@@ -1,6 +1,6 @@
-# Codex 工作成果归档
+# CodexWork2
 
-此仓库用于保存与 Codex 协作产生的工作成果。
+用于存储 Codex 与 GPT 对话产生的工作成果。
 
 约定：
 
