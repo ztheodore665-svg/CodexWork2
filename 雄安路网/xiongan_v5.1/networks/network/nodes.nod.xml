@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+    <node id="1" x="-360.00" y="0.00" type="traffic_light"/>
+    <node id="2" x="360.00" y="180.00" type="traffic_light"/>
+    <node id="3" x="-180.00" y="180.00" type="traffic_light"/>
+    <node id="4" x="360.00" y="0.00" type="traffic_light"/>
+    <node id="5" x="0.00" y="360.00" type="traffic_light"/>
+    <node id="6" x="0.00" y="180.00" type="traffic_light"/>
+    <node id="7" x="-270.00" y="300.00" type="traffic_light"/>
+    <node id="8" x="180.00" y="-360.00" type="traffic_light"/>
+    <node id="9" x="180.00" y="180.00" type="traffic_light"/>
+    <node id="10" x="180.00" y="360.00" type="traffic_light"/>
+    <node id="11" x="180.00" y="0.00" type="traffic_light"/>
+    <node id="12" x="180.00" y="-180.00" type="traffic_light"/>
+    <node id="13" x="0.00" y="0.00" type="traffic_light"/>
+    <node id="14" x="-360.00" y="180.00" type="traffic_light"/>
+    <node id="15" x="360.00" y="-180.00" type="traffic_light"/>
+    <node id="16" x="-180.00" y="0.00" type="traffic_light"/>
+    <node id="17" x="-180.00" y="-360.00" type="traffic_light"/>
+    <node id="18" x="0.00" y="-270.00" type="traffic_light"/>
+    <node id="19" x="315.00" y="315.00" type="traffic_light"/>
+    <node id="20" x="-180.00" y="-180.00" type="traffic_light"/>
+    <node id="21" x="-540.00" y="0.00" type="priority"/>
+    <node id="22" x="-180.00" y="-540.00" type="priority"/>
+    <node id="23" x="180.00" y="-540.00" type="priority"/>
+    <node id="24" x="540.00" y="-180.00" type="priority"/>
+    <node id="25" x="450.00" y="450.00" type="priority"/>
+    <node id="26" x="540.00" y="0.00" type="priority"/>
+</nodes>

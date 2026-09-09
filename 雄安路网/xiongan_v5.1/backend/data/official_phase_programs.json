@@ -1,0 +1,4816 @@
+{
+ "1": {
+  "demo": 1,
+  "conns": [
+   {
+    "from": "E14_1",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E14_1",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E14_1",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E14_1",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E14_1",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E16_1",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E16_1",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E16_1",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E16_1",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E16_1",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E16_1",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E20_1",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E20_1",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E20_1",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E20_1",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E20_1",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E21_1",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E21_1",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E21_1",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E21_1",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E21_1",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E21_1",
+    "lane": 2,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E14_1": "N",
+   "E16_1": "E",
+   "E20_1": "SE",
+   "E21_1": "W"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 160,
+    "cycle_built": 160.0,
+    "ew_ratio": 0.778,
+    "ns_ratio": 0.222,
+    "ew_g": 604.0,
+    "ns_g": 172.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 38.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 38.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 140,
+    "cycle_built": 140.0,
+    "ew_ratio": 0.766,
+    "ns_ratio": 0.234,
+    "ew_g": 501.0,
+    "ns_g": 153.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 27.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 33.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 33.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 27.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 160,
+    "cycle_built": 160.0,
+    "ew_ratio": 0.776,
+    "ns_ratio": 0.224,
+    "ew_g": 607.0,
+    "ns_g": 175.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "2": {
+  "demo": 2,
+  "conns": [
+   {
+    "from": "E19_2",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E19_2",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E19_2",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E19_2",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E4_2",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E4_2",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E4_2",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E4_2",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E9_2",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E9_2",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E9_2",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E9_2",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E19_2": "N",
+   "E4_2": "S",
+   "E9_2": "W"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 0.0,
+    "ns_ratio": 1.0,
+    "ew_g": 0.0,
+    "ns_g": 247.0,
+    "phases": [
+     {
+      "state": "GGGrGGrrggrr",
+      "dur": 33.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyryyrrggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGggrr",
+      "dur": 41.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 0.0,
+    "ns_ratio": 1.0,
+    "ew_g": 0.0,
+    "ns_g": 259.0,
+    "phases": [
+     {
+      "state": "GGGrGGrrggrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyryyrrggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGggrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 0.0,
+    "ns_ratio": 1.0,
+    "ew_g": 0.0,
+    "ns_g": 283.0,
+    "phases": [
+     {
+      "state": "GGGrGGrrggrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyryyrrggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGggrr",
+      "dur": 29.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "3": {
+  "demo": 3,
+  "conns": [
+   {
+    "from": "E7_3",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E7_3",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E7_3",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E7_3",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E7_3",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E6_3",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E6_3",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E6_3",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E6_3",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_3",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E16_3",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E16_3",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E16_3",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E16_3",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E16_3",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E14_3",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E14_3",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E14_3",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E14_3",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E14_3",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E14_3": "W",
+   "E16_3": "S",
+   "E6_3": "E",
+   "E7_3": "NW"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 108,
+    "cycle_built": 108.0,
+    "ew_ratio": 0.77,
+    "ns_ratio": 0.23,
+    "ew_g": 785.0,
+    "ns_g": 235.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 108,
+    "cycle_built": 108.0,
+    "ew_ratio": 0.77,
+    "ns_ratio": 0.23,
+    "ew_g": 785.0,
+    "ns_g": 235.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 108,
+    "cycle_built": 108.0,
+    "ew_ratio": 0.77,
+    "ns_ratio": 0.23,
+    "ew_g": 785.0,
+    "ns_g": 235.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "4": {
+  "demo": 4,
+  "conns": [
+   {
+    "from": "E2_4",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E2_4",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E2_4",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E2_4",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E2_4",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E26_4",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E26_4",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E26_4",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E26_4",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E26_4",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E26_4",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E15_4",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E15_4",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E15_4",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E15_4",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E15_4",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E11_4",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E11_4",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E11_4",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E11_4",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E11_4",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E11_4",
+    "lane": 2,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E11_4": "W",
+   "E15_4": "S",
+   "E26_4": "E",
+   "E2_4": "N"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 180,
+    "cycle_built": 180.0,
+    "ew_ratio": 0.52,
+    "ns_ratio": 0.48,
+    "ew_g": 468.0,
+    "ns_g": 432.0,
+    "phases": [
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 52.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrrrgrrrrGGGGGG",
+      "dur": 36.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrrrrgrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrGGGGGGgrrrrgrrrrr",
+      "dur": 42.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyyygrrrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 140,
+    "cycle_built": 140.0,
+    "ew_ratio": 0.417,
+    "ns_ratio": 0.583,
+    "ew_g": 408.0,
+    "ns_g": 570.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrrGGGGGgrrrrr",
+      "dur": 57.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrrryyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrrrgrrrrGGGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrrrrgrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrGGGGGGgrrrrgrrrrr",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyyygrrrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 180,
+    "cycle_built": 180.0,
+    "ew_ratio": 0.524,
+    "ns_ratio": 0.476,
+    "ew_g": 480.0,
+    "ns_g": 436.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 48.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "5": {
+  "demo": 5,
+  "conns": [
+   {
+    "from": "E10_5",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E10_5",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E10_5",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E10_5",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E6_5",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E6_5",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E6_5",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_5",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E7_5",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E7_5",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E7_5",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E7_5",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E10_5": "E",
+   "E6_5": "S",
+   "E7_5": "W"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.648,
+    "ns_ratio": 0.352,
+    "ew_g": 272.0,
+    "ns_g": 148.0,
+    "phases": [
+     {
+      "state": "GGGGggrrGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyggrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.648,
+    "ns_ratio": 0.352,
+    "ew_g": 272.0,
+    "ns_g": 148.0,
+    "phases": [
+     {
+      "state": "GGGGggrrGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyggrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.648,
+    "ns_ratio": 0.352,
+    "ew_g": 272.0,
+    "ns_g": 148.0,
+    "phases": [
+     {
+      "state": "GGGGggrrGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyggrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "6": {
+  "demo": 6,
+  "conns": [
+   {
+    "from": "E5_6",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E5_6",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E5_6",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E5_6",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E5_6",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E9_6",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E9_6",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E9_6",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E9_6",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E9_6",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E13_6",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E13_6",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E13_6",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E13_6",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E13_6",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E3_6",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E3_6",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E3_6",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E3_6",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E3_6",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E13_6": "S",
+   "E3_6": "W",
+   "E5_6": "N",
+   "E9_6": "E"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 137,
+    "cycle_built": 137.0,
+    "ew_ratio": 0.604,
+    "ns_ratio": 0.396,
+    "ew_g": 570.0,
+    "ns_g": 374.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 57.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 26.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 137,
+    "cycle_built": 137.0,
+    "ew_ratio": 0.604,
+    "ns_ratio": 0.396,
+    "ew_g": 570.0,
+    "ns_g": 374.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 57.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 26.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 137,
+    "cycle_built": 137.0,
+    "ew_ratio": 0.604,
+    "ns_ratio": 0.396,
+    "ew_g": 570.0,
+    "ns_g": 374.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 57.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 26.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "7": {
+  "demo": 7,
+  "conns": [
+   {
+    "from": "E5_7",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E5_7",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E5_7",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E5_7",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E3_7",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E3_7",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E3_7",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E3_7",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E14_7",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E14_7",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E14_7",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E14_7",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E14_7": "SW",
+   "E3_7": "SE",
+   "E5_7": "E"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 95,
+    "cycle_built": 95.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 356.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "ggrrgrrrGGGG",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrgrrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGgrrrrrrr",
+      "dur": 42.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyygrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 83,
+    "cycle_built": 83.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 308.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "ggrrgrrrGGGG",
+      "dur": 36.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrgrrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGgrrrrrrr",
+      "dur": 41.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyygrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 90,
+    "cycle_built": 90.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 336.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "ggrrgrrrGGGG",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrgrrryyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGgrrrrrrr",
+      "dur": 39.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyygrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "8": {
+  "demo": 8,
+  "conns": [
+   {
+    "from": "E12_8",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E12_8",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E12_8",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E12_8",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E12_8",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E15_8",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E15_8",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E15_8",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E15_8",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E15_8",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E23_8",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E23_8",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E23_8",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E23_8",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E23_8",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E18_8",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E18_8",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E18_8",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E18_8",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E18_8",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E12_8": "N",
+   "E15_8": "NE",
+   "E18_8": "NW",
+   "E23_8": "S"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 110,
+    "cycle_built": 110.0,
+    "ew_ratio": 0.55,
+    "ns_ratio": 0.45,
+    "ew_g": 264.0,
+    "ns_g": 216.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 18.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 28.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 12.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 90,
+    "cycle_built": 90.0,
+    "ew_ratio": 0.568,
+    "ns_ratio": 0.432,
+    "ew_g": 210.0,
+    "ns_g": 160.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 25.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 15.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 20.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 10.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 120,
+    "cycle_built": 120.0,
+    "ew_ratio": 0.547,
+    "ns_ratio": 0.453,
+    "ew_g": 290.0,
+    "ns_g": 240.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 20.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 15.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "9": {
+  "demo": 9,
+  "conns": [
+   {
+    "from": "E10_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E10_9",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E10_9",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E10_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E10_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E10_9",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E19_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E19_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E19_9",
+    "lane": 0,
+    "dir": "l"
+   },
+   {
+    "from": "E19_9",
+    "lane": 0,
+    "dir": "l"
+   },
+   {
+    "from": "E19_9",
+    "lane": 0,
+    "dir": "t"
+   },
+   {
+    "from": "E2_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E2_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E2_9",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E2_9",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E2_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E2_9",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E11_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E11_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E11_9",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E11_9",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E11_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E11_9",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E6_9",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E6_9",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E6_9",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E6_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_9",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_9",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E10_9": "N",
+   "E11_9": "S",
+   "E19_9": "NE",
+   "E2_9": "E",
+   "E6_9": "W"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 145,
+    "cycle_built": 145.0,
+    "ew_ratio": 0.523,
+    "ns_ratio": 0.477,
+    "ew_g": 736.0,
+    "ns_g": 672.0,
+    "phases": [
+     {
+      "state": "GGGGGGggrrrggrrrrGGGGGGgrrrrr",
+      "dur": 56.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyyyggrrrggrrrryyyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrggrrrGGGGGGggrrrrGGGGGG",
+      "dur": 48.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrrggrrryyyyyyggrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGGGGggrrrrggrrrrgrrrrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyyyyggrrrrggrrrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 145,
+    "cycle_built": 145.0,
+    "ew_ratio": 0.523,
+    "ns_ratio": 0.477,
+    "ew_g": 736.0,
+    "ns_g": 672.0,
+    "phases": [
+     {
+      "state": "GGGGGGggrrrggrrrrGGGGGGgrrrrr",
+      "dur": 56.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyyyggrrrggrrrryyyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrggrrrGGGGGGggrrrrGGGGGG",
+      "dur": 48.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrrggrrryyyyyyggrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGGGGggrrrrggrrrrgrrrrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyyyyggrrrrggrrrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 145,
+    "cycle_built": 145.0,
+    "ew_ratio": 0.523,
+    "ns_ratio": 0.477,
+    "ew_g": 736.0,
+    "ns_g": 672.0,
+    "phases": [
+     {
+      "state": "GGGGGGggrrrggrrrrGGGGGGgrrrrr",
+      "dur": 56.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyyyggrrrggrrrryyyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrggrrrGGGGGGggrrrrGGGGGG",
+      "dur": 48.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrrggrrryyyyyyggrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrrGGGGGggrrrrggrrrrgrrrrr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrryyyyyggrrrrggrrrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "10": {
+  "demo": 10,
+  "conns": [
+   {
+    "from": "E19_10",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E19_10",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E19_10",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E19_10",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E9_10",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E9_10",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E9_10",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E9_10",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E5_10",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E5_10",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E5_10",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E5_10",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E19_10": "E",
+   "E5_10": "W",
+   "E9_10": "S"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 120,
+    "cycle_built": 120.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 361.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "rrGGggrrgrrr",
+      "dur": 63.0,
+      "kind": "green"
+     },
+     {
+      "state": "rryyggrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 90,
+    "cycle_built": 90.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 280.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 40.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "rrGGggrrgrrr",
+      "dur": 40.0,
+      "kind": "green"
+     },
+     {
+      "state": "rryyggrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 120,
+    "cycle_built": 120.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 397.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 59.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "rrGGggrrgrrr",
+      "dur": 51.0,
+      "kind": "green"
+     },
+     {
+      "state": "rryyggrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "11": {
+  "demo": 11,
+  "conns": [
+   {
+    "from": "E9_11",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E9_11",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E9_11",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E9_11",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E9_11",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E4_11",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E4_11",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E4_11",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E4_11",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E4_11",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E4_11",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E12_11",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E12_11",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E12_11",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E12_11",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E12_11",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E13_11",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E13_11",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E13_11",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E13_11",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E13_11",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E13_11",
+    "lane": 2,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E12_11": "S",
+   "E13_11": "W",
+   "E4_11": "E",
+   "E9_11": "N"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 170,
+    "cycle_built": 170.0,
+    "ew_ratio": 0.544,
+    "ns_ratio": 0.456,
+    "ew_g": 492.0,
+    "ns_g": 412.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 23.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 52.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 25.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 130,
+    "cycle_built": 130.0,
+    "ew_ratio": 0.606,
+    "ns_ratio": 0.394,
+    "ew_g": 400.0,
+    "ns_g": 260.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 40.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 20.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 20.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 176,
+    "cycle_built": 176.0,
+    "ew_ratio": 0.543,
+    "ns_ratio": 0.457,
+    "ew_g": 504.0,
+    "ns_g": 424.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGrrgrrrrGGGGrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyrrgrrrryyyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrrGGgrrrrgrrrGG",
+      "dur": 26.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrrryygrrrrgrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrrGGGrrgrrrrr",
+      "dur": 52.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrrryyyrrgrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrrgrrGGgrrrrr",
+      "dur": 28.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrrgrryygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "12": {
+  "demo": 12,
+  "conns": [
+   {
+    "from": "E11_12",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E11_12",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E11_12",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E11_12",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E11_12",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E15_12",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E15_12",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E15_12",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E15_12",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E15_12",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E8_12",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E8_12",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E8_12",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E8_12",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E8_12",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E18_12",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E18_12",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E18_12",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E18_12",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E18_12",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E11_12": "N",
+   "E15_12": "E",
+   "E18_12": "SW",
+   "E8_12": "S"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 170,
+    "cycle_built": 170.0,
+    "ew_ratio": 0.556,
+    "ns_ratio": 0.444,
+    "ew_g": 450.0,
+    "ns_g": 360.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 15.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 195,
+    "cycle_built": 215.0,
+    "ew_ratio": 0.515,
+    "ns_ratio": 0.485,
+    "ew_g": 530.0,
+    "ns_g": 500.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 65.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 60.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 178,
+    "cycle_built": 180.0,
+    "ew_ratio": 0.552,
+    "ns_ratio": 0.448,
+    "ew_g": 476.0,
+    "ns_g": 386.0,
+    "phases": [
+     {
+      "state": "grrrrGGGrrgrrrrGGGrr",
+      "dur": 58.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrrrgrrGGgrrrrgrrGG",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgrryygrrrrgrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "GGGrrgrrrrGGGrrgrrrr",
+      "dur": 53.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgrrrr",
+      "dur": 17.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   }
+  ]
+ },
+ "13": {
+  "demo": 13,
+  "conns": [
+   {
+    "from": "E6_13",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E6_13",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E6_13",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_13",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E6_13",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E11_13",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E11_13",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E11_13",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E11_13",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E11_13",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E16_13",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E16_13",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E16_13",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E16_13",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E16_13",
+    "lane": 2,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E11_13": "E",
+   "E16_13": "W",
+   "E6_13": "N"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 152,
+    "cycle_built": 152.0,
+    "ew_ratio": 0.82,
+    "ns_ratio": 0.18,
+    "ew_g": 505.0,
+    "ns_g": 111.0,
+    "phases": [
+     {
+      "state": "ggrrrGGGGrGGGrr",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrryyyyryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggGGGgrrrrrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggyyygrrrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggrrrgrrrrrrrGG",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrrgrrrrrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggrrrGGGGrrrrrr",
+      "dur": 15.0,
+      "kind": "green"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 147,
+    "cycle_built": 147.0,
+    "ew_ratio": 0.823,
+    "ns_ratio": 0.177,
+    "ew_g": 515.0,
+    "ns_g": 111.0,
+    "phases": [
+     {
+      "state": "ggrrrGGGGrGGGrr",
+      "dur": 65.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrryyyyryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggGGGgrrrrrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggyyygrrrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggrrrgrrrrrrrGG",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrrgrrrrrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 152,
+    "cycle_built": 152.0,
+    "ew_ratio": 0.82,
+    "ns_ratio": 0.18,
+    "ew_g": 505.0,
+    "ns_g": 111.0,
+    "phases": [
+     {
+      "state": "ggrrrGGGGrGGGrr",
+      "dur": 55.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrryyyyryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggGGGgrrrrrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggyyygrrrrrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggrrrgrrrrrrrGG",
+      "dur": 30.0,
+      "kind": "green"
+     },
+     {
+      "state": "ggrrrgrrrrrrryy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrrrrrrrrrrrr",
+      "dur": 2.0,
+      "kind": "red"
+     },
+     {
+      "state": "ggrrrGGGGrrrrrr",
+      "dur": 15.0,
+      "kind": "green"
+     }
+    ]
+   }
+  ]
+ },
+ "14": {
+  "demo": 14,
+  "conns": [
+   {
+    "from": "E7_14",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E7_14",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E7_14",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E7_14",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E3_14",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E3_14",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E3_14",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E3_14",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E1_14",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E1_14",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E1_14",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E1_14",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E1_14": "S",
+   "E3_14": "E",
+   "E7_14": "NE"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 75,
+    "cycle_built": 75.0,
+    "ew_ratio": 0.319,
+    "ns_ratio": 0.681,
+    "ew_g": 66.0,
+    "ns_g": 141.0,
+    "phases": [
+     {
+      "state": "GGrrGgrrgrrr",
+      "dur": 22.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrygrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrggrrGGGr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 75,
+    "cycle_built": 75.0,
+    "ew_ratio": 0.319,
+    "ns_ratio": 0.681,
+    "ew_g": 66.0,
+    "ns_g": 141.0,
+    "phases": [
+     {
+      "state": "GGrrGgrrgrrr",
+      "dur": 22.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrygrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrggrrGGGr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 75,
+    "cycle_built": 75.0,
+    "ew_ratio": 0.319,
+    "ns_ratio": 0.681,
+    "ew_g": 66.0,
+    "ns_g": 141.0,
+    "phases": [
+     {
+      "state": "GGrrGgrrgrrr",
+      "dur": 22.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrygrrgrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "rrrrggrrGGGr",
+      "dur": 47.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "15": {
+  "demo": 15,
+  "conns": [
+   {
+    "from": "E4_15",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E4_15",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E4_15",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E4_15",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E4_15",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E24_15",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E24_15",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E24_15",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E24_15",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E24_15",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E8_15",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E8_15",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E8_15",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E8_15",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E8_15",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E12_15",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E12_15",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E12_15",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E12_15",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E12_15",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E12_15": "W",
+   "E24_15": "E",
+   "E4_15": "N",
+   "E8_15": "SW"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 115,
+    "cycle_built": 115.0,
+    "ew_ratio": 0.771,
+    "ns_ratio": 0.229,
+    "ew_g": 840.0,
+    "ns_g": 250.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 59.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 115,
+    "cycle_built": 115.0,
+    "ew_ratio": 0.771,
+    "ns_ratio": 0.229,
+    "ew_g": 840.0,
+    "ns_g": 250.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 59.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 115,
+    "cycle_built": 115.0,
+    "ew_ratio": 0.771,
+    "ns_ratio": 0.229,
+    "ew_g": 840.0,
+    "ns_g": 250.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgrrrr",
+      "dur": 50.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGGGG",
+      "dur": 59.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "16": {
+  "demo": 16,
+  "conns": [
+   {
+    "from": "E3_16",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E3_16",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E3_16",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E3_16",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E3_16",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E13_16",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E13_16",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E13_16",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E13_16",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E13_16",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E13_16",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E20_16",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E20_16",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E20_16",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E20_16",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E20_16",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E1_16",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E1_16",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E1_16",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E1_16",
+    "lane": 2,
+    "dir": "s"
+   },
+   {
+    "from": "E1_16",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E1_16",
+    "lane": 2,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E13_16": "E",
+   "E1_16": "W",
+   "E20_16": "S",
+   "E3_16": "N"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.524,
+    "ns_ratio": 0.476,
+    "ew_g": 408.0,
+    "ns_g": 370.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGGgrrrrGGGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyyygrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrrGGGGGgrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrrryyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.524,
+    "ns_ratio": 0.476,
+    "ew_g": 408.0,
+    "ns_g": 370.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGGgrrrrGGGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyyygrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrrGGGGGgrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrrryyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 77,
+    "cycle_built": 77.0,
+    "ew_ratio": 0.524,
+    "ns_ratio": 0.476,
+    "ew_g": 408.0,
+    "ns_g": 370.0,
+    "phases": [
+     {
+      "state": "grrrrGGGGGGgrrrrGGGGGG",
+      "dur": 34.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyyygrrrryyyyyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGGGGgrrrrrGGGGGgrrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrrryyyyygrrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "17": {
+  "demo": 17,
+  "conns": [
+   {
+    "from": "E20_17",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E20_17",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E20_17",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E20_17",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E18_17",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E18_17",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E18_17",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E18_17",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E22_17",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E22_17",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E22_17",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E22_17",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E18_17": "NE",
+   "E20_17": "N",
+   "E22_17": "S"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 96,
+    "cycle_built": 96.0,
+    "ew_ratio": 0.592,
+    "ns_ratio": 0.408,
+    "ew_g": 232.0,
+    "ns_g": 160.0,
+    "phases": [
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 58.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 96,
+    "cycle_built": 96.0,
+    "ew_ratio": 0.592,
+    "ns_ratio": 0.408,
+    "ew_g": 232.0,
+    "ns_g": 160.0,
+    "phases": [
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 58.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 96,
+    "cycle_built": 96.0,
+    "ew_ratio": 0.592,
+    "ns_ratio": 0.408,
+    "ew_g": 232.0,
+    "ns_g": 160.0,
+    "phases": [
+     {
+      "state": "rrrrGGGGgrrr",
+      "dur": 58.0,
+      "kind": "green"
+     },
+     {
+      "state": "rrrryyyygrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "GGrrggrrGGGr",
+      "dur": 32.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrggrryyyr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "18": {
+  "demo": 18,
+  "conns": [
+   {
+    "from": "E12_18",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E12_18",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E12_18",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E12_18",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E12_18",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E8_18",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E8_18",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E8_18",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E8_18",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E8_18",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E17_18",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E17_18",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E17_18",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E17_18",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E17_18",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E20_18",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E20_18",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E20_18",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E20_18",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E20_18",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E12_18": "NE",
+   "E17_18": "SW",
+   "E20_18": "NW",
+   "E8_18": "SE"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 444.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGGgggrrrrGGGgggrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGgggrrrrGGGgg",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 444.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGGgggrrrrGGGgggrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGgggrrrrGGGgg",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 80,
+    "cycle_built": 80.0,
+    "ew_ratio": 1.0,
+    "ns_ratio": 0.0,
+    "ew_g": 444.0,
+    "ns_g": 0.0,
+    "phases": [
+     {
+      "state": "GGGgggrrrrGGGgggrrrr",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyrrgrrrryyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGgggrrrrGGGgg",
+      "dur": 37.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyrrgrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "19": {
+  "demo": 19,
+  "conns": [
+   {
+    "from": "E25_19",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E25_19",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E25_19",
+    "lane": 2,
+    "dir": "l"
+   },
+   {
+    "from": "E25_19",
+    "lane": 2,
+    "dir": "t"
+   },
+   {
+    "from": "E2_19",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E2_19",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E2_19",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E2_19",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E2_19",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "l"
+   },
+   {
+    "from": "E9_19",
+    "lane": 0,
+    "dir": "t"
+   },
+   {
+    "from": "E10_19",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E10_19",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E10_19",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E10_19",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E10_19",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E10_19": "W",
+   "E25_19": "NE",
+   "E2_19": "S",
+   "E9_19": "SW"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 76,
+    "cycle_built": 76.0,
+    "ew_ratio": 0.75,
+    "ns_ratio": 0.25,
+    "ew_g": 315.0,
+    "ns_g": 105.0,
+    "phases": [
+     {
+      "state": "GGgggrrrrGGGGgggrrrr",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrgrrrryyyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrGGGgggrrrrrGGGgg",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrryyyrrgrrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 76,
+    "cycle_built": 76.0,
+    "ew_ratio": 0.75,
+    "ns_ratio": 0.25,
+    "ew_g": 315.0,
+    "ns_g": 105.0,
+    "phases": [
+     {
+      "state": "GGgggrrrrGGGGgggrrrr",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrgrrrryyyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrGGGgggrrrrrGGGgg",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrryyyrrgrrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 76,
+    "cycle_built": 76.0,
+    "ew_ratio": 0.75,
+    "ns_ratio": 0.25,
+    "ew_g": 315.0,
+    "ns_g": 105.0,
+    "phases": [
+     {
+      "state": "GGgggrrrrGGGGgggrrrr",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyrrgrrrryyyyrrgrrrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrGGGgggrrrrrGGGgg",
+      "dur": 35.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrryyyrrgrrrrryyyrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ },
+ "20": {
+  "demo": 20,
+  "conns": [
+   {
+    "from": "E16_20",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E16_20",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E16_20",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E16_20",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E16_20",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E18_20",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E18_20",
+    "lane": 0,
+    "dir": "l"
+   },
+   {
+    "from": "E18_20",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E18_20",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E18_20",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E17_20",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E17_20",
+    "lane": 0,
+    "dir": "s"
+   },
+   {
+    "from": "E17_20",
+    "lane": 1,
+    "dir": "s"
+   },
+   {
+    "from": "E17_20",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E17_20",
+    "lane": 1,
+    "dir": "t"
+   },
+   {
+    "from": "E1_20",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E1_20",
+    "lane": 0,
+    "dir": "r"
+   },
+   {
+    "from": "E1_20",
+    "lane": 1,
+    "dir": "r"
+   },
+   {
+    "from": "E1_20",
+    "lane": 1,
+    "dir": "l"
+   },
+   {
+    "from": "E1_20",
+    "lane": 1,
+    "dir": "t"
+   }
+  ],
+  "arms": {
+   "E16_20": "N",
+   "E17_20": "S",
+   "E18_20": "SE",
+   "E1_20": "NW"
+  },
+  "plans": [
+   {
+    "period": "早高峰",
+    "range": "7:00-9:00",
+    "cycle_official": 120,
+    "cycle_built": 120.0,
+    "ew_ratio": 0.486,
+    "ns_ratio": 0.514,
+    "ew_g": 459.0,
+    "ns_g": 486.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgggrr",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgggrr",
+      "dur": 9.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGgGG",
+      "dur": 45.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryygyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrgGGGGgrrrrgggGG",
+      "dur": 9.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgyyyygrrrrgggyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "平峰",
+    "range": "14:30-16:30",
+    "cycle_official": 90,
+    "cycle_built": 90.0,
+    "ew_ratio": 0.485,
+    "ns_ratio": 0.515,
+    "ew_g": 333.0,
+    "ns_g": 354.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgggrr",
+      "dur": 33.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgggrr",
+      "dur": 6.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGgGG",
+      "dur": 33.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryygyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrgGGGGgrrrrgggGG",
+      "dur": 6.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgyyyygrrrrgggyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   },
+   {
+    "period": "晚高峰",
+    "range": "17:30-19:30",
+    "cycle_official": 110,
+    "cycle_built": 110.0,
+    "ew_ratio": 0.485,
+    "ns_ratio": 0.515,
+    "ew_g": 417.0,
+    "ns_g": 442.0,
+    "phases": [
+     {
+      "state": "GGGGGgrrrrGGGGGgggrr",
+      "dur": 41.0,
+      "kind": "green"
+     },
+     {
+      "state": "yyyyygrrrryyyyygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrGGgrrrrgrrGGgggrr",
+      "dur": 8.0,
+      "kind": "green"
+     },
+     {
+      "state": "grryygrrrrgrryygggrr",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrGGGGGgrrrrGGgGG",
+      "dur": 41.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrryyyyygrrrryygyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     },
+     {
+      "state": "grrrrgGGGGgrrrrgggGG",
+      "dur": 8.0,
+      "kind": "green"
+     },
+     {
+      "state": "grrrrgyyyygrrrrgggyy",
+      "dur": 3.0,
+      "kind": "yellow"
+     }
+    ]
+   }
+  ]
+ }
+}

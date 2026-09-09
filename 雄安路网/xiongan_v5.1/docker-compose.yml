@@ -1,0 +1,39 @@
+# 车路云协同管控平台 · 一键容器化启动
+# 用法（在项目根目录执行）：
+#   docker compose up -d --build
+# 然后浏览器访问 http://localhost:5173
+#
+# 环境变量（可在 .env 中配置后取消 env_file 注释）：
+#   LLM_PROVIDER=zhipu | ollama
+#   LLM_API_KEY=你的智谱密钥
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: xiongan-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # 默认本地 Ollama（离线保底）；要智谱请在此或 env_file 覆盖
+      LLM_PROVIDER: ollama
+      LLM_MODEL: qwen2.5:1.5b
+      LLM_API_KEY: ollama
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: xiongan-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+# 如需随 .env 注入智谱密钥（.env 默认不入库，仅本机存在），取消下面注释：
+#   backend:
+#     env_file:
+#       - path: .env
+#         required: false

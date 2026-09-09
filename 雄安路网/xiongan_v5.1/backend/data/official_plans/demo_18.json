@@ -1,0 +1,70 @@
+{
+  "demo": "demo_18",
+  "source": "路口数据/18/路口数据/demo_18流量和交叉口配时方案.xlsx",
+  "plans": [
+    {
+      "period": "早高峰",
+      "range": "7:00-9:00",
+      "cycle": 80,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东北、西南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        },
+        {
+          "no": 2,
+          "name": "西北、东南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        }
+      ]
+    },
+    {
+      "period": "平峰",
+      "range": "14:30-16:30",
+      "cycle": 80,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东北、西南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        },
+        {
+          "no": 2,
+          "name": "西北、东南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        }
+      ]
+    },
+    {
+      "period": "晚高峰",
+      "range": "17:30-19:30",
+      "cycle": 80,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东北、西南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        },
+        {
+          "no": 2,
+          "name": "西北、东南放行",
+          "green": 37,
+          "yellow": 3,
+          "all_red": null
+        }
+      ]
+    }
+  ],
+  "flow": []
+}

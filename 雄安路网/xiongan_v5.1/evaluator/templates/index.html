@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUMO 交通红绿灯算法评价平台</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div id="header">
+  <h1>🚦 SUMO 交通红绿灯算法评价平台</h1>
+  <span class="sep"></span>
+  <label>项目:</label>
+  <select id="project-select">
+    <option value="">-- 选择项目 --</option>
+    {% for p in projects %}
+    <option value="{{ p.path }}">{{ p.name }} ({{ p.intersection_count }}个路口)</option>
+    {% endfor %}
+  </select>
+  <span class="sep"></span>
+  <input type="text" id="project-search" placeholder="或输入项目路径，按回车加载...">
+  <span class="sep"></span>
+  <span style="font-size:12px;opacity:0.7;">支持 network/ + intersections/ 结构的项目</span>
+</div>
+
+<div id="main">
+  <!-- 左侧配置面板 -->
+  <div id="sidebar">
+    <div id="sidebar-section">
+      <h3>项目信息</h3>
+      <div id="proj-info">
+        <span style="color:var(--text-secondary);font-size:13px;">请选择或输入一个项目</span>
+      </div>
+    </div>
+
+    <div id="sidebar-section">
+      <h3>仿真参数</h3>
+      <div class="form-group">
+        <div class="form-row">
+          <label>车流量（辆）</label>
+          <span id="val-total_vehicles">500</span>
+        </div>
+        <input type="range" id="param-total_vehicles" min="10" max="10000" step="10" value="500" oninput="updateParam('total_vehicles', this.value)">
+        <div class="hint">10 ~ 10000 辆</div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-row">
+          <label>仿真时长</label>
+          <span id="val-duration">600秒（10分0秒）</span>
+        </div>
+        <input type="range" id="param-duration" min="60" max="7200" step="60" value="600" oninput="updateParam('duration', this.value)">
+        <div class="hint">60 ~ 7200 秒（1分钟 ~ 2小时）</div>
+      </div>
+
+      <div class="form-group">
+        <label>随机种子</label>
+        <input type="number" id="param-seed" value="42" min="0" max="99999" onchange="updateParam('seed', this.value)">
+        <div class="hint">相同种子产生相同车流</div>
+      </div>
+
+      <button class="btn btn-outline" onclick="generateRoutes()">🔧 仅生成车流</button>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="runSimulation()">▶ 无头运行（统计）</button>
+        <button class="btn btn-warning" onclick="runSimulationGUI()">🎬 启动 GUI 可视化</button>
+      </div>
+    </div>
+
+    <div id="save-section">
+      <h3 style="font-size:15px;margin-bottom:10px;">💾 保存结果</h3>
+      <input type="text" id="save-label" placeholder="结果标签（可选）">
+      <button class="btn btn-success" onclick="saveResults()">保存当前结果</button>
+    </div>
+  </div>
+
+  <!-- 右侧内容区 -->
+  <div id="content">
+    <div class="empty-state">
+      <div class="icon">🚦</div>
+      <p>请选择一个项目开始评价</p>
+      <p class="sub">选择项目后，配置参数并运行仿真，结果将在此显示</p>
+    </div>
+  </div>
+</div>
+
+<!-- 状态栏 -->
+<div id="status-bar">
+  <span class="dot idle"></span>
+  <span id="status-text">就绪</span>
+  <div id="progress-bar-wrap">
+    <div class="fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<!-- 底部：历史结果 -->
+<div style="padding:0 20px 20px;">
+  <div class="panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <h3>📋 历史保存结果</h3>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="panel-body" style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>保存时间</th>
+          <th>标签</th>
+          <th>参数</th>
+          <th>平均等待时间</th>
+          <th>操作</th>
+        </tr></thead>
+        <tbody id="saved-results-body">
+          <tr><td colspan="5" style="text-align:center;color:var(--text-secondary);padding:20px;">加载中...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

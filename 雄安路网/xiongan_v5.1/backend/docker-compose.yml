@@ -1,0 +1,23 @@
+# 车路云协同管控平台 - 容器编排
+# 后端：FastAPI 服务（含健康检查）。可选 redis 缓存、前端（未实现）。
+services:
+  backend:
+    build: .
+    container_name: cccp-backend
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      - SUMO_HOME=${SUMO_HOME}
+      - SIM_CONFIG_PATH=${SIM_CONFIG_PATH:-}
+      - SUMO_COMM_PORT=${SUMO_COMM_PORT:-8813}
+    volumes:
+      # 复用宿主 SUMO 安装目录与仿真路网数据
+      - ${SUMO_HOME}:${SUMO_HOME}:ro
+    restart: unless-stopped
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: cccp-redis
+  #   ports: ["6379:6379"]
+  #   environment:
+  #     - CACHE_ADDR=redis://redis:6379

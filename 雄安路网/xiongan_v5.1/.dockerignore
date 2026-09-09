@@ -1,0 +1,21 @@
+# Docker 构建上下文排除
+node_modules/
+frontend/node_modules/
+.git/
+.gitignore
+.vite/
+dist/
+__pycache__/
+*.pyc
+.venv/
+.env
+*.local
+Thumbs.db
+.DS_Store
+docs/
+evaluator/
+requirements/
+docker-compose.yml
+start.bat
+README.md
+backend/data/networks/  # 训练/评估随机路网体积大，需要时单独 COPY

@@ -1,0 +1,88 @@
+{
+  "info": {
+    "_postman_id": "cccp-collection",
+    "name": "车路云协同管控平台 API",
+    "description": "从 FastAPI OpenAPI 生成的基础集合；完整版可访问 /docs 后重新导出。",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "健康检查",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/health", "host": ["{{base}}"], "path": ["api", "v1", "health"] }
+      }
+    },
+    {
+      "name": "路网 GeoJSON",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/network", "host": ["{{base}}"], "path": ["api", "v1", "network"] }
+      }
+    },
+    {
+      "name": "路网摘要",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/network/summary", "host": ["{{base}}"], "path": ["api", "v1", "network", "summary"] }
+      }
+    },
+    {
+      "name": "启动仿真",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"net_path\": \"C:/Users/27773/Desktop/xiongan/network/base_network.net.xml\",\n  \"route_files\": [\"C:/Users/27773/Desktop/xiongan/network/routes.rou.xml\"],\n  \"scheme\": \"scheme_1\",\n  \"scheme_params\": {}\n}"
+        },
+        "url": { "raw": "{{base}}/api/v1/simulate/start", "host": ["{{base}}"], "path": ["api", "v1", "simulate", "start"] }
+      }
+    },
+    {
+      "name": "仿真状态",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/simulate/status", "host": ["{{base}}"], "path": ["api", "v1", "simulate", "status"] }
+      }
+    },
+    {
+      "name": "实时指标",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/metrics/realtime", "host": ["{{base}}"], "path": ["api", "v1", "metrics", "realtime"] }
+      }
+    },
+    {
+      "name": "方案列表",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base}}/api/v1/schemes", "host": ["{{base}}"], "path": ["api", "v1", "schemes"] }
+      }
+    },
+    {
+      "name": "方案动作",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": { "mode": "raw", "raw": "{\n  \"action\": \"get_status\",\n  \"params\": {}\n}" },
+        "url": { "raw": "{{base}}/api/v1/schemes/scheme_1/config", "host": ["{{base}}"], "path": ["api", "v1", "schemes", "scheme_1", "config"] }
+      }
+    },
+    {
+      "name": "扰动注入",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": { "mode": "raw", "raw": "{\n  \"event_type\": \"large_event\",\n  \"params\": {\"edge_ids\": [\"E1\", \"E2\"], \"vehicles\": 20}\n}" },
+        "url": { "raw": "{{base}}/api/v1/events/inject", "host": ["{{base}}"], "path": ["api", "v1", "events", "inject"] }
+      }
+    }
+  ]
+}

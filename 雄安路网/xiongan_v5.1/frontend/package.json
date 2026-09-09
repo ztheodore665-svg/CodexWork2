@@ -1,0 +1,21 @@
+{
+  "name": "xiongan-traffic-platform-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "雄安车路云协同管控平台前端（AI 指挥中心）",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "echarts": "^5.6.0",
+    "pinia": "^2.3.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "vite": "^6.3.5"
+  }
+}

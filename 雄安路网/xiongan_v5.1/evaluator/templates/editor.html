@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>十字路口红绿灯规划可视化编辑平台</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #e74c3c; --yellow: #f39c12; --green: #27ae60;
+  --bg: #f5f6fa; --surface: #fff; --border: #dcdde1; --text: #2c3e50;
+  --text-secondary: #7f8c8d; --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --radius: 8px;
+}
+body { font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+
+/* Toolbar */
+#toolbar {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow); z-index: 10; position: relative; flex-wrap: wrap;
+}
+#toolbar h1 { font-size: 18px; font-weight: 700; margin-right: 8px; white-space: nowrap; }
+#toolbar .sep { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+.tbtn {
+  display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface);
+  cursor: pointer; font-size: 13px; color: var(--text); white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tbtn:hover { background: #f0f0f5; border-color: #b0b0c0; }
+.tbtn.primary { background: #3498db; color: #fff; border-color: #3498db; }
+.tbtn.primary:hover { background: #2980b9; }
+.tbtn.danger { color: #e74c3c; border-color: #e74c3c30; }
+.tbtn.danger:hover { background: #fdedec; }
+.tbtn.active { background: #e8f4fd; border-color: #3498db; color: #3498db; font-weight: 600; }
+#intersection-select { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: var(--surface); cursor: pointer; }
+
+/* Main layout */
+#main { display: flex; height: calc(100vh - 60px - 36px); overflow: hidden; }
+
+/* Sidebar */
+#sidebar {
+  width: 280px; min-width: 280px; background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+#sidebar-header {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center;
+}
+#lane-list { flex: 1; overflow-y: auto; }
+.lane-card {
+  padding: 10px 14px; border-bottom: 1px solid #f0f0f5; cursor: grab;
+  border-left: 3px solid transparent; position: relative;
+}
+.lane-card:hover { background: #f8f9fc; }
+.lane-card:active { cursor: grabbing; }
+.lane-card.drag-over { background: #e8f4fd; border-left-color: #3498db; }
+.lane-card .drag-handle { position: absolute; left: 2px; top: 50%; transform: translateY(-50%); color: #ccc; font-size: 12px; cursor: grab; padding: 2px; }
+.lane-card .lane-approach {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; color: #fff; margin-bottom: 4px; margin-left: 10px;
+}
+.lane-card .lane-id { font-weight: 600; font-size: 14px; margin-left: 10px; }
+.lane-card .lane-info { font-size: 12px; color: var(--text-secondary); margin-top: 2px; margin-left: 10px; }
+.lane-card .lane-actions { display: flex; gap: 6px; margin-top: 6px; margin-left: 10px; }
+.lane-card .lane-actions button {
+  font-size: 11px; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
+  background: #fff; cursor: pointer;
+}
+.lane-card .lane-actions button:hover { background: #f0f0f5; }
+.lane-card .lane-actions button.danger { color: #e74c3c; border-color: #e74c3c30; }
+.lane-card .lane-actions button.danger:hover { background: #fdedec; }
+
+.approach-North { background: #3498db; }
+.approach-South { background: #2ecc71; }
+.approach-East  { background: #e67e22; }
+.approach-West  { background: #9b59b6; }
+
+/* Timeline area */
+#timeline-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+#timeline-wrap { flex: 1; overflow: auto; position: relative; }
+#timeline-table { border-collapse: collapse; min-width: 100%; table-layout: fixed; }
+#timeline-table th, #timeline-table td { border: 1px solid var(--border); }
+
+/* Lane label column */
+.lane-label-cell {
+  position: sticky; left: 0; z-index: 2; background: var(--surface);
+  padding: 4px 10px; min-width: 180px; max-width: 200px;
+  font-size: 12px; border-right: 2px solid var(--border) !important;
+  cursor: default;
+}
+.header-label-cell {
+  position: sticky; left: 0; z-index: 3; background: #f8f9fc;
+  padding: 8px 10px; font-weight: 700; font-size: 13px;
+  border-right: 2px solid var(--border) !important;
+}
+
+/* Phase header */
+.phase-header {
+  position: relative; padding: 10px 6px; text-align: center; min-width: 80px;
+  background: #f8f9fc; cursor: grab; user-select: none;
+}
+.phase-header:active { cursor: grabbing; }
+.phase-header.dragging { opacity: 0.4; }
+.phase-header.drag-target { background: #e8f4fd; box-shadow: inset 0 0 0 2px #3498db; }
+.phase-header .phase-name { font-weight: 600; font-size: 13px; }
+.phase-header .phase-duration { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.phase-header:hover { background: #eef1f8; }
+.phase-header .phase-delete {
+  position: absolute; top: 2px; right: 4px; width: 18px; height: 18px;
+  border-radius: 50%; border: none; background: #e74c3c20; color: #e74c3c;
+  cursor: pointer; font-size: 12px; line-height: 18px; text-align: center; display: none;
+}
+.phase-header:hover .phase-delete { display: block; }
+.phase-header .phase-delete:hover { background: #e74c3c; color: #fff; }
+.phase-header .drag-hint {
+  position: absolute; top: 2px; left: 6px; color: #ccc; font-size: 10px; display: none;
+}
+.phase-header:hover .drag-hint { display: block; }
+
+/* Yellow transition column between phases */
+.yellow-col {
+  width: 34px; min-width: 34px; background: #fef9e7;
+  text-align: center; vertical-align: middle; cursor: pointer;
+  position: relative; border-left: 2px solid #f39c1250; border-right: 2px solid #f39c1250;
+  transition: background 0.15s;
+}
+.yellow-col:hover { background: #fdebd0; }
+.yellow-col .yellow-label { font-size: 10px; color: #c0940c; font-weight: 600; }
+.yellow-col .yellow-split { font-size: 14px; color: #d4a017; cursor: pointer; }
+.yellow-col:hover .yellow-split { color: #e74c3c; }
+.yellow-col-header {
+  width: 34px; min-width: 34px; background: #fef9e7; text-align: center;
+  font-size: 10px; color: #b8960c; font-weight: 600; cursor: pointer;
+  border-left: 2px solid #f39c1250; border-right: 2px solid #f39c1250;
+}
+.yellow-col-header:hover { background: #fdebd0; }
+
+/* Timeline cells */
+.timeline-cell {
+  height: 44px; cursor: pointer; text-align: center; vertical-align: middle;
+  transition: filter 0.1s; position: relative;
+}
+.timeline-cell:hover { filter: brightness(0.90); }
+.timeline-cell.color-red   { background: var(--red); }
+.timeline-cell.color-green { background: var(--green); }
+.timeline-cell.has-override::after {
+  content: ''; position: absolute; top: 3px; right: 3px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #fff; border: 1px solid rgba(0,0,0,0.3);
+}
+
+/* Approach separator */
+.approach-sep-row td {
+  padding: 5px 10px; background: #f0f4f8; font-size: 12px; font-weight: 700;
+  color: var(--text-secondary); border-bottom: 2px solid var(--border);
+}
+tr.drag-over-row td { border-top: 3px solid #3498db !important; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal {
+  background: var(--surface); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  padding: 24px; min-width: 380px; max-width: 480px;
+}
+.modal h3 { margin-bottom: 16px; font-size: 16px; }
+.modal .form-group { margin-bottom: 12px; }
+.modal .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary); }
+.modal .form-group input, .modal .form-group select {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px;
+}
+.modal .form-group input:focus, .modal .form-group select:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 2px #3498db20; }
+.modal .form-group .hint { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.modal .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.modal .form-actions button {
+  padding: 8px 18px; border-radius: 6px; font-size: 13px; border: 1px solid var(--border);
+  background: var(--surface); cursor: pointer;
+}
+.modal .form-actions button.primary { background: #3498db; color: #fff; border-color: #3498db; }
+.modal .form-actions button.primary:hover { background: #2980b9; }
+.modal .form-actions button:hover { background: #f0f0f5; }
+
+/* Empty state */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; color: var(--text-secondary);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state p { font-size: 14px; }
+
+/* Context menu */
+#context-menu {
+  position: fixed; z-index: 150; background: var(--surface); border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1px solid var(--border);
+  padding: 4px; min-width: 160px; display: none;
+}
+#context-menu .ctx-item {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  border-radius: 6px; cursor: pointer; font-size: 13px;
+}
+#context-menu .ctx-item:hover { background: #f0f0f5; }
+#context-menu .ctx-sep { height: 1px; background: var(--border); margin: 4px 0; }
+.ctx-color-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
+.ctx-color-dot.red { background: var(--red); }
+.ctx-color-dot.green { background: var(--green); }
+
+/* Legend */
+#legend {
+  display: flex; gap: 16px; padding: 8px 16px; background: var(--surface);
+  border-top: 1px solid var(--border); align-items: center; font-size: 12px;
+  color: var(--text-secondary);
+}
+#legend .legend-item { display: flex; align-items: center; gap: 6px; }
+#legend .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+#legend .legend-dot.red { background: var(--red); }
+#legend .legend-dot.green { background: var(--green); }
+#legend .legend-dot.yellow-bar { width: 12px; height: 12px; border-radius: 2px; background: #fef9e7; border: 1px solid #f39c12; }
+
+/* Toast */
+#toast {
+  position: fixed; bottom: 24px; right: 24px; padding: 12px 20px;
+  border-radius: 8px; color: #fff; font-size: 14px; font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 200;
+  transform: translateY(100px); opacity: 0; transition: all 0.3s ease;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { background: #27ae60; }
+#toast.error { background: #e74c3c; }
+#toast.info { background: #3498db; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="toolbar">
+    <h1>🚦 红绿灯规划可视化编辑平台</h1>
+    <span class="sep"></span>
+    <button class="tbtn" onclick="handleImport()" title="从JSON文件导入配置">📂 导入</button>
+    <button class="tbtn" onclick="handleExport()" title="导出当前配置为JSON文件">💾 导出</button>
+    <button class="tbtn" onclick="handleUndo()" title="撤回上一个操作">↩ 撤回</button>
+	    <button class="tbtn primary" id="btn-save-file" onclick="saveToFile()" title="保存到原配置文件" style="display:none;">💾 保存到文件</button>
+    <span class="sep"></span>
+    <button class="tbtn active" id="btn-batch-mode" onclick="toggleColorMode()" title="当前：批量模式 — 点击色块改变整个进口方向&#10;按 Ctrl 可临时切换为单独模式">📋 批量模式</button>
+    <span class="sep"></span>
+    <button class="tbtn primary" onclick="showAddLaneModal()">＋ 添加车道</button>
+    <button class="tbtn" onclick="handleAddPhase()">＋ 添加相位</button>
+    <button class="tbtn" id="btn-conflict-check" onclick="handleConflictCheck()" style="color:#e67e22;border-color:#e67e2240;">⚠ 检测冲突</button>
+    <span class="sep"></span>
+    <select id="intersection-select" onchange="switchIntersection(this.value)"></select>
+    <button class="tbtn" onclick="showAddIntersectionModal()">＋ 新路口</button>
+    <button class="tbtn" onclick="showEditIntersectionModal()">✏️ 改路口名</button>
+    <button class="tbtn danger" onclick="deleteCurrentIntersection()">🗑 删路口</button>
+    <span style="font-size:12px;color:var(--text-secondary);margin-left:auto;">
+      拖拽排序 · Ctrl+点击单独改色 · 相位间自动3s黄灯
+    </span>
+  </div>
+
+  <div id="main">
+    <div id="sidebar">
+      <div id="sidebar-header">
+        <span>车道列表</span>
+        <span style="font-size:11px;color:var(--text-secondary);" id="lane-count">0 条车道</span>
+      </div>
+      <div id="lane-list"></div>
+    </div>
+    <div id="timeline-area">
+      <div id="timeline-wrap">
+        <div id="timeline-content"></div>
+      </div>
+    </div>
+  </div>
+  <div id="legend">
+    <span style="font-weight:600;">图例：</span>
+    <span class="legend-item"><span class="legend-dot green"></span> 绿灯（通行）</span>
+    <span class="legend-item"><span class="legend-dot red"></span> 红灯（禁止）</span>
+    <span class="legend-item"><span class="legend-dot yellow-bar"></span> 黄灯过渡 3s（相位间自动添加）</span>
+    <span style="margin-left:8px;color:#aaa;">|</span>
+    <span>左键批量 · Ctrl+左键单独 · 右键菜单 · 双击表头编辑 · 拖拽排序</span>
+    <span style="margin-left:auto;font-weight:600;" id="cycle-time-display"></span>
+  </div>
+</div>
+
+<div id="context-menu">
+  <div class="ctx-item" onclick="ctxSetColor('green')"><span class="ctx-color-dot green"></span> 设为绿灯</div>
+  <div class="ctx-item" onclick="ctxSetColor('red')"><span class="ctx-color-dot red"></span> 设为红灯</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="ctxClearOverride()">🔄 清除单独覆盖</div>
+</div>
+<div id="toast"></div>
+<div id="modal-container"></div>
+
+<script src="/static/js/conflict_detection.js"></script>
+<script>
+// ─── 数据模型 ──────────────────────────────────────────────
+const DEFAULT_PHASE_DURATION = 20;
+const BETWEEN_YELLOW = 3; // seconds of yellow between phases
+
+let editorConfig = { config_file: null, project_path: null, intersection_id: null };
+let appState = {
+  config: { version: "1.0", description: "红绿灯配置文件", intersections: [] },
+  currentIdx: 0,
+  batchMode: true,
+  approachColors: {},
+  laneColors: {}
+};
+
+// ─── 撤回栈 ────────────────────────────────────────────────
+const MAX_UNDO = 80;
+let undoStack = [];
+
+function pushUndo() {
+  const snap = {
+    config: JSON.parse(JSON.stringify(appState.config)),
+    currentIdx: appState.currentIdx,
+    batchMode: appState.batchMode,
+    approachColors: JSON.parse(JSON.stringify(appState.approachColors)),
+    laneColors: JSON.parse(JSON.stringify(appState.laneColors))
+  };
+  undoStack.push(snap);
+  if (undoStack.length > MAX_UNDO) undoStack.shift();
+}
+
+function handleUndo() {
+  if (undoStack.length === 0) { toast('没有可撤回的操作', 'info'); return; }
+  const snap = undoStack.pop();
+  appState.config = snap.config;
+  appState.currentIdx = snap.currentIdx;
+  appState.batchMode = snap.batchMode;
+  appState.approachColors = snap.approachColors;
+  appState.laneColors = snap.laneColors;
+  // Update batch mode button
+  const btn = document.getElementById('btn-batch-mode');
+  if (appState.batchMode) {
+    btn.textContent = '📋 批量模式'; btn.classList.add('active');
+  } else {
+    btn.textContent = '🎯 单独模式'; btn.classList.remove('active');
+  }
+  render();
+  toast('已撤回上一步操作', 'success');
+}
+
+function current() { return appState.config.intersections[appState.currentIdx]; }
+
+function ensureApproachColors(idx) {
+  if (!appState.approachColors[idx]) appState.approachColors[idx] = {};
+  return appState.approachColors[idx];
+}
+function ensureLaneColors(idx) {
+  if (!appState.laneColors[idx]) appState.laneColors[idx] = {};
+  return appState.laneColors[idx];
+}
+
+function getApproachColor(approach, phaseIdx) {
+  const ac = ensureApproachColors(appState.currentIdx);
+  if (!ac[approach]) ac[approach] = {};
+  if (!ac[approach][phaseIdx]) ac[approach][phaseIdx] = 'red';
+  return ac[approach][phaseIdx];
+}
+function setApproachColor(approach, phaseIdx, color) {
+  const ac = ensureApproachColors(appState.currentIdx);
+  if (!ac[approach]) ac[approach] = {};
+  ac[approach][phaseIdx] = color;
+  // Clear per-lane overrides for all lanes of this approach in this phase
+  const lc = ensureLaneColors(appState.currentIdx);
+  const inter = current();
+  for (const lane of inter.lanes) {
+    if (lane.approach === approach && lc[lane.id]) delete lc[lane.id][phaseIdx];
+  }
+}
+
+function getLaneColor(laneId, approach, phaseIdx) {
+  const lc = ensureLaneColors(appState.currentIdx);
+  if (lc[laneId] && lc[laneId][phaseIdx] !== undefined) return lc[laneId][phaseIdx];
+  return getApproachColor(approach, phaseIdx);
+}
+function setLaneColor(laneId, phaseIdx, color) {
+  const lc = ensureLaneColors(appState.currentIdx);
+  if (!lc[laneId]) lc[laneId] = {};
+  lc[laneId][phaseIdx] = color;
+}
+function clearLaneColorOverride(laneId, phaseIdx) {
+  const lc = ensureLaneColors(appState.currentIdx);
+  if (lc[laneId]) delete lc[laneId][phaseIdx];
+}
+function hasLaneOverride(laneId, phaseIdx) {
+  const lc = ensureLaneColors(appState.currentIdx);
+  return lc[laneId] && lc[laneId][phaseIdx] !== undefined;
+}
+
+// ─── 初始化演示数据 ────────────────────────────────────────
+// ── 编辑器集成：从评价平台加载 ────────────────────────────
+function saveToFile() {
+  const btn = document.getElementById('btn-save-file');
+  if (!editorConfig.config_file) { alert('无配置来源文件，请使用导出功能'); return; }
+  for (let i = 0; i < appState.config.intersections.length; i++) syncJSONFromColors(i);
+  const inter = appState.config.intersections[appState.currentIdx];
+  fetch('/api/editor/save', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ config_file: editorConfig.config_file, intersection: inter })
+  }).then(r => r.json()).then(d => {
+    if (d.success) { btn.textContent = '✓ 已保存'; setTimeout(() => { btn.textContent = '💾 保存到文件'; }, 2000); }
+    else alert(d.error || '保存失败');
+  });
+}
+
+async function loadFromParams() {
+  const params = new URLSearchParams(window.location.search);
+  const project = params.get('project');
+  const intersection = params.get('intersection');
+  if (!project || !intersection) return;
+  try {
+    const r = await fetch('/api/editor/load', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ project_path: project, intersection_id: intersection })
+    });
+    const d = await r.json();
+    if (d.success) {
+      appState.config = { version: '1.0', description: d.intersection.name || '', intersections: [d.intersection] };
+      appState.currentIdx = 0;
+      appState.approachColors = {}; appState.laneColors = {};
+      syncColorsFromJSON(0);
+      editorConfig = { config_file: d.config_file, project_path: d.project_path, intersection_id: d.intersection.id };
+      document.getElementById('btn-save-file').style.display = '';
+      render();
+    }
+  } catch(e) { console.error('加载失败:', e); }
+}
+
+function initDemoData() {
+  const demo = {
+    version: "1.0",
+    description: "标准十字路口红绿灯配置",
+    intersections: [{
+      id: "J1", name: "标准十字路口",
+      approaches: ["North", "East", "South", "West"],
+      lanes: [
+        { id: "N_0", approach: "North", index: 0, allowed_directions: ["left"], signal_group: "N_left", description: "北进口左转车道" },
+        { id: "N_1", approach: "North", index: 1, allowed_directions: ["straight"], signal_group: "NS_through", description: "北进口直行车道" },
+        { id: "N_2", approach: "North", index: 2, allowed_directions: ["right"], signal_group: "N_right", description: "北进口右转车道" },
+        { id: "E_0", approach: "East", index: 0, allowed_directions: ["left"], signal_group: "E_left", description: "东进口左转车道" },
+        { id: "E_1", approach: "East", index: 1, allowed_directions: ["straight"], signal_group: "EW_through", description: "东进口直行车道" },
+        { id: "E_2", approach: "East", index: 2, allowed_directions: ["right"], signal_group: "E_right", description: "东进口右转车道" },
+        { id: "S_0", approach: "South", index: 0, allowed_directions: ["left"], signal_group: "S_left", description: "南进口左转车道" },
+        { id: "S_1", approach: "South", index: 1, allowed_directions: ["straight"], signal_group: "NS_through", description: "南进口直行车道" },
+        { id: "S_2", approach: "South", index: 2, allowed_directions: ["right"], signal_group: "S_right", description: "南进口右转车道" },
+        { id: "W_0", approach: "West", index: 0, allowed_directions: ["left"], signal_group: "W_left", description: "西进口左转车道" },
+        { id: "W_1", approach: "West", index: 1, allowed_directions: ["straight"], signal_group: "EW_through", description: "西进口直行车道" },
+        { id: "W_2", approach: "West", index: 2, allowed_directions: ["right"], signal_group: "W_right", description: "西进口右转车道" }
+      ],
+      phases: [
+        { id: "phase_1", name: "南北直行", duration: 30, signal_groups: ["NS_through"] },
+        { id: "phase_2", name: "南北左转", duration: 15, signal_groups: ["N_left", "S_left"] },
+        { id: "phase_3", name: "东西直行", duration: 30, signal_groups: ["EW_through"] },
+        { id: "phase_4", name: "东西左转", duration: 15, signal_groups: ["E_left", "W_left"] }
+      ],
+      always_green: ["N_right", "S_right", "E_right", "W_right"],
+      cycle_time: 99
+    }]
+  };
+  appState.config = demo;
+  appState.currentIdx = 0;
+  appState.approachColors = {};
+  appState.laneColors = {};
+  syncColorsFromJSON(0);
+}
+
+function syncColorsFromJSON(idx) {
+  const inter = appState.config.intersections[idx];
+  if (!inter) return;
+  ensureApproachColors(idx);
+  appState.approachColors[idx] = {};
+  appState.laneColors[idx] = {};
+  const alwaysGreenSet = new Set(inter.always_green || []);
+
+  // Normalize phases: ensure duration field exists
+  for (const ph of inter.phases) {
+    if (ph.duration === undefined) {
+      ph.duration = (ph.green_time || 20) + (ph.yellow_time || 3) + (ph.red_time || 0);
+    }
+  }
+
+  const approachGroups = {};
+  for (const lane of inter.lanes) {
+    if (alwaysGreenSet.has(lane.signal_group)) continue;
+    if (!approachGroups[lane.approach]) approachGroups[lane.approach] = new Set();
+    approachGroups[lane.approach].add(lane.signal_group);
+  }
+
+  for (let pi = 0; pi < inter.phases.length; pi++) {
+    const phase = inter.phases[pi];
+    for (const approach of inter.approaches) {
+      if (!appState.approachColors[idx][approach]) appState.approachColors[idx][approach] = {};
+      const sgSet = approachGroups[approach];
+      if (!sgSet || sgSet.size === 0) {
+        appState.approachColors[idx][approach][pi] = 'green';
+        continue;
+      }
+      let isGreen = false;
+      for (const sg of sgSet) {
+        if (phase.signal_groups.includes(sg)) { isGreen = true; break; }
+      }
+      appState.approachColors[idx][approach][pi] = isGreen ? 'green' : 'red';
+    }
+  }
+}
+
+function syncJSONFromColors(idx) {
+  const inter = appState.config.intersections[idx];
+  if (!inter) return;
+
+  for (let pi = 0; pi < inter.phases.length; pi++) {
+    const phase = inter.phases[pi];
+    const activeSGs = new Set();
+    for (const lane of inter.lanes) {
+      const color = getLaneColor(lane.id, lane.approach, pi);
+      if (color === 'green') activeSGs.add(lane.signal_group);
+    }
+    phase.signal_groups = [...activeSGs];
+    phase.green_time = phase.duration;
+    phase.yellow_time = BETWEEN_YELLOW;
+    phase.red_time = 0;
+  }
+
+  if (inter.phases.length > 0) {
+    const alwaysGreenSGs = new Set();
+    for (const lane of inter.lanes) {
+      let greenInAll = true;
+      for (let pi = 0; pi < inter.phases.length; pi++) {
+        if (!inter.phases[pi].signal_groups.includes(lane.signal_group)) { greenInAll = false; break; }
+      }
+      if (greenInAll) alwaysGreenSGs.add(lane.signal_group);
+    }
+    inter.always_green = [...alwaysGreenSGs];
+  }
+
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || p.green_time || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+}
+
+// ─── 模式切换 ──────────────────────────────────────────────
+function toggleColorMode() {
+  appState.batchMode = !appState.batchMode;
+  const btn = document.getElementById('btn-batch-mode');
+  if (appState.batchMode) {
+    btn.textContent = '📋 批量模式';
+    btn.classList.add('active');
+    btn.title = '当前：批量模式 — 点击色块改变整个进口方向\n按 Ctrl 可临时切换为单独模式';
+  } else {
+    btn.textContent = '🎯 单独模式';
+    btn.classList.remove('active');
+    btn.title = '当前：单独模式 — 点击色块仅改变该车道\n按 Ctrl 可临时切换为批量模式';
+  }
+  toast(appState.batchMode ? '已切换到批量模式' : '已切换到单独模式', 'info');
+}
+
+// ─── 渲染 ──────────────────────────────────────────────────
+function render() {
+  renderIntersectionSelect();
+  renderSidebar();
+  renderTimeline();
+  renderCycleTime();
+}
+
+function renderCycleTime() {
+  const inter = current();
+  const el = document.getElementById('cycle-time-display');
+  if (inter && inter.cycle_time) {
+    el.textContent = `周期时长: ${inter.cycle_time}s（含相位间${BETWEEN_YELLOW}s黄灯）`;
+  } else { el.textContent = ''; }
+}
+
+function renderIntersectionSelect() {
+  const sel = document.getElementById('intersection-select');
+  sel.innerHTML = appState.config.intersections.map((inter, i) =>
+    `<option value="${i}" ${i === appState.currentIdx ? 'selected' : ''}>${inter.name || inter.id}</option>`
+  ).join('');
+}
+
+function switchIntersection(idx) {
+  appState.currentIdx = parseInt(idx);
+  render();
+}
+
+function renderSidebar() {
+  const inter = current();
+  const list = document.getElementById('lane-list');
+  const count = document.getElementById('lane-count');
+  if (!inter || inter.lanes.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">🚗</div><p>暂无车道</p><p style="font-size:12px;">点击"添加车道"开始</p></div>`;
+    count.textContent = '0 条车道';
+    return;
+  }
+  count.textContent = `${inter.lanes.length} 条车道`;
+
+  const dirNames = { straight: '直行', left: '左转', right: '右转', left_straight: '左转+直行', straight_right: '直行+右转', left_straight_right: '全向' };
+  const approachNames = { North: '北', East: '东', South: '南', West: '西' };
+
+  let lastApproach = '';
+  let html = '';
+  for (let i = 0; i < inter.lanes.length; i++) {
+    const lane = inter.lanes[i];
+    if (lane.approach !== lastApproach) {
+      if (lastApproach) html += `<div style="height:1px;background:var(--border);margin:0 14px;"></div>`;
+      html += `<div style="padding:6px 14px;font-size:11px;font-weight:700;color:var(--text-secondary);letter-spacing:1px;">
+        ${approachNames[lane.approach] || lane.approach}向进口
+      </div>`;
+      lastApproach = lane.approach;
+    }
+    const dirs = lane.allowed_directions.map(d => dirNames[d] || d).join('+');
+    html += `
+    <div class="lane-card" draggable="true"
+         ondragstart="laneDragStart(event, ${i})" ondragend="laneDragEnd(event)"
+         ondragover="laneDragOver(event, ${i})" ondragleave="laneDragLeave(event)"
+         ondrop="laneDrop(event, ${i})">
+      <span class="drag-handle">⋮⋮</span>
+      <span class="lane-approach approach-${lane.approach}">${approachNames[lane.approach] || lane.approach}</span>
+      <div class="lane-id">${lane.id}</div>
+      <div class="lane-info">${lane.description || dirs} · 信号组: ${lane.signal_group}</div>
+      <div class="lane-actions">
+        <button onclick="event.stopPropagation();showEditLaneModal('${lane.id}')">编辑</button>
+        <button class="danger" onclick="event.stopPropagation();deleteLane('${lane.id}')">删除</button>
+      </div>
+    </div>`;
+  }
+  list.innerHTML = html;
+}
+
+function renderTimeline() {
+  const inter = current();
+  const container = document.getElementById('timeline-content');
+  if (!inter || inter.lanes.length === 0 || inter.phases.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">⏱️</div><p>请添加车道和相位</p></div>`;
+    return;
+  }
+
+  const approachNames = { North: '北', East: '东', South: '南', West: '西' };
+  const dirNames = { straight: '直行', left: '左转', right: '右转', left_straight: '直左', straight_right: '直右', left_straight_right: '全向' };
+
+  // Total width: sum of durations + between-phase yellow gaps
+  const totalDur = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0);
+  const totalYellow = (inter.phases.length - 1) * BETWEEN_YELLOW;
+  const totalWidth = totalDur + totalYellow;
+
+  // Build colgroup: [label, phase0, yellow0, phase1, yellow1, ..., phaseN]
+  let html = '<table id="timeline-table"><colgroup>';
+  html += '<col style="width:190px;">';
+  for (let pi = 0; pi < inter.phases.length; pi++) {
+    const dur = inter.phases[pi].duration || 0;
+    html += `<col style="width:${Math.max(6, (dur / totalWidth) * 100)}%;">`;
+    if (pi < inter.phases.length - 1) {
+      html += `<col style="width:${Math.max(2, (BETWEEN_YELLOW / totalWidth) * 100)}%;">`;
+    }
+  }
+  html += '</colgroup>';
+
+  // Header row
+  html += '<thead><tr>';
+  html += '<th class="header-label-cell">车道</th>';
+  for (let pi = 0; pi < inter.phases.length; pi++) {
+    const ph = inter.phases[pi];
+    html += `<th class="phase-header" draggable="true"
+      ondragstart="phaseDragStart(event, ${pi})" ondragend="phaseDragEnd(event)"
+      ondragover="phaseDragOver(event, ${pi})" ondragleave="phaseDragLeave(event)"
+      ondrop="phaseDrop(event, ${pi})"
+      ondblclick="startEditPhase(${pi})" title="拖拽排序 · 双击编辑">
+      <span class="drag-hint">⋮⋮</span>
+      <div class="phase-name">${ph.name}</div>
+      <div class="phase-duration">${ph.duration || 0}s</div>
+      ${inter.phases.length > 1 ? `<button class="phase-delete" onclick="event.stopPropagation();deletePhase(${pi})" title="删除此相位">×</button>` : ''}
+    </th>`;
+    if (pi < inter.phases.length - 1) {
+      html += `<th class="yellow-col-header" onclick="splitPhase(${pi})" title="相位间黄灯 ${BETWEEN_YELLOW}s · 点击可在此分割相位">
+        黄<br>${BETWEEN_YELLOW}s<br><span style="font-size:11px;">＋</span>
+      </th>`;
+    }
+  }
+  html += '</tr></thead>';
+
+  // Body
+  html += '<tbody>';
+  let lastApproach = '';
+
+  for (let li = 0; li < inter.lanes.length; li++) {
+    const lane = inter.lanes[li];
+
+    if (lane.approach !== lastApproach) {
+      html += `<tr class="approach-sep-row"><td colspan="${inter.phases.length * 2}" style="padding:5px 10px;background:#f0f4f8;font-size:12px;font-weight:700;color:var(--text-secondary);border-bottom:2px solid var(--border);">
+        <span class="lane-approach approach-${lane.approach}" style="margin-right:6px;">${approachNames[lane.approach] || lane.approach}</span>
+        ${lane.approach}向进口
+      </td></tr>`;
+      lastApproach = lane.approach;
+    }
+
+    html += `<tr draggable="true"
+      ondragstart="laneDragStart(event, ${li})" ondragend="laneDragEnd(event)"
+      ondragover="laneDragOver(event, ${li})" ondragleave="laneDragLeave(event)"
+      ondrop="laneDrop(event, ${li})">`;
+
+    const dirLabel = lane.allowed_directions.map(d => dirNames[d] || d).join('+');
+    html += `<td class="lane-label-cell">
+      <span class="lane-approach approach-${lane.approach}" style="margin-right:6px;">${approachNames[lane.approach] || lane.approach}</span>
+      <span style="font-weight:600;font-size:13px;">${lane.id}</span>
+      <span style="color:var(--text-secondary);font-size:11px;margin-left:4px;">${dirLabel}</span>
+    </td>`;
+
+    for (let pi = 0; pi < inter.phases.length; pi++) {
+      const color = getLaneColor(lane.id, lane.approach, pi);
+      const override = hasLaneOverride(lane.id, pi);
+      html += `<td class="timeline-cell color-${color}${override ? ' has-override' : ''}"
+        onclick="handleCellClick(event, '${lane.id}', '${lane.approach}', ${pi})"
+        oncontextmenu="showContextMenu(event, '${lane.id}', '${lane.approach}', ${pi}); return false;"
+        title="${approachNames[lane.approach] || lane.approach}向 · ${lane.id} · ${inter.phases[pi].name}(${inter.phases[pi].duration}s) · ${color === 'green' ? '绿灯' : '红灯'}${override ? ' (单独覆盖)' : ''}&#10;点击=批量改色 | Ctrl+点击=单独改色 | 右键=快捷菜单">
+      </td>`;
+      if (pi < inter.phases.length - 1) {
+        html += `<td class="yellow-col" onclick="splitPhase(${pi})" title="相位间黄灯过渡 ${BETWEEN_YELLOW}s · 点击分割相位"></td>`;
+      }
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+
+  container.innerHTML = html;
+}
+
+// ─── 单元格点击处理 ────────────────────────────────────────
+function handleCellClick(event, laneId, approach, phaseIdx) {
+  pushUndo();
+  if (event.ctrlKey || event.metaKey) {
+    if (appState.batchMode) {
+      cycleLaneColor(laneId, phaseIdx);
+    } else {
+      cycleApproachColor(approach, phaseIdx);
+    }
+  } else {
+    if (appState.batchMode) {
+      cycleApproachColor(approach, phaseIdx);
+    } else {
+      cycleLaneColor(laneId, phaseIdx);
+    }
+  }
+  render();
+}
+
+function cycleApproachColor(approach, phaseIdx) {
+  const cur = getApproachColor(approach, phaseIdx);
+  setApproachColor(approach, phaseIdx, cur === 'green' ? 'red' : 'green');
+}
+
+function cycleLaneColor(laneId, phaseIdx) {
+  const inter = current();
+  const lane = inter.lanes.find(l => l.id === laneId);
+  if (!lane) return;
+  const cur = getLaneColor(laneId, lane.approach, phaseIdx);
+  setLaneColor(laneId, phaseIdx, cur === 'green' ? 'red' : 'green');
+}
+
+// ─── 相位编辑 ──────────────────────────────────────────────
+function startEditPhase(pi) {
+  const inter = current();
+  const ph = inter.phases[pi];
+  showPhaseEditModal(pi, ph);
+}
+
+function showPhaseEditModal(pi, ph) {
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3>编辑相位</h3>
+      <div class="form-group"><label>相位名称</label><input id="edit-phase-name" value="${escapeHtml(ph.name)}"></div>
+      <div class="form-group"><label>相位用时（秒）</label><input id="edit-duration" type="number" min="1" value="${ph.duration || 20}"></div>
+      <div class="form-group"><span class="hint">注：相位之间自动添加 ${BETWEEN_YELLOW}s 黄灯过渡</span></div>
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="savePhaseEdit(${pi})">保存</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function savePhaseEdit(pi) {
+  pushUndo();
+  const inter = current();
+  inter.phases[pi].name = document.getElementById('edit-phase-name').value || inter.phases[pi].name;
+  inter.phases[pi].duration = Math.max(1, parseInt(document.getElementById('edit-duration').value) || 10);
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+  closeModal();
+  render();
+  toast('相位已更新', 'success');
+}
+
+// ─── 相位操作 ──────────────────────────────────────────────
+function handleAddPhase() {
+  pushUndo();
+  const inter = current();
+  if (!inter) { toast('请先创建路口', 'error'); return; }
+  const idx = inter.phases.length;
+  inter.phases.push({
+    id: `phase_${idx + 1}`, name: `相位 ${idx + 1}`,
+    duration: DEFAULT_PHASE_DURATION, signal_groups: []
+  });
+  const ac = ensureApproachColors(appState.currentIdx);
+  for (const approach of inter.approaches) {
+    if (!ac[approach]) ac[approach] = {};
+    ac[approach][idx] = 'red';
+  }
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+  render();
+  toast('新相位已添加', 'success');
+}
+
+function splitPhase(pi) {
+  const inter = current();
+  const oldPhase = inter.phases[pi];
+  const total = oldPhase.duration || 20;
+  const half = Math.floor(total / 2);
+
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal" style="min-width:440px;">
+      <h3>分割相位: ${escapeHtml(oldPhase.name)}</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">
+        原相位总用时 <b>${total}s</b>，请设置分割后两个子相位的用时：
+      </p>
+      <div class="form-group"><label>子相位 A 名称</label><input id="split-name-a" value="${escapeHtml(oldPhase.name)}-A"></div>
+      <div class="form-group"><label>子相位 A 用时（秒）</label><input id="split-dur-a" type="number" min="1" max="${total - 1}" value="${half || 1}"></div>
+      <div class="form-group"><label>子相位 B 名称</label><input id="split-name-b" value="${escapeHtml(oldPhase.name)}-B"></div>
+      <div class="form-group"><label>子相位 B 用时（秒）</label><input id="split-dur-b" type="number" min="1" max="${total - 1}" value="${total - (half || 1)}"></div>
+      <div class="form-group"><span class="hint" id="split-sum-hint">合计: ${total}s</span></div>
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="doSplitPhase(${pi})">确认分割</button>
+      </div>
+    </div>
+  </div>`;
+
+  // Sync the two duration fields
+  const durA = document.getElementById('split-dur-a');
+  const durB = document.getElementById('split-dur-b');
+  const hint = document.getElementById('split-sum-hint');
+  function syncFromA() {
+    const va = parseInt(durA.value) || 1;
+    const clampedA = Math.max(1, Math.min(total - 1, va));
+    durA.value = clampedA;
+    durB.value = total - clampedA;
+    hint.textContent = `合计: ${clampedA + (total - clampedA)}s`;
+  }
+  function syncFromB() {
+    const vb = parseInt(durB.value) || 1;
+    const clampedB = Math.max(1, Math.min(total - 1, vb));
+    durB.value = clampedB;
+    durA.value = total - clampedB;
+    hint.textContent = `合计: ${(total - clampedB) + clampedB}s`;
+  }
+  durA.addEventListener('input', syncFromA);
+  durB.addEventListener('input', syncFromB);
+}
+
+function doSplitPhase(pi) {
+  pushUndo();
+  const inter = current();
+  const oldPhase = inter.phases[pi];
+  const nameA = document.getElementById('split-name-a').value.trim() || `${oldPhase.name}-A`;
+  const nameB = document.getElementById('split-name-b').value.trim() || `${oldPhase.name}-B`;
+  const durA = Math.max(1, parseInt(document.getElementById('split-dur-a').value) || 1);
+  const total = oldPhase.duration || 20;
+  const durB = Math.max(1, total - durA);
+
+  const phaseA = { id: `phase_${pi + 1}`, name: nameA, duration: durA, signal_groups: [...(oldPhase.signal_groups || [])] };
+  const phaseB = { id: `phase_${pi + 2}`, name: nameB, duration: durB, signal_groups: [...(oldPhase.signal_groups || [])] };
+  inter.phases.splice(pi, 1, phaseA, phaseB);
+  inter.phases.forEach((p, i) => { p.id = `phase_${i + 1}`; });
+
+  const ac = ensureApproachColors(appState.currentIdx);
+  const numPhases = inter.phases.length;
+  for (const approach of inter.approaches) {
+    if (!ac[approach]) ac[approach] = {};
+    const newColors = {};
+    for (let i = 0; i < numPhases; i++) {
+      if (i < pi) newColors[i] = ac[approach][i] || 'red';
+      else if (i === pi || i === pi + 1) newColors[i] = ac[approach][pi] || 'red';
+      else newColors[i] = ac[approach][i - 1] || 'red';
+    }
+    ac[approach] = newColors;
+  }
+
+  const lc = ensureLaneColors(appState.currentIdx);
+  for (const laneId of Object.keys(lc)) {
+    const newLc = {};
+    for (let i = 0; i < numPhases; i++) {
+      if (lc[laneId]) {
+        if (i < pi) newLc[i] = lc[laneId][i];
+        else if (i === pi || i === pi + 1) newLc[i] = lc[laneId][pi];
+        else newLc[i] = lc[laneId][i - 1];
+      }
+    }
+    lc[laneId] = newLc;
+  }
+
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+  closeModal();
+  render();
+  toast(`相位 "${oldPhase.name}" 已分割为 "${nameA}"(${durA}s) + "${nameB}"(${durB}s)`, 'success');
+}
+
+function deletePhase(pi) {
+  pushUndo();
+  const inter = current();
+  if (inter.phases.length <= 1) { toast('至少保留一个相位', 'error'); return; }
+  const name = inter.phases[pi].name;
+  inter.phases.splice(pi, 1);
+  inter.phases.forEach((p, i) => { p.id = `phase_${i + 1}`; });
+
+  const ac = ensureApproachColors(appState.currentIdx);
+  const numPhases = inter.phases.length;
+  for (const approach of inter.approaches) {
+    if (!ac[approach]) continue;
+    const newColors = {};
+    for (let i = 0; i < numPhases; i++) {
+      if (i < pi) newColors[i] = ac[approach][i] || 'red';
+      else newColors[i] = ac[approach][i + 1] || 'red';
+    }
+    ac[approach] = newColors;
+  }
+
+  const lc = ensureLaneColors(appState.currentIdx);
+  for (const laneId of Object.keys(lc)) {
+    const newLc = {};
+    for (let i = 0; i < numPhases; i++) {
+      if (i < pi) newLc[i] = lc[laneId][i];
+      else newLc[i] = lc[laneId][i + 1];
+    }
+    lc[laneId] = newLc;
+  }
+
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+  render();
+  toast(`相位 "${name}" 已删除`, 'info');
+}
+
+// ─── 相位拖拽排序 ──────────────────────────────────────────
+let phaseDragIdx = null;
+
+function phaseDragStart(e, pi) { phaseDragIdx = pi; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
+function phaseDragEnd(e) { e.target.classList.remove('dragging'); document.querySelectorAll('.phase-header.drag-target').forEach(el => el.classList.remove('drag-target')); phaseDragIdx = null; }
+function phaseDragOver(e, pi) { e.preventDefault(); if (pi !== phaseDragIdx) e.target.closest('.phase-header').classList.add('drag-target'); }
+function phaseDragLeave(e) { e.target.closest('.phase-header').classList.remove('drag-target'); }
+function phaseDrop(e, targetPi) {
+  e.preventDefault();
+  e.target.closest('.phase-header').classList.remove('drag-target');
+  if (phaseDragIdx === null || phaseDragIdx === targetPi) return;
+  movePhase(phaseDragIdx, targetPi);
+  phaseDragIdx = null;
+}
+
+function movePhase(fromIdx, toIdx) {
+  pushUndo();
+  const inter = current();
+  const numPhases = inter.phases.length;
+  const [moved] = inter.phases.splice(fromIdx, 1);
+  inter.phases.splice(toIdx, 0, moved);
+  inter.phases.forEach((p, i) => { p.id = `phase_${i + 1}`; });
+
+  const ac = ensureApproachColors(appState.currentIdx);
+  for (const approach of inter.approaches) {
+    if (!ac[approach]) continue;
+    const old = { ...ac[approach] };
+    const newColors = {};
+    for (let i = 0; i < numPhases; i++) {
+      let srcIdx;
+      if (i === fromIdx) srcIdx = -1;
+      else if (fromIdx < toIdx) {
+        srcIdx = (i > fromIdx && i <= toIdx) ? i - 1 : i;
+      } else {
+        srcIdx = (i >= toIdx && i < fromIdx) ? i + 1 : i;
+      }
+      if (srcIdx === -1) newColors[toIdx] = old[fromIdx] || 'red';
+      else newColors[i] = old[srcIdx] || 'red';
+    }
+    ac[approach] = newColors;
+  }
+
+  const lc = ensureLaneColors(appState.currentIdx);
+  for (const laneId of Object.keys(lc)) {
+    const old = { ...lc[laneId] };
+    const newLc = {};
+    for (let i = 0; i < numPhases; i++) {
+      let srcIdx;
+      if (i === fromIdx) srcIdx = -1;
+      else if (fromIdx < toIdx) srcIdx = (i > fromIdx && i <= toIdx) ? i - 1 : i;
+      else srcIdx = (i >= toIdx && i < fromIdx) ? i + 1 : i;
+      if (srcIdx === -1) { if (old[fromIdx] !== undefined) newLc[toIdx] = old[fromIdx]; }
+      else if (old[srcIdx] !== undefined) newLc[i] = old[srcIdx];
+    }
+    lc[laneId] = newLc;
+  }
+
+  inter.cycle_time = inter.phases.reduce((sum, p) => sum + (p.duration || 0), 0) + (inter.phases.length - 1) * BETWEEN_YELLOW;
+  render();
+  toast('相位顺序已更新', 'success');
+}
+
+// ─── 车道拖拽排序 ──────────────────────────────────────────
+let laneDragIdx = null;
+
+function laneDragStart(e, li) { laneDragIdx = li; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
+function laneDragEnd(e) { e.target.classList.remove('dragging'); document.querySelectorAll('.drag-over-row').forEach(el => el.classList.remove('drag-over-row')); laneDragIdx = null; }
+function laneDragOver(e, li) { e.preventDefault(); if (li !== laneDragIdx) e.target.closest('tr').classList.add('drag-over-row'); }
+function laneDragLeave(e) { e.target.closest('tr').classList.remove('drag-over-row'); }
+function laneDrop(e, targetLi) {
+  e.preventDefault();
+  e.target.closest('tr').classList.remove('drag-over-row');
+  if (laneDragIdx === null || laneDragIdx === targetLi) return;
+  moveLane(laneDragIdx, targetLi);
+  laneDragIdx = null;
+}
+
+function moveLane(fromIdx, toIdx) {
+  pushUndo();
+  const inter = current();
+  const [moved] = inter.lanes.splice(fromIdx, 1);
+  inter.lanes.splice(toIdx, 0, moved);
+  const approachCounters = {};
+  for (const lane of inter.lanes) {
+    if (!approachCounters[lane.approach]) approachCounters[lane.approach] = 0;
+    lane.index = approachCounters[lane.approach]++;
+    lane.id = `${lane.approach.charAt(0)}_${lane.index}`;
+  }
+  render();
+  toast('车道顺序已更新', 'success');
+}
+
+// ─── 车道操作 ──────────────────────────────────────────────
+function showAddLaneModal() {
+  const inter = current();
+  if (!inter) { toast('请先创建路口', 'error'); return; }
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3>添加车道</h3>
+      <div class="form-group"><label>进口方向</label>
+        <select id="new-lane-approach">
+          <option value="North">北 North</option><option value="East">东 East</option>
+          <option value="South">南 South</option><option value="West">西 West</option>
+        </select>
+      </div>
+      <div class="form-group"><label>转向方向</label>
+        <select id="new-lane-direction">
+          <option value="straight">直行</option><option value="left">左转</option>
+          <option value="right">右转</option><option value="left_straight">左转+直行</option>
+          <option value="straight_right">直行+右转</option>
+        </select>
+      </div>
+      <div class="form-group"><label>信号灯组名称</label><input id="new-lane-sg" placeholder="如 NS_through"></div>
+      <div class="form-group"><label>描述（可选）</label><input id="new-lane-desc" placeholder="如 北进口直行车道"></div>
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="addLane()">添加</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addLane() {
+  pushUndo();
+  const inter = current();
+  const approach = document.getElementById('new-lane-approach').value;
+  const dir = document.getElementById('new-lane-direction').value;
+  const sg = document.getElementById('new-lane-sg').value.trim();
+  const desc = document.getElementById('new-lane-desc').value.trim();
+
+  if (!sg) { toast('请输入信号灯组名称', 'error'); return; }
+
+  if (!inter.approaches.includes(approach)) {
+    inter.approaches.push(approach);
+    const order = { North: 0, East: 1, South: 2, West: 3 };
+    inter.approaches.sort((a, b) => (order[a] || 99) - (order[b] || 99));
+  }
+
+  // Find insertion position after last lane of this approach
+  let insertIdx = inter.lanes.length;
+  for (let i = inter.lanes.length - 1; i >= 0; i--) {
+    if (inter.lanes[i].approach === approach) { insertIdx = i + 1; break; }
+  }
+  if (insertIdx === inter.lanes.length) {
+    const approachOrder = { North: 0, East: 1, South: 2, West: 3 };
+    const targetOrder = approachOrder[approach] || 99;
+    for (let i = 0; i < inter.lanes.length; i++) {
+      if ((approachOrder[inter.lanes[i].approach] || 99) > targetOrder) { insertIdx = i; break; }
+    }
+  }
+
+  const sameApproach = inter.lanes.filter(l => l.approach === approach);
+  const nextIdx = sameApproach.length;
+  const id = `${approach.charAt(0)}_${nextIdx}`;
+
+  inter.lanes.splice(insertIdx, 0, {
+    id, approach, index: nextIdx,
+    allowed_directions: [dir], signal_group: sg,
+    description: desc || `${approach}向${dir}车道`
+  });
+
+  const ac = ensureApproachColors(appState.currentIdx);
+  if (!ac[approach]) ac[approach] = {};
+  for (let pi = 0; pi < inter.phases.length; pi++) {
+    if (!ac[approach][pi]) ac[approach][pi] = 'red';
+  }
+
+  closeModal();
+  render();
+  toast(`车道 ${id} 已添加到${approach}向进口`, 'success');
+}
+
+function showEditLaneModal(laneId) {
+  const inter = current();
+  const lane = inter.lanes.find(l => l.id === laneId);
+  if (!lane) return;
+
+  const dirOptions = [
+    ['straight', '直行'], ['left', '左转'], ['right', '右转'],
+    ['left_straight', '左转+直行'], ['straight_right', '直行+右转'], ['left_straight_right', '全向']
+  ];
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3>编辑车道: ${lane.id}</h3>
+      <div class="form-group"><label>进口方向</label>
+        <select id="edit-lane-approach">
+          <option value="North" ${lane.approach==='North'?'selected':''}>北 North</option>
+          <option value="East" ${lane.approach==='East'?'selected':''}>东 East</option>
+          <option value="South" ${lane.approach==='South'?'selected':''}>南 South</option>
+          <option value="West" ${lane.approach==='West'?'selected':''}>西 West</option>
+        </select>
+      </div>
+      <div class="form-group"><label>转向方向</label>
+        <select id="edit-lane-direction">${dirOptions.map(([v,l]) => `<option value="${v}" ${lane.allowed_directions[0]===v?'selected':''}>${l}</option>`).join('')}</select>
+      </div>
+      <div class="form-group"><label>信号灯组名称</label><input id="edit-lane-sg" value="${escapeHtml(lane.signal_group)}"></div>
+      <div class="form-group"><label>描述</label><input id="edit-lane-desc" value="${escapeHtml(lane.description||'')}"></div>
+      <input type="hidden" id="edit-lane-id" value="${lane.id}">
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="saveLaneEdit()">保存</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveLaneEdit() {
+  pushUndo();
+  const inter = current();
+  const id = document.getElementById('edit-lane-id').value;
+  const lane = inter.lanes.find(l => l.id === id);
+  if (!lane) return;
+  lane.approach = document.getElementById('edit-lane-approach').value;
+  lane.allowed_directions = [document.getElementById('edit-lane-direction').value];
+  lane.signal_group = document.getElementById('edit-lane-sg').value.trim();
+  lane.description = document.getElementById('edit-lane-desc').value.trim();
+  if (!inter.approaches.includes(lane.approach)) inter.approaches.push(lane.approach);
+  closeModal();
+  render();
+  toast(`车道 ${id} 已更新`, 'success');
+}
+
+function deleteLane(laneId) {
+  pushUndo();
+  const inter = current();
+  const idx = inter.lanes.findIndex(l => l.id === laneId);
+  if (idx === -1) return;
+  inter.lanes.splice(idx, 1);
+  const lc = ensureLaneColors(appState.currentIdx);
+  delete lc[laneId];
+  const approachCounters = {};
+  for (const lane of inter.lanes) {
+    if (!approachCounters[lane.approach]) approachCounters[lane.approach] = 0;
+    lane.index = approachCounters[lane.approach]++;
+    lane.id = `${lane.approach.charAt(0)}_${lane.index}`;
+  }
+  render();
+  toast(`车道 ${laneId} 已删除`, 'info');
+}
+
+// ─── 路口操作 ──────────────────────────────────────────────
+function showEditIntersectionModal() {
+  const inter = current();
+  if (!inter) return;
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3>编辑路口</h3>
+      <div class="form-group"><label>路口ID</label><input id="edit-inter-id" value="${escapeHtml(inter.id)}"></div>
+      <div class="form-group"><label>路口名称</label><input id="edit-inter-name" value="${escapeHtml(inter.name || '')}"></div>
+      <div class="form-group"><label>描述</label><input id="edit-inter-desc" value="${escapeHtml(appState.config.description || '')}"></div>
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="saveIntersectionEdit()">保存</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveIntersectionEdit() {
+  pushUndo();
+  const inter = current();
+  if (!inter) return;
+  inter.id = document.getElementById('edit-inter-id').value.trim() || inter.id;
+  inter.name = document.getElementById('edit-inter-name').value.trim() || inter.name;
+  appState.config.description = document.getElementById('edit-inter-desc').value.trim();
+  closeModal();
+  render();
+  toast(`路口已更新为 "${inter.name}"`, 'success');
+}
+
+function showAddIntersectionModal() {
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <h3>添加新路口</h3>
+      <div class="form-group"><label>路口ID</label><input id="new-inter-id" placeholder="如 J2" value="J${appState.config.intersections.length + 1}"></div>
+      <div class="form-group"><label>路口名称</label><input id="new-inter-name" placeholder="如 丁字路口"></div>
+      <div class="form-actions">
+        <button onclick="closeModal()">取消</button>
+        <button class="primary" onclick="addIntersection()">创建</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addIntersection() {
+  pushUndo();
+  const id = document.getElementById('new-inter-id').value.trim();
+  const name = document.getElementById('new-inter-name').value.trim();
+  if (!id || !name) { toast('请填写完整信息', 'error'); return; }
+  appState.config.intersections.push({
+    id, name,
+    approaches: ["North", "East", "South", "West"],
+    lanes: [], phases: [], always_green: [], cycle_time: 0
+  });
+  const newIdx = appState.config.intersections.length - 1;
+  ensureApproachColors(newIdx);
+  ensureLaneColors(newIdx);
+  appState.currentIdx = newIdx;
+  closeModal();
+  render();
+  toast(`路口 "${name}" 已创建`, 'success');
+}
+
+function deleteCurrentIntersection() {
+  pushUndo();
+  if (appState.config.intersections.length <= 1) { toast('至少保留一个路口', 'error'); return; }
+  const inter = current();
+  const name = inter.name || inter.id;
+  if (!confirm(`确定要删除路口 "${name}" 及其所有配置吗？此操作不可撤销。`)) return;
+  appState.config.intersections.splice(appState.currentIdx, 1);
+  delete appState.approachColors[appState.currentIdx];
+  delete appState.laneColors[appState.currentIdx];
+  const newAc = {}, newLc = {};
+  for (let i = 0; i < appState.config.intersections.length; i++) {
+    if (appState.approachColors[i]) newAc[i] = appState.approachColors[i];
+    if (appState.laneColors[i]) newLc[i] = appState.laneColors[i];
+  }
+  appState.approachColors = newAc;
+  appState.laneColors = newLc;
+  if (appState.currentIdx >= appState.config.intersections.length) {
+    appState.currentIdx = appState.config.intersections.length - 1;
+  }
+  render();
+  toast(`路口 "${name}" 已删除`, 'info');
+}
+
+// ─── 冲突检测 ──────────────────────────────────────────────
+
+/** 构建当前路口的 laneColorMap 供 ConflictDetector 使用。
+ *  直接根据各相位的 signal_groups 判断车道红绿，不使用 UI 颜色状态，
+ *  因为 UI 按 approach 聚合（一个进口多个信号组时粒度太粗）。
+ */
+function buildLaneColorMap() {
+  const inter = current();
+  if (!inter) return {};
+  const alwaysGreen = new Set(inter.always_green || []);
+  const map = {};
+  for (const lane of inter.lanes) {
+    map[lane.id] = {};
+    for (let pi = 0; pi < inter.phases.length; pi++) {
+      const phase = inter.phases[pi];
+      const activeSGs = new Set(phase.signal_groups || []);
+      if (alwaysGreen.has(lane.signal_group) || activeSGs.has(lane.signal_group)) {
+        map[lane.id][pi] = 'green';
+      } else {
+        map[lane.id][pi] = 'red';
+      }
+    }
+  }
+  return map;
+}
+
+function handleConflictCheck(silent) {
+  const inter = current();
+  if (!inter || inter.lanes.length === 0 || inter.phases.length === 0) {
+    if (!silent) toast('请先添加车道和相位', 'info');
+    return { hasConflict: false, results: [] };
+  }
+
+  if (typeof ConflictDetector === 'undefined') {
+    if (!silent) toast('冲突检测模块未加载', 'error');
+    return { hasConflict: false, results: [] };
+  }
+
+  const laneColorMap = buildLaneColorMap();
+  const results = ConflictDetector.detectAllConflicts(inter, laneColorMap);
+
+  if (silent) {
+    return { hasConflict: results.length > 0, results };
+  }
+
+  showConflictModal(results);
+  return { hasConflict: results.length > 0, results };
+}
+
+function showConflictModal(results) {
+  const container = document.getElementById('modal-container');
+  if (results.length === 0) {
+    container.innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <h3 style="color:#27ae60;">✅ 冲突检测通过</h3>
+        <p style="margin:12px 0;font-size:14px;">所有相位中均未发现车流冲突，当前编排合理。</p>
+        <div class="form-actions"><button class="primary" onclick="closeModal()">确定</button></div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const approachNames = { North: '北', East: '东', South: '南', West: '西' };
+
+  let html = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal" style="min-width:560px;max-width:640px;max-height:80vh;overflow-y:auto;">
+      <h3 style="color:#e74c3c;">⚠ 发现 ${results.reduce((s, r) => s + r.conflicts.length, 0)} 处车流冲突</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin:4px 0 14px;">
+        共 ${results.length} 个相位存在冲突，详情如下：
+      </p>`;
+
+  for (const phaseResult of results) {
+    html += `
+      <div style="margin-bottom:14px;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <div style="background:#fdedec;padding:8px 12px;font-weight:700;font-size:13px;">
+          ${escapeHtml(phaseResult.phaseName)}（相位 ${phaseResult.phaseIdx + 1}，${current().phases[phaseResult.phaseIdx].duration}s）
+          <span style="font-weight:400;font-size:12px;color:#e74c3c;">— ${phaseResult.conflicts.length} 处冲突</span>
+        </div>`;
+    for (const c of phaseResult.conflicts) {
+      html += `
+        <div style="padding:6px 12px;font-size:13px;border-top:1px solid #f0f0f5;display:flex;align-items:center;gap:8px;">
+          <span class="lane-approach approach-${c.lane1.approach}">${approachNames[c.lane1.approach] || c.lane1.approach}</span>
+          <span style="font-weight:600;">${c.lane1.id}</span>
+          <span style="color:#e74c3c;font-weight:700;">↔</span>
+          <span class="lane-approach approach-${c.lane2.approach}">${approachNames[c.lane2.approach] || c.lane2.approach}</span>
+          <span style="font-weight:600;">${c.lane2.id}</span>
+          <span style="color:var(--text-secondary);font-size:11px;margin-left:auto;">${c.reason}</span>
+        </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `
+      <div class="form-actions">
+        <button onclick="closeModal()">关闭</button>
+      </div>
+    </div>
+  </div>`;
+  container.innerHTML = html;
+}
+
+// ─── 导入/导出 ─────────────────────────────────────────────
+function handleImport() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const json = JSON.parse(ev.target.result);
+        if (!json.intersections || !Array.isArray(json.intersections)) {
+          throw new Error('无效的配置文件格式：缺少 intersections 数组');
+        }
+        appState.config = json;
+        appState.currentIdx = 0;
+        appState.approachColors = {};
+        appState.laneColors = {};
+        for (let i = 0; i < json.intersections.length; i++) {
+          syncColorsFromJSON(i);
+        }
+        render();
+        toast(`成功导入 ${json.intersections.length} 个路口配置`, 'success');
+      } catch (err) {
+        toast(`导入失败: ${err.message}`, 'error');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function handleExport() {
+  // 导出前检测冲突
+  const { hasConflict, results } = handleConflictCheck(true);
+  if (hasConflict) {
+    const totalConflicts = results.reduce((s, r) => s + r.conflicts.length, 0);
+    if (!confirm(`⚠ 检测到 ${totalConflicts} 处车流冲突（涉及 ${results.length} 个相位）。\n\n冲突的编排可能导致交通事故。\n\n确定仍要导出吗？\n\n（点击"取消"返回修改，"确定"继续导出）`)) {
+      return;
+    }
+  }
+
+  for (let i = 0; i < appState.config.intersections.length; i++) {
+    syncJSONFromColors(i);
+  }
+  const json = JSON.stringify(appState.config, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const inter = current();
+  const name = (inter ? inter.name || inter.id : 'traffic_signal_config').replace(/[\\/:*?"<>|]/g, '_');
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}`;
+  a.download = `${name}_${ts}.json`;
+  a.href = url;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+  toast('配置已导出', 'success');
+}
+
+// ─── 右键菜单 ──────────────────────────────────────────────
+let ctxTarget = null;
+
+function showContextMenu(e, laneId, approach, phaseIdx) {
+  e.preventDefault();
+  ctxTarget = { laneId, approach, phaseIdx };
+  const menu = document.getElementById('context-menu');
+  menu.style.display = 'block';
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = Math.min(e.clientY, window.innerHeight - 120) + 'px';
+}
+
+function ctxSetColor(color) {
+  if (!ctxTarget) return;
+  pushUndo();
+  const { approach, phaseIdx } = ctxTarget;
+  setApproachColor(approach, phaseIdx, color);
+  render();
+  toast(`已设为${color === 'green' ? '绿灯' : '红灯'}（批量）`, 'info');
+  document.getElementById('context-menu').style.display = 'none';
+  ctxTarget = null;
+}
+
+function ctxClearOverride() {
+  if (!ctxTarget) return;
+  pushUndo();
+  const { laneId, phaseIdx } = ctxTarget;
+  clearLaneColorOverride(laneId, phaseIdx);
+  render();
+  toast('已清除单独颜色覆盖', 'info');
+  document.getElementById('context-menu').style.display = 'none';
+  ctxTarget = null;
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('context-menu');
+  if (menu && !menu.contains(e.target)) {
+    menu.style.display = 'none';
+    ctxTarget = null;
+  }
+});
+
+// ─── 工具函数 ──────────────────────────────────────────────
+function closeModal() {
+  document.getElementById('modal-container').innerHTML = '';
+}
+
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `${type} show`;
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => { el.className = ''; }, 2500);
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+    document.getElementById('context-menu').style.display = 'none';
+    ctxTarget = null;
+  }
+});
+
+// ─── 启动 ──────────────────────────────────────────────────
+initDemoData();
+if (window.location.search.includes('project=')) {
+  loadFromParams().then(() => { if (!editorConfig.config_file) render(); });
+} else {
+  render();
+}
+</script>
+
+</body>
+</html>

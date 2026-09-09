@@ -1,0 +1,725 @@
+{
+  "demo": "demo_11",
+  "source": "路口数据/11/路口数据/demo_11流量和交叉口配时方案.xlsx",
+  "plans": [
+    {
+      "period": "早高峰",
+      "range": "7:00-9:00",
+      "cycle": 170,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东西向直行",
+          "green": 50,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 2,
+          "name": "东西向左转",
+          "green": 23,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 3,
+          "name": "南北向直行",
+          "green": 52,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 4,
+          "name": "南北向左转",
+          "green": 25,
+          "yellow": 3,
+          "all_red": 2
+        }
+      ]
+    },
+    {
+      "period": "平峰",
+      "range": "14:30-16:30",
+      "cycle": 130,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东西向直行",
+          "green": 40,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 2,
+          "name": "东西向左转",
+          "green": 20,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 3,
+          "name": "南北向直行",
+          "green": 30,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 4,
+          "name": "南北向左转",
+          "green": 20,
+          "yellow": 3,
+          "all_red": 2
+        }
+      ]
+    },
+    {
+      "period": "晚高峰",
+      "range": "17:30-19:30",
+      "cycle": 176,
+      "phases": [
+        {
+          "no": 1,
+          "name": "东西向直行",
+          "green": 50,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 2,
+          "name": "东西向左转",
+          "green": 26,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 3,
+          "name": "南北向直行",
+          "green": 52,
+          "yellow": 3,
+          "all_red": 2
+        },
+        {
+          "no": 4,
+          "name": "南北向左转",
+          "green": 28,
+          "yellow": 3,
+          "all_red": 2
+        }
+      ]
+    }
+  ],
+  "flow": [
+    {
+      "period": "早高峰",
+      "range": "7:00-9:00",
+      "bins": [
+        {
+          "start": "07:00",
+          "end": "07:15",
+          "east": {
+            "left": 60,
+            "straight": 80,
+            "right": 59
+          },
+          "west": {
+            "left": 72,
+            "straight": 99,
+            "right": 71
+          },
+          "north": {
+            "left": 45,
+            "straight": 65,
+            "right": 42
+          },
+          "south": {
+            "left": 55,
+            "straight": 75,
+            "right": 50
+          }
+        },
+        {
+          "start": "07:15",
+          "end": "07:30",
+          "east": {
+            "left": 58,
+            "straight": 79,
+            "right": 61
+          },
+          "west": {
+            "left": 58,
+            "straight": 81,
+            "right": 49
+          },
+          "north": {
+            "left": 52,
+            "straight": 62,
+            "right": 44
+          },
+          "south": {
+            "left": 60,
+            "straight": 72,
+            "right": 54
+          }
+        },
+        {
+          "start": "07:30",
+          "end": "07:45",
+          "east": {
+            "left": 62,
+            "straight": 81,
+            "right": 58
+          },
+          "west": {
+            "left": 68,
+            "straight": 89,
+            "right": 63
+          },
+          "north": {
+            "left": 48,
+            "straight": 68,
+            "right": 46
+          },
+          "south": {
+            "left": 52,
+            "straight": 78,
+            "right": 53
+          }
+        },
+        {
+          "start": "07:45",
+          "end": "08:00",
+          "east": {
+            "left": 57,
+            "straight": 78,
+            "right": 60
+          },
+          "west": {
+            "left": 50,
+            "straight": 76,
+            "right": 57
+          },
+          "north": {
+            "left": 43,
+            "straight": 60,
+            "right": 41
+          },
+          "south": {
+            "left": 58,
+            "straight": 70,
+            "right": 51
+          }
+        },
+        {
+          "start": "08:00",
+          "end": "08:15",
+          "east": {
+            "left": 61,
+            "straight": 80,
+            "right": 62
+          },
+          "west": {
+            "left": 74,
+            "straight": 94,
+            "right": 69
+          },
+          "north": {
+            "left": 47,
+            "straight": 64,
+            "right": 45
+          },
+          "south": {
+            "left": 53,
+            "straight": 73,
+            "right": 55
+          }
+        },
+        {
+          "start": "08:15",
+          "end": "08:30",
+          "east": {
+            "left": 59,
+            "straight": 79,
+            "right": 57
+          },
+          "west": {
+            "left": 60,
+            "straight": 83,
+            "right": 48
+          },
+          "north": {
+            "left": 46,
+            "straight": 61,
+            "right": 43
+          },
+          "south": {
+            "left": 56,
+            "straight": 76,
+            "right": 52
+          }
+        },
+        {
+          "start": "08:30",
+          "end": "08:45",
+          "east": {
+            "left": 60,
+            "straight": 80,
+            "right": 60
+          },
+          "west": {
+            "left": 55,
+            "straight": 78,
+            "right": 66
+          },
+          "north": {
+            "left": 44,
+            "straight": 63,
+            "right": 47
+          },
+          "south": {
+            "left": 54,
+            "straight": 74,
+            "right": 56
+          }
+        },
+        {
+          "start": "08:45",
+          "end": "09:00",
+          "east": {
+            "left": 59,
+            "straight": 78,
+            "right": 59
+          },
+          "west": {
+            "left": 73,
+            "straight": 89,
+            "right": 67
+          },
+          "north": {
+            "left": 40,
+            "straight": 52,
+            "right": 47
+          },
+          "south": {
+            "left": 53,
+            "straight": 85,
+            "right": 56
+          }
+        }
+      ],
+      "totals": {
+        "east": 1587,
+        "west": 1689,
+        "north": 1215,
+        "south": 1471
+      }
+    },
+    {
+      "period": "平峰",
+      "range": "14:30-16:30",
+      "bins": [
+        {
+          "start": "14:30",
+          "end": "14:45",
+          "east": {
+            "left": 44,
+            "straight": 95,
+            "right": 42
+          },
+          "west": {
+            "left": 50,
+            "straight": 84,
+            "right": 44
+          },
+          "north": {
+            "left": 38,
+            "straight": 68,
+            "right": 33
+          },
+          "south": {
+            "left": 42,
+            "straight": 63,
+            "right": 32
+          }
+        },
+        {
+          "start": "14:45",
+          "end": "15:00",
+          "east": {
+            "left": 52,
+            "straight": 88,
+            "right": 48
+          },
+          "west": {
+            "left": 55,
+            "straight": 86,
+            "right": 47
+          },
+          "north": {
+            "left": 42,
+            "straight": 66,
+            "right": 35
+          },
+          "south": {
+            "left": 46,
+            "straight": 65,
+            "right": 34
+          }
+        },
+        {
+          "start": "15:00",
+          "end": "15:15",
+          "east": {
+            "left": 47,
+            "straight": 92,
+            "right": 43
+          },
+          "west": {
+            "left": 51,
+            "straight": 82,
+            "right": 45
+          },
+          "north": {
+            "left": 39,
+            "straight": 70,
+            "right": 34
+          },
+          "south": {
+            "left": 43,
+            "straight": 64,
+            "right": 33
+          }
+        },
+        {
+          "start": "15:15",
+          "end": "15:30",
+          "east": {
+            "left": 46,
+            "straight": 90,
+            "right": 47
+          },
+          "west": {
+            "left": 53,
+            "straight": 88,
+            "right": 46
+          },
+          "north": {
+            "left": 40,
+            "straight": 67,
+            "right": 36
+          },
+          "south": {
+            "left": 45,
+            "straight": 62,
+            "right": 31
+          }
+        },
+        {
+          "start": "15:30",
+          "end": "15:45",
+          "east": {
+            "left": 48,
+            "straight": 94,
+            "right": 44
+          },
+          "west": {
+            "left": 52,
+            "straight": 85,
+            "right": 48
+          },
+          "north": {
+            "left": 37,
+            "straight": 69,
+            "right": 32
+          },
+          "south": {
+            "left": 44,
+            "straight": 66,
+            "right": 35
+          }
+        },
+        {
+          "start": "15:45",
+          "end": "16:00",
+          "east": {
+            "left": 45,
+            "straight": 86,
+            "right": 45
+          },
+          "west": {
+            "left": 49,
+            "straight": 83,
+            "right": 43
+          },
+          "north": {
+            "left": 41,
+            "straight": 65,
+            "right": 35
+          },
+          "south": {
+            "left": 41,
+            "straight": 61,
+            "right": 32
+          }
+        },
+        {
+          "start": "16:00",
+          "end": "16:15",
+          "east": {
+            "left": 50,
+            "straight": 93,
+            "right": 42
+          },
+          "west": {
+            "left": 54,
+            "straight": 87,
+            "right": 46
+          },
+          "north": {
+            "left": 38,
+            "straight": 68,
+            "right": 36
+          },
+          "south": {
+            "left": 47,
+            "straight": 65,
+            "right": 34
+          }
+        },
+        {
+          "start": "16:15",
+          "end": "16:30",
+          "east": {
+            "left": 48,
+            "straight": 92,
+            "right": 43
+          },
+          "west": {
+            "left": 56,
+            "straight": 85,
+            "right": 45
+          },
+          "north": {
+            "left": 35,
+            "straight": 67,
+            "right": 35
+          },
+          "south": {
+            "left": 42,
+            "straight": 64,
+            "right": 35
+          }
+        }
+      ],
+      "totals": {
+        "east": 1464,
+        "west": 1464,
+        "north": 1126,
+        "south": 1126
+      }
+    },
+    {
+      "period": "晚高峰",
+      "range": "17:30-19:30",
+      "bins": [
+        {
+          "start": "17:30",
+          "end": "17:45",
+          "east": {
+            "left": 65,
+            "straight": 95,
+            "right": 75
+          },
+          "west": {
+            "left": 70,
+            "straight": 102,
+            "right": 75
+          },
+          "north": {
+            "left": 62,
+            "straight": 90,
+            "right": 64
+          },
+          "south": {
+            "left": 40,
+            "straight": 55,
+            "right": 43
+          }
+        },
+        {
+          "start": "17:45",
+          "end": "18:00",
+          "east": {
+            "left": 72,
+            "straight": 102,
+            "right": 68
+          },
+          "west": {
+            "left": 76,
+            "straight": 108,
+            "right": 69
+          },
+          "north": {
+            "left": 68,
+            "straight": 95,
+            "right": 66
+          },
+          "south": {
+            "left": 44,
+            "straight": 58,
+            "right": 41
+          }
+        },
+        {
+          "start": "18:00",
+          "end": "18:15",
+          "east": {
+            "left": 68,
+            "straight": 98,
+            "right": 72
+          },
+          "west": {
+            "left": 72,
+            "straight": 105,
+            "right": 73
+          },
+          "north": {
+            "left": 65,
+            "straight": 92,
+            "right": 70
+          },
+          "south": {
+            "left": 41,
+            "straight": 56,
+            "right": 45
+          }
+        },
+        {
+          "start": "18:15",
+          "end": "18:30",
+          "east": {
+            "left": 70,
+            "straight": 105,
+            "right": 65
+          },
+          "west": {
+            "left": 75,
+            "straight": 110,
+            "right": 77
+          },
+          "north": {
+            "left": 70,
+            "straight": 88,
+            "right": 62
+          },
+          "south": {
+            "left": 43,
+            "straight": 60,
+            "right": 40
+          }
+        },
+        {
+          "start": "18:30",
+          "end": "18:45",
+          "east": {
+            "left": 75,
+            "straight": 92,
+            "right": 70
+          },
+          "west": {
+            "left": 68,
+            "straight": 100,
+            "right": 71
+          },
+          "north": {
+            "left": 60,
+            "straight": 96,
+            "right": 68
+          },
+          "south": {
+            "left": 45,
+            "straight": 54,
+            "right": 42
+          }
+        },
+        {
+          "start": "18:45",
+          "end": "19:00",
+          "east": {
+            "left": 60,
+            "straight": 100,
+            "right": 74
+          },
+          "west": {
+            "left": 64,
+            "straight": 107,
+            "right": 74
+          },
+          "north": {
+            "left": 67,
+            "straight": 94,
+            "right": 65
+          },
+          "south": {
+            "left": 39,
+            "straight": 59,
+            "right": 44
+          }
+        },
+        {
+          "start": "19:00",
+          "end": "19:15",
+          "east": {
+            "left": 74,
+            "straight": 108,
+            "right": 60
+          },
+          "west": {
+            "left": 78,
+            "straight": 109,
+            "right": 70
+          },
+          "north": {
+            "left": 69,
+            "straight": 89,
+            "right": 67
+          },
+          "south": {
+            "left": 44,
+            "straight": 57,
+            "right": 39
+          }
+        },
+        {
+          "start": "19:15",
+          "end": "19:30",
+          "east": {
+            "left": 76,
+            "straight": 100,
+            "right": 76
+          },
+          "west": {
+            "left": 77,
+            "straight": 110,
+            "right": 81
+          },
+          "north": {
+            "left": 69,
+            "straight": 100,
+            "right": 68
+          },
+          "south": {
+            "left": 44,
+            "straight": 57,
+            "right": 46
+          }
+        }
+      ],
+      "totals": {
+        "east": 1920,
+        "west": 2031,
+        "north": 1804,
+        "south": 1136
+      }
+    }
+  ]
+}

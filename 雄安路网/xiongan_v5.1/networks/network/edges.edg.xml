@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges>
+    <edge id="E14_7" from="14" to="7" numLanes="2" speed="11.11" width="3" priority="1" shape="-360.00,360.00"/>
+    <edge id="E7_5" from="7" to="5" numLanes="2" speed="11.11" width="3" priority="1" shape="-180.00,360.00"/>
+    <edge id="E5_10" from="5" to="10" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E10_19" from="10" to="19" numLanes="2" speed="11.11" width="3" priority="1" shape="270.00,360.00"/>
+    <edge id="E7_14" from="7" to="14" numLanes="2" speed="11.11" width="3" priority="1" shape="-360.00,360.00"/>
+    <edge id="E5_7" from="5" to="7" numLanes="2" speed="11.11" width="3" priority="1" shape="-180.00,360.00"/>
+    <edge id="E10_5" from="10" to="5" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E19_10" from="19" to="10" numLanes="2" speed="11.11" width="3" priority="1" shape="270.00,360.00"/>
+    <edge id="E14_3" from="14" to="3" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E3_6" from="3" to="6" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E6_9" from="6" to="9" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E9_2" from="9" to="2" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E3_14" from="3" to="14" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E6_3" from="6" to="3" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E9_6" from="9" to="6" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E2_9" from="2" to="9" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E21_1" from="21" to="1" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E1_16" from="1" to="16" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E16_13" from="16" to="13" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E13_11" from="13" to="11" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E11_4" from="11" to="4" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E26_4" from="26" to="4" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E1_21" from="1" to="21" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E16_1" from="16" to="1" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E13_16" from="13" to="16" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E11_13" from="11" to="13" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E4_11" from="4" to="11" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E4_26" from="4" to="26" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E1_20" from="1" to="20" numLanes="2" speed="11.11" width="3" priority="1" shape="-360.00,0.00 -360.00,-90.00 -359.23,-101.75 -356.93,-113.29 -353.15,-124.44 -347.94,-135.00 -341.40,-144.79 -333.64,-153.64 -324.79,-161.40 -315.00,-167.94 -304.44,-173.15 -293.29,-176.93 -281.75,-179.23 -270.00,-270.00 -180.00,-180.00"/>
+    <edge id="E20_18" from="20" to="18" numLanes="2" speed="11.11" width="3" priority="1" shape="-90.00,-180.00"/>
+    <edge id="E18_12" from="18" to="12" numLanes="2" speed="11.11" width="3" priority="1" shape="90.00,-180.00"/>
+    <edge id="E12_15" from="12" to="15" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E15_24" from="15" to="24" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E20_1" from="20" to="1" numLanes="2" speed="11.11" width="3" priority="1" shape="-180.00,-180.00 -270.00,-270.00 -281.75,-179.23 -293.29,-176.93 -304.44,-173.15 -315.00,-167.94 -324.79,-161.40 -333.64,-153.64 -341.40,-144.79 -347.94,-135.00 -353.15,-124.44 -356.93,-113.29 -359.23,-101.75 -360.00,-90.00 -360.00,0.00"/>
+    <edge id="E18_20" from="18" to="20" numLanes="2" speed="11.11" width="3" priority="1" shape="-90.00,-180.00"/>
+    <edge id="E12_18" from="12" to="18" numLanes="2" speed="11.11" width="3" priority="1" shape="90.00,-180.00"/>
+    <edge id="E15_12" from="15" to="12" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E24_15" from="24" to="15" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E17_18" from="17" to="18" numLanes="2" speed="11.11" width="3" priority="1" shape="-90.00,-360.00"/>
+    <edge id="E18_8" from="18" to="8" numLanes="2" speed="11.11" width="3" priority="1" shape="90.00,-360.00"/>
+    <edge id="E8_15" from="8" to="15" numLanes="2" speed="11.11" width="3" priority="1" shape="180.00,-360.00 270.00,-360.00 287.56,-358.27 304.44,-353.15 320.00,-344.83 333.64,-333.64 344.83,-320.00 353.15,-304.44 358.27,-287.56 360.00,-270.00 358.27,-252.44 353.15,-235.56 344.83,-220.00 360.00,-180.00 360.00,-180.00"/>
+    <edge id="E18_17" from="18" to="17" numLanes="2" speed="11.11" width="3" priority="1" shape="-90.00,-360.00"/>
+    <edge id="E8_18" from="8" to="18" numLanes="2" speed="11.11" width="3" priority="1" shape="90.00,-360.00"/>
+    <edge id="E15_8" from="15" to="8" numLanes="2" speed="11.11" width="3" priority="1" shape="360.00,-180.00 360.00,-180.00 344.83,-220.00 353.15,-235.56 358.27,-252.44 360.00,-270.00 358.27,-287.56 353.15,-304.44 344.83,-320.00 333.64,-333.64 320.00,-344.83 304.44,-353.15 287.56,-358.27 270.00,-360.00 180.00,-360.00"/>
+    <edge id="E14_1" from="14" to="1" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E1_14" from="1" to="14" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E7_3" from="7" to="3" numLanes="2" speed="11.11" width="3" priority="1" shape="-180.00,240.00" allow="passenger bus"/>
+    <edge id="E3_16" from="3" to="16" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E16_20" from="16" to="20" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E20_17" from="20" to="17" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E17_22" from="17" to="22" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E3_7" from="3" to="7" numLanes="2" speed="11.11" width="3" priority="1" shape="-180.00,240.00" allow="passenger bus"/>
+    <edge id="E16_3" from="16" to="3" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E20_16" from="20" to="16" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E17_20" from="17" to="20" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E22_17" from="22" to="17" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E5_6" from="5" to="6" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E6_13" from="6" to="13" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E6_5" from="6" to="5" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E13_6" from="13" to="6" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E10_9" from="10" to="9" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E9_11" from="9" to="11" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E11_12" from="11" to="12" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E12_8" from="12" to="8" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E8_23" from="8" to="23" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E9_10" from="9" to="10" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E11_9" from="11" to="9" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E12_11" from="12" to="11" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E8_12" from="8" to="12" numLanes="2" speed="11.11" width="3" priority="1" allow="passenger bus"/>
+    <edge id="E23_8" from="23" to="8" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E19_2" from="19" to="2" numLanes="2" speed="11.11" width="3" priority="1" shape="360.00,270.00"/>
+    <edge id="E2_4" from="2" to="4" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E4_15" from="4" to="15" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E2_19" from="2" to="19" numLanes="2" speed="11.11" width="3" priority="1" shape="360.00,270.00"/>
+    <edge id="E4_2" from="4" to="2" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E15_4" from="15" to="4" numLanes="2" speed="11.11" width="3" priority="1"/>
+    <edge id="E9_19" from="9" to="19" numLanes="1" speed="8.33" width="3" priority="0" allow="passenger"/>
+    <edge id="E19_9" from="19" to="9" numLanes="1" speed="8.33" width="3" priority="0" allow="passenger"/>
+    <edge id="E19_25" from="19" to="25" numLanes="3" speed="13.89" width="3" priority="2"/>
+    <edge id="E25_19" from="25" to="19" numLanes="3" speed="13.89" width="3" priority="2"/>
+</edges>

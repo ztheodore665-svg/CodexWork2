@@ -1,0 +1,60 @@
+/* 基础样式：reset + 全局组件基元 */
+* { box-sizing: border-box; }
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--bg-base);
+  color: var(--text-1);
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out);
+}
+
+/* 数字/ID 用等宽体（tabular） */
+.num, .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* 面板 */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+}
+
+.panel-title {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px var(--space-4);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.panel-title > span:first-child { overflow: hidden; text-overflow: ellipsis; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* 键盘可达性：统一 focus-visible 轮廓 */
+button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* 示例数据水印（v0 用，接入后端后移除） */
+.sample-badge {
+  display: inline-block; padding: 1px 6px; border-radius: 3px;
+  font-size: 10px; letter-spacing: 0.05em;
+  color: var(--text-3); border: 1px dashed var(--border-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

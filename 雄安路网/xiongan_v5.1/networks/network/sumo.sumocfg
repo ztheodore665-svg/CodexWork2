@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="base_network.net.xml"/>
+        <route-files value="routes.rou.xml"/>
+        <additional-files value="timing.add.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="600.0"/>
+    </time>
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+    <gui_only>
+        <delay value="100"/>
+    </gui_only>
+</configuration>

@@ -1,0 +1,24 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+traci>=1.18
+sumolib>=1.18
+numpy>=1.26
+pytest>=8.0
+pytest-asyncio>=0.23
+
+# LLM 智能体（智谱 / Ollama，OpenAI 兼容）
+openai>=1.30
+
+# 评估报告生成（md / docx / pdf + matplotlib 图表）
+matplotlib>=3.8
+python-docx>=1.1
+reportlab>=4.0
+markdown>=3.5
+jinja2>=3.1
+
+# 可选：PyTorch CPU 版（MAPPO 推理；不装则方案二自动降级 SCOOT）
+# torch
+# onnx
+# onnxruntime
