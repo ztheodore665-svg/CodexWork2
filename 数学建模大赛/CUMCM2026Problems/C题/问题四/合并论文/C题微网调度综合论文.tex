@@ -801,8 +801,8 @@ K^*=\arg\min_{K\in\mathcal K}Z_{4-2}(K),\qquad
 
 \begin{table}[H]
 \centering
-\small
-\setlength{\tabcolsep}{4.5pt}
+\normalsize
+\setlength{\tabcolsep}{8pt}
 \renewcommand\arraystretch{1.25}
 \caption{问题主要实验结论汇总}
 \label{tab:overallresult}
@@ -893,314 +893,37 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
 
 \clearpage
 \begin{center}
-    {\zihao{2}\bfseries 附录\par}
-    \vspace{1.5em}
+{\zihao{2}\bfseries 附录\par}
+\vspace{1.5em}
 \end{center}
 
-本文附录仅节选四问模型的关键算法代码，供评委抽检数学模型与程序实现的一致性。数据读取、格式转换、绘图和批量输出等辅助代码不在论文中重复展开，完整可运行源程序及结果文件均随支撑材料 ZIP 提交。经核对，本文未使用赛题原始数据以外的自主查阅数据资料；文中引用的学术文献仅用于模型方法说明，已列入参考文献。以下代码节选已删除个人身份、学校、队伍和指导教师等信息。
-
-\section*{附录一\quad 问题一确定性线性规划核心代码}
-
-注：本节保留确定性供需平衡、储能效率、容量边界、日循环边界和线性规划调用；数据导入及结果写入代码详见支撑材料中的\texttt{solve\_q1.py}和\texttt{validation\_q1.py}。
-
-\begin{lstlisting}[caption={问题一确定性线性规划核心代码节选},label={lst:q1_core}]
-N = 144
-DT = 1.0 / 6.0
-ETA_CH = ETA_DIS = 0.9
-E_MAX = 5000.0 * DT
-S_MIN, S_MAX, S_INIT = 1200.0, 10800.0, 6000.0
-
-def build_and_solve_lp(prices, E_load, E_pv,
-                       s_max=S_MAX, s_min=S_MIN,
-                       eta_ch=ETA_CH, eta_dis=ETA_DIS):
-    n = 3 * N + (N + 1)
-    c = np.zeros(n)
-    c[:N] = prices
-
-    A_ub = np.zeros((N, n))
-    b_ub = np.zeros(N)
-    for t in range(N):
-        A_ub[t, t]       = -1.0
-        A_ub[t, N + t]   =  1.0
-        A_ub[t, 2*N + t] = -1.0
-        b_ub[t] = E_pv[t] - E_load[t]
-
-    A_eq = np.zeros((N, n))
-    b_eq = np.zeros(N)
-    for t in range(N):
-        A_eq[t, 3*N + t]     = -1.0
-        A_eq[t, 3*N + t + 1] =  1.0
-        A_eq[t, N + t]       = -eta_ch
-        A_eq[t, 2*N + t]     =  1.0 / eta_dis
-
-    bounds = ([(0, None)] * N + [(0, E_MAX)] * N
-              + [(0, E_MAX)] * N)
-    bounds += [(S_INIT, S_INIT)]
-    bounds += [(s_min, s_max)] * (N - 1)
-    bounds += [(S_INIT, S_INIT)]
-
-    res = linprog(c, A_ub=A_ub, b_ub=b_ub,
-                  A_eq=A_eq, b_eq=b_eq,
-                  bounds=bounds, method='highs')
-    if not res.success:
-        raise RuntimeError(res.message)
-    return res.x[:N], res.x[N:2*N], res.x[2*N:3*N], res.x[3*N:]
-\end{lstlisting}
-
-\section*{附录二\quad 问题二机会约束日前规划核心代码}
-
-注：本节展示前14天历史净负荷统计量、安全系数$K$和机会约束确定性等价形式；日内状态机回测、敏感性扫描及结果输出的完整实现详见\texttt{solve\_q2.py}、\texttt{refine\_k.py}和\texttt{run\_dynamic\_mild.py}。
-
-\begin{lstlisting}[caption={问题二安全净负荷与日前 LP 核心代码节选},label={lst:q2_core}]
-def build_plan_net(load_dict, pv_dict, all_dates, d_idx, K):
-    hist = all_dates[max(0, d_idx - 14):d_idx]
-    if len(hist) == 0:
-        hist = [all_dates[d_idx]]
-    net_hist = np.array([load_dict[d] - pv_dict[d] for d in hist])
-    mu = net_hist.mean(axis=0)
-    sigma = (net_hist.std(axis=0, ddof=0)
-             if len(hist) > 1 else np.zeros(T))
-    return mu + K * sigma
-
-def solve_day_ahead_lp(plan_net, prices):
-    n = 3 * T + (T + 1)
-    c = np.zeros(n)
-    c[:T] = prices
-    bounds = ([(0, None)] * T + [(0, E_MAX)] * T
-              + [(0, E_MAX)] * T)
-    bounds += [(S_INIT, S_INIT)]
-    bounds += [(S_MIN, S_MAX)] * (T - 1)
-    bounds += [(S_INIT, S_INIT)]
-
-    A_eq = np.zeros((T, n))
-    b_eq = np.zeros(T)
-    for t in range(T):
-        A_eq[t, 3*T+t+1] = 1.0
-        A_eq[t, 3*T+t]   = -1.0
-        A_eq[t, T+t]     = -0.9
-        A_eq[t, 2*T+t]   = 1.0 / 0.9
-
-    A_ub = np.zeros((T, n))
-    b_ub = np.zeros(T)
-    for t in range(T):
-        A_ub[t, t]       = -1.0
-        A_ub[t, T+t]     =  1.0
-        A_ub[t, 2*T+t]   = -1.0
-        b_ub[t] = -plan_net[t]
-
-    res = linprog(c, A_ub=A_ub, b_ub=b_ub,
-                  A_eq=A_eq, b_eq=b_eq,
-                  bounds=bounds, method='highs')
-    return res.x[:T] if res.success else None
-
-def simulate_intraday(E_plan, real_load, real_pv):
-    S_cur = S_INIT
-    emergency = np.zeros(T)
-    for t in range(T):
-        delta = real_load[t] - real_pv[t] - E_plan[t]
-        if delta < 0:
-            charge = min(-delta, E_MAX, (S_MAX-S_cur)/0.9)
-            S_cur += 0.9 * charge
-        else:
-            discharge = min(delta, E_MAX, (S_cur-S_MIN)*0.9)
-            S_cur -= discharge / 0.9
-            emergency[t] = max(0.0, delta-discharge)
-\end{lstlisting}
-
-\section*{附录三\quad 问题三预测更新与 MPC 核心代码}
-
-注：本节保留四个发布时间的预测插值、滚动时域重新优化、已执行区间锁定和预测折减；物理清洗、消融实验及批量结果分析详见支撑材料中的\texttt{solve\_q3.py}、\texttt{solve\_q3\_clean.py}、\texttt{solve\_q3\_clean\_ab.py}、\texttt{analyze\_q3\_extra.py}和\texttt{analyze\_q3\_clean\_extra.py}。
-
-\begin{lstlisting}[caption={问题三预测更新与 MPC 滚动核心代码节选},label={lst:q3_core}]
-def interpolate_forecasts(f0, f6, f12, f18, pv_actual_kW):
-    centers = (np.arange(144) + 1.5) / 6.0
-    pv0 = np.interp(centers, np.arange(0, 25),
-                    np.r_[0.0, f0]) * DT
-
-    pv6 = pv0.copy()
-    pv6[35:] = np.interp(centers[35:], np.arange(6, 25),
-                         np.r_[pv_actual_kW[35], f6[:18]]) * DT
-    pv12 = pv6.copy()
-    pv12[71:] = np.interp(centers[71:], np.arange(12, 25),
-                          np.r_[pv_actual_kW[71], f12[:12]]) * DT
-    pv18 = pv12.copy()
-    pv18[107:] = np.interp(centers[107:], np.arange(18, 25),
-                          np.r_[pv_actual_kW[107], f18[:6]]) * DT
-    return pv0, pv6, pv12, pv18
-
-def solve_mpc_adj(T_k, S_current, E_plan_rest,
-                  load_rest, pv_pred_rest, prices_rest):
-    M = T - T_k
-    n = 6 * M + 1
-    c = np.zeros(n)
-    c[:M] = prices_rest
-    c[M:2*M] = 0.5 * prices_rest
-    c[2*M:3*M] = 0.5 * prices_rest
-
-    bounds = ([(0, None)] * (3 * M)
-              + [(0, E_MAX)] * (2 * M))
-    bounds += [(S_current, S_current)]
-    bounds += [(S_MIN, S_MAX)] * (M - 1)
-    bounds += [(S_INIT, S_INIT)]
-
-    A_eq, b_eq = [], []
-    for m in range(M):
-        row = np.zeros(n)
-        row[m], row[M+m], row[2*M+m] = 1.0, -1.0, 1.0
-        A_eq.append(row)
-        b_eq.append(E_plan_rest[m])
-
-    for m in range(M):
-        row = np.zeros(n)
-        row[5*M+m+1] = 1.0
-        row[5*M+m] = -1.0
-        row[3*M+m] = -0.9
-        row[4*M+m] = 1.0 / 0.9
-        A_eq.append(row)
-        b_eq.append(0.0)
-
-    A_ub, b_ub = [], []
-    for m in range(M):
-        row = np.zeros(n)
-        row[m] = -1.0
-        row[3*M+m], row[4*M+m] = 1.0, -1.0
-        A_ub.append(row)
-        b_ub.append(-(load_rest[m] - pv_pred_rest[m]))
-
-    res = linprog(c, A_ub=np.array(A_ub), b_ub=np.array(b_ub),
-                  A_eq=np.array(A_eq), b_eq=np.array(b_eq),
-                  bounds=bounds, method='highs')
-    if not res.success:
-        raise RuntimeError(res.message)
-    x = res.x
-    return x[:M], x[3*M:4*M], x[4*M:5*M], x[5*M:]
-
-# Only the not-yet-executed interval is re-optimized at each release time.
-S_cur = S_INIT
-for t in range(35):
-    S_cur += 0.9 * E_ch_plan[t] - E_dis_plan[t] / 0.9
-pv_pred_6_adj = pv_pred_6.copy()
-pv_pred_6_adj[35:] *= 0.95
-E_adj_6, E_ch_6, E_dis_6, _ = solve_mpc_adj(
-    35, S_cur, E_plan[35:], load[35:],
-    pv_pred_6_adj[35:], prices[35:])
-
-for t in range(35, 71):
-    S_cur += 0.9 * E_ch_6[t-35] - E_dis_6[t-35] / 0.9
-pv_pred_12_adj = pv_pred_12.copy()
-pv_pred_12_adj[71:] *= 0.95
-E_adj_12, E_ch_12, E_dis_12, _ = solve_mpc_adj(
-    71, S_cur, E_plan[71:], load[71:],
-    pv_pred_12_adj[71:], prices[71:])
-
-for t in range(71, 107):
-    S_cur += 0.9 * E_ch_12[t-71] - E_dis_12[t-71] / 0.9
-pv_pred_18_adj = pv_pred_18.copy()
-pv_pred_18_adj[107:] *= 0.95
-E_adj_18, E_ch_18, E_dis_18, _ = solve_mpc_adj(
-    107, S_cur, E_plan[107:], load[107:],
-    pv_pred_18_adj[107:], prices[107:])
-\end{lstlisting}
-
-\section*{附录四\quad 问题四动态电价自适应调度核心代码}
-
-注：问题四沿用问题二的安全净负荷模型和问题三的 MPC 状态机，仅将价格向量替换为按日期和时段变化的动态电价，并在结算阶段使用同一价格向量。完整实现详见\texttt{solve\_q4\_2.py}、\texttt{solve\_q4\_3.py}、\texttt{q4\_analysis\_only.py}和\texttt{q4\_plot.py}。
-
-\begin{lstlisting}[caption={问题四动态电价与滚动结算核心代码节选},label={lst:q4_core}]
-def process_day_4_2(date, load_arr, pv_arr, prices_day,
-                    load_dict, pv_dict, all_dates, K=0.80):
-    idx = all_dates.index(date)
-    hist = all_dates[max(0, idx-14):idx]
-    if len(hist) == 0:
-        hist = [all_dates[idx]]
-    net_hist = np.array([load_dict[d] - pv_dict[d] for d in hist])
-    mu = net_hist.mean(axis=0)
-    sigma = (net_hist.std(axis=0, ddof=1)
-             if len(hist) > 1 else np.zeros(T))
-    plan_net = mu + K * sigma
-
-    E_plan, E_ch, E_dis, S = solve_0h_plan(
-        load_arr, pv_arr, prices_day, plan_net)
-    net_energy = pv_arr + E_plan + E_dis - E_ch - load_arr
-    E_emer = np.maximum(0.0, -net_energy)
-    E_curt = np.maximum(0.0, net_energy)
-    total_cost = np.sum(prices_day * E_plan)
-    total_cost += np.sum(5.0 * prices_day * E_emer)
-    return E_plan, E_ch, E_dis, E_emer, E_curt, total_cost
-
-def settle_mpc(E_adj, E_plan, E_emer, prices_day):
-    u_plus = np.maximum(0.0, E_adj - E_plan)
-    u_minus = np.maximum(0.0, E_plan - E_adj)
-    settle = np.sum(prices_day *
-                    (E_adj + 0.5*u_plus + 0.5*u_minus))
-    emergency = np.sum(5.0 * prices_day * E_emer)
-    return settle + emergency
-
-# The same prices_day is passed to both optimization and settlement.
-\end{lstlisting}
-
-\clearpage
-\section*{支撑材料索引}
-支撑材料中保留与本文模型、结果和结论直接相关的可运行源程序、结果文件及必要的中间数据。赛题原始附件不在本表重复列出，原始文件仍保留在题目目录中；图形文件仅列出能够代表主要结论的结果图，其余图形随支撑材料一并提交。
-
-\begin{longtable}{p{5.2cm}p{8.8cm}}
-\caption{支撑材料索引表}\label{tab:appendix_support}\\
+\begin{table}[H]
+\centering
+\normalsize
+\renewcommand\arraystretch{1.45}
+\setlength{\tabcolsep}{10pt}
+\caption{附件说明表}
+\label{tab:appendix_support}
+\begin{tabularx}{\textwidth}{p{5.0cm}X}
 \toprule
-\textbf{文件名} & \textbf{用途说明}\\
+\textbf{文件} & \textbf{说明}\\
 \midrule
-\endfirsthead
-\multicolumn{2}{c}{续表~\thetable\quad 支撑材料索引表}\\
-\toprule
-\textbf{文件名} & \textbf{用途说明}\\
-\midrule
-\endhead
-\midrule
-\multicolumn{2}{r}{续下页}\\
-\endfoot
-\bottomrule
-\endlastfoot
-\texttt{solve\_q1.py} & 问题一确定性日前购电与储能线性规划主程序。\\
-\texttt{validation\_q1.py} & 问题一无储能对照、参数敏感性和结果校验程序。\\
-\texttt{solve\_q2.py} & 问题二机会约束日前计划与全年真实回测主程序。\\
-\texttt{refine\_k.py} & 问题二安全系数$K$的局部细扫程序。\\
-\texttt{solve\_q3.py} & 问题三预测更新与MPC滚动调度主程序。\\
-\texttt{solve\_q3\_clean.py} & 问题三光伏预测物理清洗对照程序。\\
-\texttt{solve\_q3\_clean\_ab.py} & 问题三预测清洗与SOC下限消融实验程序。\\
-\texttt{analyze\_q3\_extra.py} & 问题三原版结果的误差、紧急购电和敏感性分析程序。\\
-\texttt{analyze\_q3\_clean\_extra.py} & 问题三改进方案的批量分析程序。\\
-\texttt{solve\_q4\_2.py} & 问题四4-2动态电价机会约束日前调度程序。\\
-\texttt{solve\_q4\_3.py} & 问题四4-3动态电价MPC滚动调度程序。\\
-\texttt{q4\_analysis\_only.py} & 问题四全周期汇总、极端价差日和敏感性分析程序。\\
-\texttt{q4\_plot.py} & 问题四成本、紧急购电、弃光和套利结果绘图程序。\\
-\texttt{result1.xlsx} & 问题一最终结果及调度明细文件。\\
-\texttt{result2.xlsx} & 问题二最终结果及全年回测汇总文件。\\
-\texttt{result3.xlsx} & 问题三原版MPC结果文件。\\
-\texttt{q3\_clean\_result3.xlsx} & 问题三预测物理清洗方案结果文件。\\
-\texttt{q3\_clean\_ab\_result3.xlsx} & 问题三清洗加SOC下限消融方案结果文件。\\
-\texttt{result4-2.xlsx} & 问题四4-2动态电价日前结果文件。\\
+\texttt{q1\_code} & 问题一确定性线性规划、无储能对照、敏感性分析与结果校验程序。\\
+\texttt{q1\_figures} & 问题一调度轨迹、SOC及容量和效率敏感性等图形结果。\\
+\texttt{q2\_code} & 问题二机会约束日前规划、安全系数扫描与全年真实回测程序。\\
+\texttt{q2\_figures} & 问题二安全系数、回测指标和典型日期分析图形结果。\\
+\texttt{q3\_code} & 问题三光伏预测插值、MPC滚动调度、预测清洗及消融实验程序。\\
+\texttt{q3\_figures} & 问题三策略对比、预测误差、敏感性和典型日期图形结果。\\
+\texttt{q4\_code} & 问题四动态电价4-2日前规划、4-3 MPC及结果分析程序。\\
+\texttt{q4\_figures} & 问题四动态电价、成本、紧急购电、弃光和储能套利图形结果。\\
+\texttt{result1.xlsx} & 问题一最终求解结果及调度明细文件。\\
+\texttt{result2.xlsx} & 问题二全年日前计划、真实回测与汇总结果文件。\\
+\texttt{result3.xlsx} & 问题三MPC滚动调度及预测处理方案结果文件。\\
+\texttt{result4-2.xlsx} & 问题四4-2动态电价机会约束日前结果文件。\\
 \texttt{result4-3.xlsx} & 问题四4-3动态电价MPC结果文件。\\
-\texttt{q3\_forecast\_error\_detail.csv} & 问题三原版逐日逐时预测误差明细。\\
-\texttt{q3\_emergency\_matrix.csv} & 问题三原版紧急购电量矩阵。\\
-\texttt{q3\_sensitivity\_full.csv} & 问题三参数敏感性分析数据。\\
-\texttt{q3\_clean\_forecast\_error\_detail.csv} & 问题三清洗方案预测误差明细。\\
-\texttt{q3\_clean\_emergency\_matrix.csv} & 问题三清洗方案紧急购电量矩阵。\\
-\texttt{q3\_clean\_ab\_forecast\_error\_detail.csv} & 问题三消融方案预测误差明细。\\
-\texttt{q3\_clean\_ab\_emergency\_matrix.csv} & 问题三消融方案紧急购电量矩阵。\\
-\texttt{q4\_2\_emer\_matrix.csv} & 问题四4-2紧急购电量矩阵。\\
-\texttt{q4\_3\_emer\_matrix.csv} & 问题四4-3紧急购电量矩阵。\\
-\texttt{q4\_2\_curt\_matrix.csv} & 问题四4-2弃光量矩阵。\\
-\texttt{q4\_3\_curt\_matrix.csv} & 问题四4-3弃光量矩阵。\\
-\texttt{q4\_2\_K\_sensitivity.csv} & 问题四4-2安全系数敏感性分析数据。\\
-\texttt{q4\_3\_beta\_sensitivity.csv} & 问题四4-3预测折减系数敏感性分析数据。\\
-\texttt{q4\_extreme\_spread\_day.csv} & 问题四动态电价极端价差日分析数据。\\
-\texttt{q4\_3\_extreme\_spread\_day.csv} & 问题四4-3极端价差日滚动调度数据。\\
-\texttt{q4\_curtailment\_hourly.csv} & 问题四逐时弃光统计数据。\\
-\texttt{q1\_dispatch.png} & 问题一电价、购电与储能调度图。\\
-\texttt{q1\_soc.png} & 问题一储能SOC轨迹图。\\
-\texttt{q1\_capacity.png} & 问题一储能容量与成本关系图。\\
-\texttt{q3\_sensitivity.png} & 问题三预测折减系数敏感性图。\\
-\texttt{q3\_clean\_compare.png} & 问题三不同预测处理方案对比图。\\
-\texttt{q4\_arbitrage\_soc.png} & 问题四极端价差日的动态电价与SOC图。\\
-\end{longtable}
+\texttt{代码运行说明.txt} & 支撑材料的运行环境、程序执行顺序和结果文件说明。\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \end{document}
