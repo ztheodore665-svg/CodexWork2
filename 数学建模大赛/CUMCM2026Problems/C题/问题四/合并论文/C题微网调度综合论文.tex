@@ -311,20 +311,13 @@ E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 \end{tabular}
 \end{table}
 
-进一步采用单因素实验考察设备参数的边际作用。将储能最大容量取8000、10000、12000、14000和16000\kwh重新求解，购电费用随容量增加而下降，但下降斜率逐渐变小，表明容量扩张存在边际收益递减。将充放电效率同步取0.80、0.85、0.90和0.95时，效率提高会降低购电费用，原因是同样的跨时段转移损耗更小。两项实验的曲线见图~\ref{fig:q1capacity}和图~\ref{fig:q1efficiency}。
+进一步采用单因素实验考察设备参数的边际作用。将储能最大容量取8000、10000、12000、14000和16000\kwh重新求解，购电费用随容量增加而下降，但下降斜率逐渐变小，表明容量扩张存在边际收益递减。将充放电效率同步取0.80、0.85、0.90和0.95时，效率提高会降低购电费用，原因是同样的跨时段转移损耗更小。容量敏感性曲线见图~\ref{fig:q1capacity}，效率扫描的完整数据随支撑材料提交。
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.78\textwidth]{q1_capacity.png}
 \caption{问题一储能容量敏感性}
 \label{fig:q1capacity}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.78\textwidth]{q1_efficiency.png}
-\caption{问题一充放电效率敏感性}
-\label{fig:q1efficiency}
 \end{figure}
 
 为检验储能对高价时段的削峰作用，采用微扰法将典型时段负荷增加1\kwh，并以最优目标值的增量估计边际供电成本。02:00和12:00的影子价格分别为0.4293和0.4411元/kWh，与相应外网电价一致；19:00的影子价格为1.2561元/kWh，低于外网电价1.3523元/kWh，说明该时段的边际负荷部分由储能承担。该结果为“储能在高价时段降低边际购电成本”提供了独立于总费用的检验。
@@ -345,13 +338,6 @@ E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 \bottomrule
 \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.86\textwidth]{q1_shadow.png}
-\caption{问题一外网电价与影子价格}
-\label{fig:q1shadow}
-\end{figure}
 
 \subsection{问题二的模型建立与求解：机会约束日前优化与真实回测}
 
@@ -460,21 +446,7 @@ $K$ & 总成本（万元） & 紧急天数 & 紧急购电（万kWh） & 弃光�
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=.82\textwidth]{q2_k_fine.png}
-\caption{问题二安全裕度低成本区间细扫}
-\label{fig:q2fine}
-\end{figure}
-
-为考察分时安全裕度的作用，另设一个只依赖历史光伏均值的温和动态规则：在历史平均光伏较高的时段降低$K$，在高电价时段提高$K$，其余时段保持基准值。以$K_0=0.85$为例，动态规则将弃光量从固定$K=0.85$的591.20万kWh降至502.32万kWh，但紧急购电量升至28.22万kWh，总成本达到1703.05万元。图~\ref{fig:q2dynamic}显示，该规则并未在本数据集上同时改善经济性和可靠性，说明仅凭历史平均光伏推断当日天气仍然不足。
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.82\textwidth]{q2_dynamic.png}
-\caption{问题二温和动态安全裕度对照}
-\label{fig:q2dynamic}
-\end{figure}
+为考察分时安全裕度的作用，另设一个只依赖历史光伏均值的温和动态规则：在历史平均光伏较高的时段降低$K$，在高电价时段提高$K$，其余时段保持基准值。以$K_0=0.85$为例，动态规则将弃光量从固定$K=0.85$的591.20万kWh降至502.32万kWh，但紧急购电量升至28.22万kWh，总成本达到1703.05万元。该规则并未在本数据集上同时改善经济性和可靠性，说明仅凭历史平均光伏推断当日天气仍然不足；其逐日统计数据随支撑材料提交。
 
 按照题目表3要求，对2025年3月20日、6月21日、9月23日和12月21日进行结果核验。固定$K=0.80$方案中，只有9月23日产生紧急购电，分别发生在9:30--10:00、20:30--20:50和21:00--21:20，对应电量为88.8437、1007.1521和20.5178 kWh。该检查将全年汇总指标落实到具体日期和具体时段，验证了紧急购电记录的输出逻辑。
 
@@ -564,27 +536,13 @@ MPC，$\alpha=0.90$ & 1409.64 & 8.9414 & 5.29\%\\
 \end{tabular}
 \end{table}
 
-主方案$\alpha=0.95$的成本结构为：实际购电1275.68万元、偏差费用35.90万元、紧急购电费用57.29万元。与静态0:00计划相比，MPC同时降低综合成本和紧急购电量；继续降低$\alpha$虽可进一步减少紧急购电，但因保守购电和偏差增加而使总成本回升。334天预测误差统计中，0:00、6:00、12:00和18:00预测的平均绝对误差分别为207.47、176.44、88.79和7.20 kW，说明新预测的到达确实提供了有价值的信息。紧急购电主要集中在清晨光伏爬坡和傍晚光伏下降阶段；6:00预测误差与当日紧急购电量的Pearson相关系数为0.660，但该相关关系仅作风险解释，不构成因果识别。
+主方案$\alpha=0.95$的成本结构为：实际购电1275.68万元、偏差费用35.90万元、紧急购电费用57.29万元。与静态0:00计划相比，MPC同时降低综合成本和紧急购电量；继续降低$\alpha$虽可进一步减少紧急购电，但因保守购电和偏差增加而使总成本回升。334天预测误差统计中，0:00、6:00、12:00和18:00预测的平均绝对误差分别为207.47、176.44、88.79和7.20 kW，说明新预测的到达确实提供了有价值的信息。紧急购电主要集中在清晨光伏爬坡和傍晚光伏下降阶段；6:00预测误差与当日紧急购电量的Pearson相关系数为0.660，但该相关关系仅作风险解释，不构成因果识别。误差明细和逐时风险分布随支撑材料提交，正文保留策略对比图以突出主结论。
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.84\textwidth]{q3_compare.png}
 \caption{问题三不同策略的成本与紧急购电对比}
 \label{fig:q3compare}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.78\textwidth]{q3_error.png}
-\caption{问题三不同发布时间的光伏预测误差}
-\label{fig:q3error}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.78\textwidth]{q3_emergency.png}
-\caption{问题三紧急购电的小时分布}
-\label{fig:q3emergency}
 \end{figure}
 
 \subsubsection{保守折减系数的敏感性}
@@ -609,7 +567,7 @@ $\alpha$ & 总成本（万元） & 实际购电（万元） & 偏差费用（万
 \end{tabular}
 \end{table}
 
-图~\ref{fig:q3sensitivity}和图~\ref{fig:q3pareto}分别从总成本曲线和成本--风险权衡角度展示上述结论。前者说明保守程度存在成本谷值，后者说明若单独追求最低紧急购电量，应选择更小的$\alpha$，但这会牺牲经济性。
+图~\ref{fig:q3sensitivity}从总成本曲线展示上述结论：保守程度存在成本谷值；若单独追求最低紧急购电量，应选择更小的$\alpha$，但这会牺牲经济性。成本--风险权衡的完整数据见支撑材料。
 
 \begin{figure}[H]
 \centering
@@ -618,23 +576,9 @@ $\alpha$ & 总成本（万元） & 实际购电（万元） & 偏差费用（万
 \label{fig:q3sensitivity}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=.72\textwidth]{q3_pareto.png}
-\caption{问题三节省费用与紧急购电量的权衡}
-\label{fig:q3pareto}
-\end{figure}
-
 \subsubsection{成本构成与典型日期核验}
 
 主方案$\alpha=0.95$的实际购电成本、偏差费用和紧急购电费用分别为1275.68万元、35.90万元和57.29万元，占总成本的93.19\%、2.62\%和4.19\%。这说明MPC的主要收益来自更合理的购电与储能时序，偏差结算本身并不是成本的主要来源；但在光伏快速爬坡、快速下降和储能功率达到上限的时段，紧急购电仍不可完全避免。
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.60\textwidth]{q3_cost_structure.png}
-\caption{问题三主方案成本结构}
-\label{fig:q3coststructure}
-\end{figure}
 
 题目指定日期的最终调整购电结果如表~\ref{tab:q3dates}所示。四个日期覆盖不同季节，购电量和费用随负荷、光伏出力和价格曲线变化，但均满足储能日循环边界。
 
@@ -656,36 +600,7 @@ $\alpha$ & 总成本（万元） & 实际购电（万元） & 偏差费用（万
 \end{tabular}
 \end{table}
 
-以2025-03-20为例，紧急购电主要集中在6:00--13:50的光伏爬坡和预测误差阶段，分段电量为510.3796、69.5725、403.3834、21.9267和58.2846 kWh；2025-12-21则主要发生在7:00--12:00，说明季节性日出时间和光伏爬坡速度会改变风险时段。图~\ref{fig:q3typical}展示四个代表日的负荷、光伏、购电与储能轨迹。
-
-\begin{figure}[H]
-\centering
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q3_curve_feb.png}
-\caption{2025-02-01}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q3_curve_jun.png}
-\caption{2025-06-21}
-\end{subfigure}
-
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q3_curve_sep.png}
-\caption{2025-09-23}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q3_curve_dec.png}
-\caption{2025-12-21}
-\end{subfigure}
-\caption{问题三不同季节典型日运行曲线}
-\label{fig:q3typical}
-\end{figure}
+以2025-03-20为例，紧急购电主要集中在6:00--13:50的光伏爬坡和预测误差阶段，分段电量为510.3796、69.5725、403.3834、21.9267和58.2846 kWh；2025-12-21则主要发生在7:00--12:00，说明季节性日出时间和光伏爬坡速度会改变风险时段。四个代表日的完整负荷、光伏、购电与储能轨迹随支撑材料提交。
 
 \subsubsection{改进方案的消融实验}
 
@@ -701,13 +616,6 @@ $\alpha$ & 总成本（万元） & 实际购电（万元） & 偏差费用（万
 \end{figure}
 
 对6:00预测误差和当日紧急购电量作散点分析，Pearson相关系数为0.660。该结果支持“晨间预测误差是风险来源之一”的解释，但由于两者都可能受天气类型、负荷水平和储能状态共同影响，本文不将其解释为单独的因果效应。
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.76\textwidth]{q3_correlation.png}
-\caption{问题三晨间预测误差与紧急购电量相关性}
-\label{fig:q3correlation}
-\end{figure}
 
 \subsection{问题四的模型建立与求解：动态电价下的机会约束与MPC}
 
@@ -777,7 +685,7 @@ E_{d,t}+\widetilde E_{\mathrm{pv},d,t}^{(\tau)}+E_{\mathrm{dis},d,t}-E_{\mathrm{
 
 \subsubsection{动态电价和参数敏感性}
 
-附件4中日内价差最大的样本日为2025年8月15日，最低电价约0.1119元/kWh，最高电价约1.6114元/kWh。该日调度轨迹呈现低价充电、高价放电，说明动态电价确实进入了储能决策。对$K=0.70,0.75,0.80,0.84,0.90$的4-2敏感性分析显示，$K=0.80$在测试网格上总成本最低；$K=0.84$的紧急购电量更低但总成本略高，可作为可靠性优先的备选。对$\beta=1.00,0.98,0.95,0.90$的4-3敏感性分析显示，$\beta=0.95$取得最低总成本和最高节省率，$\beta=0.90$的紧急购电量更低但保守购电成本上升。
+附件4中日内价差最大的样本日为2025年8月15日，最低电价约0.1119元/kWh，最高电价约1.6114元/kWh。该日调度轨迹呈现低价充电、高价放电，说明动态电价确实进入了储能决策。对$K=0.70,0.75,0.80,0.84,0.90$的4-2敏感性分析显示，$K=0.80$在测试网格上总成本最低；$K=0.84$的紧急购电量更低但总成本略高，可作为可靠性优先的备选。对$\beta=1.00,0.98,0.95,0.90$的4-3敏感性分析显示，$\beta=0.95$取得最低总成本和最高节省率，$\beta=0.90$的紧急购电量更低但保守购电成本上升，正文以汇总表和成本图呈现，完整扫描数据随支撑材料提交。
 
 \begin{table}[H]
 \centering
@@ -798,46 +706,15 @@ E_{d,t}+\widetilde E_{\mathrm{pv},d,t}^{(\tau)}+E_{\mathrm{dis},d,t}-E_{\mathrm{
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=.82\textwidth]{q4_beta.png}
-\caption{问题四预测折减系数敏感性}
-\label{fig:q4beta}
-\end{figure}
-
 \subsubsection{紧急购电与弃光的时段特征}
 
-为了避免只用总成本解释动态电价模型，进一步按小时统计紧急购电。4-2的紧急购电量为37.0508万kWh，4-3为14.3723万kWh；但4-3的发生天数更多，说明总量减少并不意味着每一天都完全消除了风险。图~\ref{fig:q4emergency}给出两种方案的小时分布，图~\ref{fig:q4curtail}给出弃光量的时段分布。
-
-\begin{figure}[H]
-\centering
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q4_2_emergency.png}
-\caption{4-2}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{.48\textwidth}
-\centering
-\includegraphics[width=\textwidth]{q4_3_emergency.png}
-\caption{4-3}
-\end{subfigure}
-\caption{问题四紧急购电小时分布}
-\label{fig:q4emergency}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.84\textwidth]{q4_curtail.png}
-\caption{问题四弃光量时段分布}
-\label{fig:q4curtail}
-\end{figure}
+为了避免只用总成本解释动态电价模型，进一步按小时统计紧急购电。4-2的紧急购电量为37.0508万kWh，4-3为14.3723万kWh；但4-3的发生天数更多，说明总量减少并不意味着每一天都完全消除了风险。两种方案的小时紧急购电和弃光时段统计见支撑材料。
 
 4-2中较高的弃光量来自日前安全裕度占用了部分储能容量和购电空间；4-3在预测更新后可以更早地减少不必要的购电和充电，因此弃光量下降。这个解释与优化约束相容，但结论仍是对334天样本的统计归纳，不能直接推广到其他预测误差分布。
 
 \subsubsection{极端价差日的运行机理}
 
-根据附件4逐日计算最高电价与最低电价之差，2025-08-15是回测区间内价差最大的样本日。图~\ref{fig:q4arbitrage}显示，储能SOC在低价时段上升，在高价时段下降；图~\ref{fig:q4arbitragebuy}显示低价阶段净购电量增加，高价阶段净购电量下降；图~\ref{fig:q4arbitragecompare}进一步对比了动态电价和储能动作。由式（24）至式（27）可知，这种轨迹并非人为设定，而是动态价格进入目标函数后，在线性约束下产生的最优结果。
+根据附件4逐日计算最高电价与最低电价之差，2025-08-15是回测区间内价差最大的样本日。图~\ref{fig:q4arbitrage}显示，储能SOC在低价时段上升，在高价时段下降；相应的净购电轨迹和动态价格对比数据见支撑材料。由式（24）至式（27）可知，这种轨迹并非人为设定，而是动态价格进入目标函数后，在线性约束下产生的最优结果。
 
 \begin{figure}[H]
 \centering
@@ -846,60 +723,9 @@ E_{d,t}+\widetilde E_{\mathrm{pv},d,t}^{(\tau)}+E_{\mathrm{dis},d,t}-E_{\mathrm{
 \label{fig:q4arbitrage}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=.86\textwidth]{q4_arbitrage_buy.png}
-\caption{2025-08-15净购电与储能动作}
-\label{fig:q4arbitragebuy}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.84\textwidth]{q4_arbitrage_compare.png}
-\caption{2025-08-15动态价格下的调度对比}
-\label{fig:q4arbitragecompare}
-\end{figure}
-
 \subsubsection{动态电价场景的参数实验}
 
-表~\ref{tab:q4ksensfull}列出了4-2安全系数的完整敏感性结果。$K$由0.70增加到0.80时，紧急购电成本下降速度快于普通购电成本上升速度，总成本下降；继续增大到0.90时，普通购电成本的增加抵消了风险收益。表~\ref{tab:q4betasensfull}显示，$\beta$从1.00降低到0.95时，滚动预测的保守修正改善了综合成本；继续降低到0.90虽使紧急购电量进一步下降，但过度保守使总成本回升。
-
-\begin{table}[H]
-\centering
-\scriptsize
-\renewcommand\arraystretch{1.2}
-\caption{问题四4-2安全系数完整敏感性}
-\label{tab:q4ksensfull}
-\begin{tabular}{ccrrr}
-\toprule
-$K$ & 计划成本（万元） & 紧急成本（万元） & 总成本（万元） & 紧急购电量（万kWh）\\
-\midrule
-0.70 & 1524.1203 & 233.6118 & 1757.7321 & 53.1217\\
-0.75 & 1551.2783 & 194.1797 & 1745.4579 & 44.3509\\
-0.80 & 1578.6095 & 161.6324 & \textbf{1740.2419} & 37.0508\\
-0.84 & 1600.6065 & 139.8952 & 1740.5017 & 32.1411\\
-0.90 & 1633.8062 & 113.0904 & 1746.8967 & 26.0479\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[H]
-\centering
-\scriptsize
-\renewcommand\arraystretch{1.2}
-\caption{问题四4-3预测折减系数完整敏感性}
-\label{tab:q4betasensfull}
-\begin{tabular}{ccrrr}
-\toprule
-$\beta$ & MPC总成本（万元） & 相对固定计划节省（万元） & 节省率 & 紧急购电量（万kWh）\\
-\midrule
-1.00 & 1467.3062 & 87.0278 & 5.5990\% & 34.7520\\
-0.98 & 1440.1252 & 114.2089 & 7.3478\% & 23.7551\\
-0.95 & \textbf{1433.1927} & \textbf{121.1413} & \textbf{7.7938\%} & 14.3723\\
-0.90 & 1476.3934 & 77.9406 & 5.0144\% & 8.9465\\
-\bottomrule
-\end{tabular}
-\end{table}
+表~\ref{tab:q4sens}列出了4-2安全系数和4-3预测折减系数的关键敏感性结果。$K$由0.70增加到0.80时，紧急购电成本下降速度快于普通购电成本上升速度，总成本下降；继续增大到0.90时，普通购电成本的增加抵消了风险收益。$\beta$从1.00降低到0.95时，滚动预测的保守修正改善了综合成本；继续降低到0.90虽使紧急购电量进一步下降，但过度保守使总成本回升。完整敏感性表保存在支撑材料中。
 
 上述实验只改变一个参数，其余条件保持不变，因而能够支持参数变化与指标变化之间的局部归因；但由于各参数均在同一334天样本上选择，不能替代跨年份独立验证。
 
