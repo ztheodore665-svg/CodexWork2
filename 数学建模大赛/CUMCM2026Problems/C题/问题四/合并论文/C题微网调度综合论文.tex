@@ -170,18 +170,18 @@ $K$、$\varepsilon$、$\beta$ & 安全裕度、机会约束违约概率、问题
 
 \begin{table}[H]
 \centering
-\scriptsize
+\normalsize
 \renewcommand\arraystretch{1.25}
 \caption{四个问题的决策信息、模型和实验目的}
 \label{tab:research_design}
-\begin{tabularx}{\textwidth}{p{1.2cm}p{3.1cm}p{3.3cm}X}
+\begin{tabularx}{\textwidth}{p{0.8cm}p{4.0cm}p{4.0cm}X}
 \toprule
-\textbf{问题} & \textbf{决策时信息} & \textbf{核心模型} & \textbf{实验目的}\\
+\textbf{问题} & \textbf{可用信息} & \textbf{模型} & \textbf{验证重点}\\
 \midrule
-1 & 单日已知电价、负荷和光伏预测 & 确定性线性规划 & 以无储能方案为基准，验证储能套利和物理可行性\\
-2 & 0:00可用前14天历史数据 & 机会约束日前规划 & 通过$K$扫描识别普通购电与紧急购电之间的权衡\\
-3 & 0:00、6:00、12:00、18:00的光伏预报 & MPC滚动线性规划 & 以固定0:00计划为基准，验证预测更新的边际收益\\
-4 & 问题二、三的信息加动态电价 & 动态电价机会约束与MPC & 分离动态价格影响和滚动修正影响，并检验$K,\beta$敏感性\\
+1 & 单日电价、负荷和光伏预测 & 确定性线性规划 & 无储能对照，检验储能经济性与可行性\\
+2 & 0:00前14天历史数据 & 机会约束日前规划 & 扫描$K$，分析常规购电与紧急购电的权衡\\
+3 & 0:00、6:00、12:00、18:00光伏预报 & MPC滚动规划 & 固定0:00计划对照，检验预测更新收益\\
+4 & 问题二、三信息与动态电价 & 动态电价机会约束与MPC & 区分价格与滚动修正作用，检验$K,\beta$敏感性\\
 \bottomrule
 \end{tabularx}
 \end{table}
