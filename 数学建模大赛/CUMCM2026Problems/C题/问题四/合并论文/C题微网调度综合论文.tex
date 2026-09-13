@@ -978,7 +978,7 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
     \vspace{1.5em}
 \end{center}
 
-本表列出本文四个问题所使用的本地实验材料。表中每行仅列出一个文件名，并为该文件给出唯一说明；程序、分析结果、图形和提交文件与正文中的问题一至问题四分别对应。原始附件文件均保留在原目录中。
+本表列出用于支撑本文模型、结果和结论复核的主要实验材料。表中每行仅列出一个文件名，并为该文件给出唯一说明；题目提供的原始附件、全部可运行源程序、较大篇幅的中间结果文件以及少量代表性图表分别列示。正文中已经展示的其他图片不再重复列入本表。经核对，本文未使用赛题原始数据以外的自主查阅数据资料；文中引用的学术文献仅用于模型方法说明，已列入参考文献。
 
 \scriptsize
 \renewcommand\arraystretch{1.16}
@@ -1004,6 +1004,8 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
 \texttt{附件4.xlsx} & 题目提供的按日期和时段变化的动态电价数据。\\
 \texttt{solve\_q1.py} & 问题一单日确定性线性规划求解程序。\\
 \texttt{validation\_q1.py} & 问题一无储能对照、容量效率敏感性、影子价格和有效性检验程序。\\
+\texttt{analyze\_q3\_extra.py} & 问题三原版结果的误差、成本、敏感性和对比分析程序。\\
+\texttt{analyze\_q3\_clean\_extra.py} & 问题三预测清洗方案的误差、成本、敏感性和对比分析程序。\\
 \texttt{solve\_q2.py} & 问题二基于前14天历史净负荷的全年机会约束求解程序。\\
 \texttt{refine\_k.py} & 问题二安全系数$K$局部细扫程序。\\
 \texttt{run\_dynamic\_mild.py} & 问题二动态安全裕度对照实验程序。\\
@@ -1017,37 +1019,55 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
 \texttt{result1.xlsx} & 问题一按题目要求整理的最终结果文件。\\
 \texttt{result2.xlsx} & 问题二按题目要求整理的最终结果文件。\\
 \texttt{result3.xlsx} & 问题三按题目要求整理的最终结果文件。\\
+\texttt{q3\_clean\_result3.xlsx} & 问题三预测清洗方案的完整结果文件。\\
+\texttt{q3\_clean\_ab\_result3.xlsx} & 问题三预测清洗加晨间SOC下限消融方案的完整结果文件。\\
 \texttt{result4-2.xlsx} & 问题四4-2按题目要求整理的动态电价日前结果文件。\\
 \texttt{result4-3.xlsx} & 问题四4-3按题目要求整理的动态电价MPC结果文件。\\
-\texttt{q1\_capacity.png} & 问题一储能容量敏感性分析图。\\
-\texttt{q1\_dispatch.png} & 问题一电价与储能充放电调度图。\\
-\texttt{q1\_efficiency.png} & 问题一储能充放电效率敏感性分析图。\\
-\texttt{q1\_shadow.png} & 问题一储能容量约束影子价格分析图。\\
-\texttt{q1\_soc.png} & 问题一储能荷电状态变化图。\\
-\texttt{q1\_validity.png} & 问题一能量守恒与约束有效性检验图。\\
-\texttt{q2\_dynamic.png} & 问题二动态安全裕度方案分析图。\\
-\texttt{q2\_k\_fine.png} & 问题二安全系数$K$局部细扫分析图。\\
-\texttt{q2\_k\_scan.png} & 问题二安全系数$K$粗扫描分析图。\\
-\texttt{q3\_clean\_compare.png} & 问题三预测清洗方案对比图。\\
-\texttt{q3\_compare.png} & 问题三原版与滚动方案综合对比图。\\
-\texttt{q3\_correlation.png} & 问题三预测误差与紧急购电相关性图。\\
-\texttt{q3\_cost\_structure.png} & 问题三成本结构分析图。\\
-\texttt{q3\_curve\_feb.png} & 问题三二月典型日期调度曲线图。\\
-\texttt{q3\_curve\_jun.png} & 问题三六月典型日期调度曲线图。\\
-\texttt{q3\_curve\_sep.png} & 问题三九月典型日期调度曲线图。\\
-\texttt{q3\_curve\_dec.png} & 问题三十二月典型日期调度曲线图。\\
-\texttt{q3\_emergency.png} & 问题三紧急购电分析图。\\
-\texttt{q3\_error.png} & 问题三预测误差分布分析图。\\
-\texttt{q3\_pareto.png} & 问题三成本与风险的Pareto分析图。\\
-\texttt{q3\_sensitivity.png} & 问题三参数敏感性分析图。\\
-\texttt{q4\_2\_emergency.png} & 问题四4-2紧急购电分析图。\\
-\texttt{q4\_3\_emergency.png} & 问题四4-3紧急购电分析图。\\
-\texttt{q4\_arbitrage\_buy.png} & 问题四动态电价下购电套利分析图。\\
-\texttt{q4\_arbitrage\_compare.png} & 问题四固定计划与MPC套利效果对比图。\\
-\texttt{q4\_arbitrage\_soc.png} & 问题四动态电价下储能SOC套利轨迹图。\\
-\texttt{q4\_beta.png} & 问题四预测折减参数$\beta$敏感性分析图。\\
-\texttt{q4\_cost.png} & 问题四不同方案成本结构分析图。\\
-\texttt{q4\_curtail.png} & 问题四不同方案弃光量分析图。
+\texttt{q3\_forecast\_error\_detail.csv} & 问题三原版逐时段光伏预测误差明细中间结果。\\
+\texttt{q3\_forecast\_error\_segments.csv} & 问题三原版按发布时间和时段划分的误差统计结果。\\
+\texttt{q3\_forecast\_error\_summary.csv} & 问题三原版预测误差汇总结果。\\
+\texttt{q3\_emergency\_matrix.csv} & 问题三原版全年逐日逐时段紧急购电矩阵。\\
+\texttt{q3\_emergency\_hourly.csv} & 问题三原版按小时汇总的紧急购电结果。\\
+\texttt{q3\_emergency\_season.csv} & 问题三原版按季节汇总的紧急购电结果。\\
+\texttt{q3\_emergency\_target\_dates.csv} & 问题三原版典型日期紧急购电明细。\\
+\texttt{q3\_sensitivity\_full.csv} & 问题三原版预测折减参数敏感性结果。\\
+\texttt{q3\_comparison\_experiment.csv} & 问题三原版与基准策略的对比实验结果。\\
+\texttt{q3\_cost\_structure.csv} & 问题三原版成本构成汇总结果。\\
+\texttt{q3\_error\_emer\_corr.csv} & 问题三预测误差与紧急购电的相关性结果。\\
+\texttt{q3\_clean\_forecast\_error\_detail.csv} & 问题三预测清洗方案逐时段误差明细中间结果。\\
+\texttt{q3\_clean\_forecast\_error\_segments.csv} & 问题三预测清洗方案分时段误差统计结果。\\
+\texttt{q3\_clean\_forecast\_error\_summary.csv} & 问题三预测清洗方案误差汇总结果。\\
+\texttt{q3\_clean\_emergency\_matrix.csv} & 问题三预测清洗方案全年紧急购电矩阵。\\
+\texttt{q3\_clean\_emergency\_hourly.csv} & 问题三预测清洗方案按小时汇总的紧急购电结果。\\
+\texttt{q3\_clean\_emergency\_season.csv} & 问题三预测清洗方案按季节汇总的紧急购电结果。\\
+\texttt{q3\_clean\_emergency\_target\_dates.csv} & 问题三预测清洗方案典型日期紧急购电明细。\\
+\texttt{q3\_clean\_sensitivity\_full.csv} & 问题三预测清洗方案参数敏感性结果。\\
+\texttt{q3\_clean\_comparison\_experiment.csv} & 问题三预测清洗方案与其他策略的对比实验结果。\\
+\texttt{q3\_clean\_cost\_structure.csv} & 问题三预测清洗方案成本构成汇总结果。\\
+\texttt{q3\_clean\_dynamic\_discount\_compare.csv} & 问题三预测清洗方案动态折减对比结果。\\
+\texttt{q3\_clean\_error\_emer\_corr.csv} & 问题三预测清洗方案误差与紧急购电相关性结果。\\
+\texttt{q3\_clean\_ab\_forecast\_error\_detail.csv} & 问题三消融方案逐时段预测误差明细中间结果。\\
+\texttt{q3\_clean\_ab\_forecast\_error\_segments.csv} & 问题三消融方案分时段误差统计结果。\\
+\texttt{q3\_clean\_ab\_forecast\_error\_summary.csv} & 问题三消融方案预测误差汇总结果。\\
+\texttt{q3\_clean\_ab\_emergency\_matrix.csv} & 问题三消融方案全年紧急购电矩阵。\\
+\texttt{q3\_clean\_ab\_emergency\_hourly.csv} & 问题三消融方案按小时汇总的紧急购电结果。\\
+\texttt{q3\_clean\_ab\_emergency\_target\_dates.csv} & 问题三消融方案典型日期紧急购电明细。\\
+\texttt{q3\_clean\_ab\_sensitivity\_full.csv} & 问题三消融方案参数敏感性结果。\\
+\texttt{q3\_clean\_comparison\_experiment.csv} & 问题三消融方案对比实验结果。\\
+\texttt{q3\_clean\_cost\_structure.csv} & 问题三消融方案成本构成汇总结果。\\
+\texttt{q4\_2\_emer\_matrix.csv} & 问题四4-2全年逐日逐时段紧急购电矩阵。\\
+\texttt{q4\_3\_emer\_matrix.csv} & 问题四4-3全年逐日逐时段紧急购电矩阵。\\
+\texttt{q4\_2\_curt\_matrix.csv} & 问题四4-2全年逐日逐时段弃光矩阵。\\
+\texttt{q4\_3\_curt\_matrix.csv} & 问题四4-3全年逐日逐时段弃光矩阵。\\
+\texttt{q4\_2\_K\_sensitivity.csv} & 问题四4-2安全系数$K$敏感性结果。\\
+\texttt{q4\_3\_beta\_sensitivity.csv} & 问题四4-3预测折减参数$\beta$敏感性结果。\\
+\texttt{q4\_extreme\_spread\_day.csv} & 问题四4-2极端动态价差日期的调度中间结果。\\
+\texttt{q4\_3\_extreme\_spread\_day.csv} & 问题四4-3极端动态价差日期的调度中间结果。\\
+\texttt{q4\_curtailment\_hourly.csv} & 问题四按小时汇总的弃光中间结果。\\
+\texttt{q1\_capacity.png} & 问题一储能容量敏感性代表性图表。\\
+\texttt{q2\_k\_scan.png} & 问题二安全系数扫描代表性图表。\\
+\texttt{q3\_clean\_compare.png} & 问题三预测清洗方案对比代表性图表。\\
+\texttt{q4\_cost.png} & 问题四动态电价方案成本结构代表性图表。\\
 \end{longtable}
 
 \end{document}
