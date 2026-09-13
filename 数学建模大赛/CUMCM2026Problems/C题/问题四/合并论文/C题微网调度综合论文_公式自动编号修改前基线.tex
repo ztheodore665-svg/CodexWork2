@@ -4,7 +4,6 @@
 \usepackage{url}
 \usepackage{float}
 \usepackage{array}
-\usepackage{amsmath}
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{subcaption}
@@ -102,8 +101,7 @@
 四问的核心区别在于决策时可获得的信息不同。问题1中，当天负荷、光伏预测和电价均视为已知，可建立确定性线性规划作为基准；问题2中，每天0:00只能利用历史数据估计当天净负荷，需要在日前购电成本与紧急购电风险之间进行权衡；问题3进一步利用日内不断更新的光伏预测，通过滚动优化修正尚未执行的计划；问题4则加入动态电价，使储能调度同时受到预测误差和价格信号的影响。
 
 因此，本文按照
-\begin{equation}
-\label{eq:model_progression}
+\[
 \text{确定性基准}
 \longrightarrow
 \text{不确定性控制}
@@ -111,7 +109,7 @@
 \text{滚动预测修正}
 \longrightarrow
 \text{动态电价扩展}
-\end{equation}
+\]
 的思路逐步建模。四问统一采用十分钟电量作为决策单位，并使用相同的储能状态方程、容量边界、充放电功率限制和日循环约束。
 
 在模型评价中，本文严格区分计划阶段和真实执行阶段：计划阶段仅使用决策时已获得的信息，真实负荷和实际光伏只在回测阶段用于计算执行结果、紧急购电、弃光及最终成本，从而避免未来信息泄漏。
@@ -124,7 +122,7 @@
 
 为突出购电计划和储能调度的主要矛盾，作如下假设：
 \begin{enumerate}
-    \item 所有功率数据在十分钟时段内按常值处理，功率与电量通过式~\eqref{eq:energy_conversion}换算；
+    \item 所有功率数据在十分钟时段内按常值处理，功率与电量通过式（2）换算；
     \item 光伏优先供给本地负荷，不能被负荷或储能吸收的富余光伏不向外网反送，计为弃光；
     \item 储能充放电效率恒定为0.9，且不设置同一时段同时充放电的额外二进制变量；正电价和效率损耗下，线性规划最优解通常不会主动安排这种无效循环；
     \item 问题二和4-2的净负荷统计仅使用目标日之前14天的历史样本；问题三和4-3的滚动优化仅使用对应发布时间已经获得的预测；
@@ -137,18 +135,18 @@
 记日内时段集合为$\Tset=\{0,1,\ldots,143\}$，单个时段长度为
 \begin{equation}
     \Delta t=\frac{10}{60}=\frac{1}{6}\ \mathrm{h}.
-    \label{eq:dt}
+    \tag{1}
 \end{equation}
 若输入的负荷功率和光伏功率分别为$P_{\mathrm{load},d,t}$和$P_{\mathrm{pv},d,t}$，则对应的时段电量为
 \begin{equation}
     E_{\mathrm{load},d,t}=P_{\mathrm{load},d,t}\Delta t,qquad
     E_{\mathrm{pv},d,t}=P_{\mathrm{pv},d,t}\Delta t.
-    \label{eq:energy_conversion}
+    \tag{2}
 \end{equation}
 定义实际净负荷为
 \begin{equation}
     N_{d,t}=E_{\mathrm{load},d,t}-E_{\mathrm{pv},d,t}.
-    \label{eq:net_load}
+    \tag{3}
 \end{equation}
 
 \subsection{统一设备约束}
@@ -158,18 +156,18 @@
 S_{d,t+1}=S_{d,t}+\eta_{\mathrm{ch}}E_{\mathrm{ch},d,t}
 -\frac{E_{\mathrm{dis},d,t}}{\eta_{\mathrm{dis}}},
 \qquad \eta_{\mathrm{ch}}=\eta_{\mathrm{dis}}=0.9.
-\label{eq:soc}
+\tag{4}
 \end{equation}
 单个十分钟时段的充放电上限为
 \begin{equation}
 0\leq E_{\mathrm{ch},d,t},E_{\mathrm{dis},d,t}
 \leq E_{\max}=5000\Delta t=833.3333\ \kwh,
-\label{eq:power_limit}
+\tag{5}
 \end{equation}
 并满足
 \begin{equation}
 1200\leq S_{d,t}\leq10800,\qquad S_{d,0}=S_{d,144}=6000.
-\label{eq:soc_limit}
+\tag{6}
 \end{equation}
 本文不考虑向外部电网反向售电，因此所有普通购电量均非负。
 
@@ -247,7 +245,7 @@ D_{\mathrm{emer}}&=\sum_d\mathbf{1}\left(\sum_tE_{\mathrm{emer},d,t}>10^{-4}\rig
 Q_{\mathrm{emer}}&=\sum_{d,t}E_{\mathrm{emer},d,t},\qquad
 Q_{\mathrm{curt}}=\sum_{d,t}E_{\mathrm{curt},d,t}.
 \end{aligned}
-\label{eq:evaluation_metrics}
+\tag{7}
 \end{equation}
 其中，$C_{\mathrm{dev},d}$在问题一、问题二和4-2中为零；问题三和4-3按照题目偏差规则结算。比较策略时，以总成本作为经济性主指标，以$Q_{\mathrm{emer}}$和$D_{\mathrm{emer}}$描述供电风险，以$Q_{\mathrm{curt}}$描述光伏消纳损失。
 
@@ -275,15 +273,15 @@ $1200$--$10800\,\mathrm{kWh}$，充放电效率均为$0.90$，
 在全天负荷、光伏预测和电价均已知时，令$E_{\mathrm{grid},t}$为普通购电量。目标函数只计普通购电费用，因为问题一不含预测偏差和紧急购电结算：
 \begin{equation}
 \min Z_1=\sum_{t\in\Tset}p_tE_{\mathrm{grid},t}.
-\label{eq:q1_objective}
+\tag{8}
 \end{equation}
 供需约束为
 \begin{equation}
 E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 \geq E_{\mathrm{load},t}+E_{\mathrm{ch},t},\qquad t\in\Tset.
-\label{eq:q1_balance}
+\tag{9}
 \end{equation}
-式~\eqref{eq:q1_balance}的不等式允许右侧未被负荷或储能吸收的光伏自然弃光；在不允许反送电且弃光不计入目标时，引入弃光变量并写成等式与当前写法等价。式~\eqref{eq:soc}描述充放电效率造成的SOC跨期耦合，式~\eqref{eq:power_limit}限制设备功率，式~\eqref{eq:soc_limit}限制容量并固定日初、日末SOC。因正电价和效率损耗均为正，模型不会通过同时充放电获得目标值下降；日循环边界则排除了透支期末SOC的虚假收益。
+式（9）的不等式允许右侧未被负荷或储能吸收的光伏自然弃光；在不允许反送电且弃光不计入目标时，引入弃光变量并写成等式与当前写法等价。式（4）描述充放电效率造成的SOC跨期耦合，式（5）限制设备功率，式（6）限制容量并固定日初、日末SOC。因正电价和效率损耗均为正，模型不会通过同时充放电获得目标值下降；日循环边界则排除了透支期末SOC的虚假收益。
 
 \paragraph{模型性质与约束含义}
 因此，在给定输入下问题一是标准连续线性规划；其可行域为线性约束定义的有界集合，采用HiGHS可直接获得全局最优解。储能只有在低价购电或光伏富余带来的未来收益能够覆盖效率损失时才产生充电动作，放电则优先服务于高价或光伏不足时段。
@@ -397,7 +395,7 @@ E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 \begin{equation}
 \mu_{d,t}=\frac{1}{W}\sum_{j=d-W}^{d-1}N_{j,t},\qquad
 \sigma_{d,t}=\sqrt{\frac{1}{W}\sum_{j=d-W}^{d-1}(N_{j,t}-\mu_{d,t})^2}.
-\label{eq:q2_statistics}
+\tag{10}
 \end{equation}
 这里采用程序中的经验标准差（分母为$W$）；问题四4-2的程序则采用无偏标准差（分母为$W-1$），两者的计算口径分别保持与对应结果文件一致。
 
@@ -412,15 +410,15 @@ E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 在净负荷近似服从正态分布的条件下，对供电能力设置机会约束。机会约束的基本思想是允许小概率的约束违约，并通过分位点将概率要求转换为确定性安全裕度\cite{charnes1959,bental2009}：
 \begin{equation}
 \mathbb P\left(E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}\geq N_{d,t}\right)\geq1-\varepsilon
-\label{eq:q2_chance}
+\tag{11}
 \end{equation}
 可转化为
 \begin{equation}
 E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
 \geq\mu_{d,t}+K\sigma_{d,t},\qquad K=\Phi^{-1}(1-\varepsilon).
-\label{eq:q2_chance_equiv}
+\tag{12}
 \end{equation}
-这里的$K$是可调安全裕度系数。式~\eqref{eq:q2_chance_equiv}是逐时段确定性等价形式，不保证全天144个时段的联合覆盖率，因此需要结合全年回测选取$K$。
+这里的$K$是可调安全裕度系数。式（12）是逐时段确定性等价形式，不保证全天144个时段的联合覆盖率，因此需要结合全年回测选取$K$。
 
 \subsubsection{模型求解}
 
@@ -429,12 +427,12 @@ E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
 日前线性规划目标为
 \begin{equation}
 \min Z_{2,\mathrm{DA}}=\sum_{t\in\Tset}p_tE^0_{d,t},
-\label{eq:q2_objective}
+\tag{13}
 \end{equation}
-并结合式~\eqref{eq:soc}至式~\eqref{eq:soc_limit}以及式~\eqref{eq:q2_chance_equiv}。计划确定后，用当天真实数据计算实际净负荷缺口。日内不直接使用日前优化得到的充放电量，而是根据实际缺口和储能当前状态执行状态机：
+并结合式（4）至式（6）及式（12）。计划确定后，用当天真实数据计算实际净负荷缺口。日内不直接使用日前优化得到的充放电量，而是根据实际缺口和储能当前状态执行状态机：
 \begin{equation}
 \Delta E_{d,t}=E_{\mathrm{load},d,t}-E_{\mathrm{pv},d,t}-E^0_{d,t}.
-\label{eq:q2_gap}
+\tag{14}
 \end{equation}
 \begin{equation}
 E_{\mathrm{ch},d,t}^{\mathrm{real}}=
@@ -443,7 +441,7 @@ E_{\mathrm{ch},d,t}^{\mathrm{real}}=
 \dfrac{S^{\max}-S_{d,t}^{\mathrm{real}}}{\eta_{\mathrm{ch}}}\right\},&\Delta E_{d,t}<0,\\
 0,&\Delta E_{d,t}\geq0,
 \end{cases}
-\label{eq:q2_real_charge}
+\tag{14a}
 \end{equation}
 \begin{equation}
 E_{\mathrm{dis},d,t}^{\mathrm{real}}=
@@ -452,27 +450,27 @@ E_{\mathrm{dis},d,t}^{\mathrm{real}}=
 \eta_{\mathrm{dis}}(S_{d,t}^{\mathrm{real}}-S^{\min})\right\},&\Delta E_{d,t}\geq0,\\
 0,&\Delta E_{d,t}<0,
 \end{cases}
-\label{eq:q2_real_discharge}
+\tag{14b}
 \end{equation}
 \begin{equation}
 S_{d,t+1}^{\mathrm{real}}=S_{d,t}^{\mathrm{real}}+\eta_{\mathrm{ch}}E_{\mathrm{ch},d,t}^{\mathrm{real}}
 -\frac{E_{\mathrm{dis},d,t}^{\mathrm{real}}}{\eta_{\mathrm{dis}}},\qquad S_{d,0}^{\mathrm{real}}=6000.
-\label{eq:q2_real_soc}
+\tag{14c}
 \end{equation}
 放电后的剩余缺口和充电后的剩余富余分别记为
 \begin{equation}
 E_{\mathrm{emer},d,t}=\max\left\{0,\Delta E_{d,t}-E_{\mathrm{dis},d,t}^{\mathrm{real}}\right\},\qquad
 E_{\mathrm{curt},d,t}=\max\left\{0,-\Delta E_{d,t}-E_{\mathrm{ch},d,t}^{\mathrm{real}}\right\}.
-\label{eq:q2_emergency_curtailment}
+\tag{14d}
 \end{equation}
-式~\eqref{eq:soc_limit}的$S_{d,0}=S_{d,144}=6000$是日前计划的日循环约束；真实状态机只继承$S_{d,0}^{\mathrm{real}}=6000$，不再人为强制日末回到6000，因此指定日期的实际$24{:}00$储电量可能不同。该区分既保留了日前计划的可比性，也如实反映了真实数据冲击下的执行结果。
+式（6）的$S_{d,0}=S_{d,144}=6000$是日前计划的日循环约束；真实状态机只继承$S_{d,0}^{\mathrm{real}}=6000$，不再人为强制日末回到6000，因此指定日期的实际$24{:}00$储电量可能不同。该区分既保留了日前计划的可比性，也如实反映了真实数据冲击下的执行结果。
 最终回测成本为
 \begin{equation}
 Z_2=\sum_{d,t}p_tE^0_{d,t}+5\sum_{d,t}p_tE_{\mathrm{emer},d,t}.
-\label{eq:q2_cost}
+\tag{15}
 \end{equation}
 \paragraph{模型性质与执行逻辑}
-式~\eqref{eq:q2_objective}的日前目标只计计划普通购电费；式~\eqref{eq:q2_gap}--\eqref{eq:q2_emergency_curtailment}把真实净负荷与计划之间的缺口交给储能状态机处理，储能受功率和SOC边界限制后的剩余缺口记为紧急购电，剩余富余量标记为弃光。这样，优化阶段与执行阶段的职责分离，且紧急购电不会被日前模型提前“看见”。
+式（13）的日前目标只计计划普通购电费；式（14）--（14d）把真实净负荷与计划之间的缺口交给储能状态机处理，储能受功率和SOC边界限制后的剩余缺口记为紧急购电，剩余富余量标记为弃光。这样，优化阶段与执行阶段的职责分离，且紧急购电不会被日前模型提前“看见”。
 
 因此，日前计划和真实执行分别由预测数据与实际数据决定，从而避免信息泄漏。
 
@@ -483,7 +481,7 @@ Z_2=\sum_{d,t}p_tE^0_{d,t}+5\sum_{d,t}p_tE_{\mathrm{emer},d,t}.
 因此问题二采用“内层日前线性规划+外层样本内参数标定”的两层结构。令$\mathcal K$为候选安全系数集合，$Z_2(K)$为该系数在334天真实回测中的总成本，先求$Z_{\min}=\min_{K\in\mathcal K}Z_2(K)$，再在允许相对差异不超过$\delta=0.01\%$的候选中取最小$K$：
 \begin{equation}
 K_{\mathrm{main}}=\min\left\{K\in\mathcal K:Z_2(K)\leq(1+\delta)Z_{\min}\right\}.
-\label{eq:q2_k_selection}
+\tag{15a}
 \end{equation}
 该规则将$K=0.80$的简洁性与$K=0.81$的微小成本差异纳入同一选择标准；若可靠性优先，则应报告相应风险指标并选取更大的$K$，而不能仅以总成本排序。
 
@@ -558,7 +556,7 @@ $\boldsymbol{K}$ &
 为与十分钟决策变量对齐，程序以每个十分钟时段的中心时刻作为插值位置，即第$i$个切片对应$t_i=(i+1.5)/6$小时。0:00预测使用整点网格$0,1,\ldots,24$，在0点补入光伏功率0后进行线性插值；6:00、12:00和18:00预测分别以真实光伏序列在第35、71和107个零基切片处的功率作为当前时刻锚点，再连接当天剩余预测整点值并插值。这样既保持了当前运行状态与最新实测值的一致，也避免把次日预测误用于当日剩余时段。对插值后的日内预测乘以保守折减系数$\beta$：
 \begin{equation}
 \widetilde E_{\mathrm{pv},d,t}^{(r)}=\beta\widehat E_{\mathrm{pv},d,t}^{(r)},\qquad r\in\{6,12,18\}.
-\label{eq:q3_pv_forecast}
+\tag{16}
 \end{equation}
 其中$\widehat E^{(0)}_{\mathrm{pv},d,t}$表示由附件3的0:00预报插值得到的全天光伏预测电量，$\widehat E^{(r)}_{\mathrm{pv},d,t}$表示发布时间$r$对应的剩余时段预测电量。主方案取$\beta=0.95$。$\beta$越小，预测越保守，通常会降低紧急购电，却可能增加常规购电和偏差成本。
 
@@ -575,38 +573,38 @@ $\boldsymbol{K}$ &
 \min Z_{3,0}=\sum_{t\in\Tset}p_tE^0_{d,t},qquad
 E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
 \geq E_{\mathrm{load},d,t}-\widehat E^{(0)}_{\mathrm{pv},d,t}.
-\label{eq:q3_initial_plan}
+\tag{17}
 \end{equation}
 在更新断面$\tau\in\{35,71,107\}$，锁定已执行时段，以当前运行状态$S_{d,\tau}^{\mathrm{real}}$为初值，对剩余时域再优化。令$E_{d,t}$为调整后购电量，引入
 \begin{equation}
 E_{d,t}-E^0_{d,t}=u^+_{d,t}-u^-_{d,t},qquad u^+_{d,t},u^-_{d,t}\geq0.
-\label{eq:q3_deviation}
+\tag{18}
 \end{equation}
 根据题意，超计划购电按1.5倍电价，少购部分按原计划电价的50\%收取偏差费用。因此每一阶段的目标可写为
 \begin{equation}
 \min Z_{3,\tau}=\sum_{t=\tau}^{143}p_t
 \left(E_{d,t}+0.5u^+_{d,t}+0.5u^-_{d,t}\right),
-\label{eq:q3_objective}
+\tag{19}
 \end{equation}
 约束为
 \begin{equation}
 E_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
 \geq E_{\mathrm{load},d,t}-\widetilde E_{\mathrm{pv},d,t}^{(\tau)}.
-\label{eq:q3_balance}
+\tag{20}
 \end{equation}
 \paragraph{模型性质与约束含义}
-式~\eqref{eq:q3_deviation}中$u^+$和$u^-$分别表示增购和退订偏差。由于二者在目标函数中均产生正费用，最优解不会同时取正，从而在不增加二进制变量的情况下实现绝对偏差的线性化。式~\eqref{eq:q3_balance}保证最新预测下的供需覆盖，式~\eqref{eq:soc}--\eqref{eq:soc_limit}保证储能状态连续、功率和容量可行；已执行区间锁定后，下一阶段只能从当前真实SOC继续决策。
+式（18）中$u^+$和$u^-$分别表示增购和退订偏差。由于二者在目标函数中均产生正费用，最优解不会同时取正，从而在不增加二进制变量的情况下实现绝对偏差的线性化。式（20）保证最新预测下的供需覆盖，式（4）--（6）保证储能状态连续、功率和容量可行；已执行区间锁定后，下一阶段只能从当前真实SOC继续决策。
 每次求解只执行下一个更新区间，全天购电和储能轨迹按模型预测控制的滚动时域思想拼接\cite{maciejowski2002,parisio2014}：
 \begin{equation}
 E^{\mathrm{exec}}=\left[E^0_{0:35},E^6_{35:71},E^{12}_{71:107},E^{18}_{107:144}\right]
-\label{eq:q3_execution}
+\tag{21}
 \end{equation}
 拼接。真实回测使用附件2的实际负荷和实际光伏，紧急购电量为
 \begin{equation}
 E_{\mathrm{emer},d,t}=\max\left\{0,E_{\mathrm{load},d,t}-E_{\mathrm{pv},d,t}
 -E^{\mathrm{exec}}_{d,t}-E^{\mathrm{exec}}_{\mathrm{dis},d,t}
 +E^{\mathrm{exec}}_{\mathrm{ch},d,t}\right\}.
-\label{eq:q3_emergency}
+\tag{22}
 \end{equation}
 
 问题三原文只明确给出计划偏差结算规则，本文沿用问题二的紧急购电按交易时刻电价5倍的口径。日总成本为常规购电、偏差费用和紧急购电费用之和：
@@ -614,7 +612,7 @@ E_{\mathrm{emer},d,t}=\max\left\{0,E_{\mathrm{load},d,t}-E_{\mathrm{pv},d,t}
 C_{3,d}=\sum_t p_tE^{\mathrm{exec}}_{d,t}
 +0.5\sum_t p_t|E^{\mathrm{exec}}_{d,t}-E^0_{d,t}|
 +5\sum_t p_tE_{\mathrm{emer},d,t}.
-\label{eq:q3_cost}
+\tag{23}
 \end{equation}
 
 \subsubsection{模型求解}
@@ -648,7 +646,7 @@ MPC，$\beta=0.90$ & 1409.64 & 8.9414 & 5.29\%\\
 令$\mathcal B$为候选折减系数集合，$Z_3(\beta)$为对应334天回测总成本，则内层滚动LP与外层参数标定可写为
 \begin{equation}
 \beta^*=\arg\min_{\beta\in\mathcal B} Z_3(\beta),
-\label{eq:q3_beta_selection}
+\tag{23a}
 \end{equation}
 本实验网格上$\beta^*=0.95$；若运行目标改为优先降低紧急购电量，则应改用风险约束或多目标选择，而不能继续使用单纯成本最小准则。
 
@@ -736,50 +734,50 @@ MPC，$\beta=0.90$ & 1409.64 & 8.9414 & 5.29\%\\
 
 \subsubsection{模型建立}
 
-问题四将基础价格替换为附件4的动态电价矩阵$C_{d,t}$。对4-2，使用式~\eqref{eq:q2_statistics}的历史统计量和安全净负荷$\mu_{d,t}+K\sigma_{d,t}$，目标函数为
+问题四将基础价格替换为附件4的动态电价矩阵$C_{d,t}$。对4-2，使用式（10）的历史统计量和安全净负荷$\mu_{d,t}+K\sigma_{d,t}$，目标函数为
 \begin{equation}
 \min Z_{4-2,\mathrm{DA}}=\sum_{t\in\Tset}C_{d,t}E^0_{d,t}.
-\label{eq:q4_da_objective}
+\tag{24}
 \end{equation}
 实际结算仍按
 \begin{equation}
 Z_{4-2}=\sum_{d,t}C_{d,t}E^0_{d,t}+5\sum_{d,t}C_{d,t}E_{\mathrm{emer},d,t}.
-\label{eq:q4_cost}
+\tag{25}
 \end{equation}
 
 对4-3，MPC的预测供需平衡使用动态电价下的调整购电量：
 \begin{equation}
 E_{d,t}+\widetilde E_{\mathrm{pv},d,t}^{(\tau)}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
 \geq E_{\mathrm{load},d,t},qquad t\geq\tau,
-\label{eq:q4_balance}
+\tag{26}
 \end{equation}
 其偏差费用线性化目标为
 \begin{equation}
 \min Z_{4-3,\tau}=\sum_{t=\tau}^{143}C_{d,t}
 \left(E_{d,t}+0.5u^+_{d,t}+0.5u^-_{d,t}\right).
-\label{eq:q4_mpc_objective}
+\tag{27}
 \end{equation}
 \paragraph{模型性质与结算逻辑}
-式~\eqref{eq:q4_da_objective}和式~\eqref{eq:q4_mpc_objective}分别最小化动态价格下的日前购电成本和滚动结算成本；式~\eqref{eq:q4_cost}将真实缺口按5倍动态电价结算。式~\eqref{eq:q4_balance}保证预测供需覆盖，式~\eqref{eq:q4_soc}--\eqref{eq:q4_emergency_curtailment}保证实际执行轨迹满足能量守恒，并分别识别紧急购电与弃光。固定$K$或$\beta$后，历史统计量和价格均为已知参数，模型仍是连续线性规划；偏差变量的正成本使$u^+$与$u^-$不会同时为正。
+式（24）和式（27）分别是最小化动态价格下的日前购电成本和滚动结算成本；式（25）将真实缺口按5倍动态电价结算。式（26）保证预测供需覆盖，式（28）--（30）保证实际执行轨迹满足能量守恒，并分别识别紧急购电与弃光。固定$K$或$\beta$后，历史统计量和价格均为已知参数，模型仍是连续线性规划；偏差变量的正成本使$u^+$与$u^-$不会同时为正。
 
 真实回测使用附件2的负荷和实际光伏；主场景取$K=0.80$、$\beta=0.95$，紧急购电按5倍动态电价结算。4-2的储能动作为日前计划，4-3的动作为各滚动阶段锁定的执行轨迹，已执行区间不因后续信息反向修改。记最终执行轨迹为$E_{\mathrm{ch},d,t}^{\mathrm{exec}}$和$E_{\mathrm{dis},d,t}^{\mathrm{exec}}$，则
 \begin{equation}
 S_{d,t+1}^{\mathrm{exec}}=S_{d,t}^{\mathrm{exec}}+0.9E_{\mathrm{ch},d,t}^{\mathrm{exec}}
 -\frac{E_{\mathrm{dis},d,t}^{\mathrm{exec}}}{0.9},\qquad S_{d,0}^{\mathrm{exec}}=6000,
-\label{eq:q4_soc}
+\tag{28}
 \end{equation}
 并以$E_{\mathrm{buy},d,t}$表示4-2的日前购电量或4-3的最终调整购电量，计算
 \begin{equation}
 R_{d,t}=E_{\mathrm{pv},d,t}+E_{\mathrm{buy},d,t}+E_{\mathrm{dis},d,t}^{\mathrm{exec}}
 -E_{\mathrm{ch},d,t}^{\mathrm{exec}}-E_{\mathrm{load},d,t},
-\label{eq:q4_residual}
+\tag{29}
 \end{equation}
 \begin{equation}
 E_{\mathrm{emer},d,t}=\max\{0,-R_{d,t}\},\qquad
 E_{\mathrm{curt},d,t}=\max\{0,R_{d,t}\}.
-\label{eq:q4_emergency_curtailment}
+\tag{30}
 \end{equation}
-式~\eqref{eq:q4_soc}--\eqref{eq:q4_emergency_curtailment}明确了实际数据进入状态递推和缺口结算的路径。
+式（28）--（30）明确了实际数据进入状态递推和缺口结算的路径。
 
 \subsubsection{模型求解}
 
@@ -815,7 +813,7 @@ E_{\mathrm{curt},d,t}=\max\{0,R_{d,t}\}.
 \begin{equation}
 K^*=\arg\min_{K\in\mathcal K}Z_{4-2}(K),\qquad
 \beta^*=\arg\min_{\beta\in\mathcal B}Z_{4-3}(\beta).
-\label{eq:q4_parameter_selection}
+\tag{27a}
 \end{equation}
 实际主方案取$K=0.80$、$\beta=0.95$；两者分别来自对应候选网格的经济性折中选择，若改变风险偏好，应同时报告成本和紧急购电指标。
 
@@ -867,7 +865,7 @@ K^*=\arg\min_{K\in\mathcal K}Z_{4-2}(K),\qquad
 
 \subsection{结果合理性检验}
 
-结果合理性检查包括四项：日期与144个时段完整匹配；线性规划均成功求解；SOC递推满足式~\eqref{eq:soc}--\eqref{eq:soc_limit}的边界和守恒；紧急购电与弃光由真实数据下的供需缺口计算，而非由优化器直接安排。四问的结果文件分别保存十分钟购电量、四小时储能汇总、始末SOC和紧急购电时段，核心代码与中间数据见附录和支撑材料。
+结果合理性检查包括四项：日期与144个时段完整匹配；线性规划均成功求解；SOC递推满足式（4）--（6）的边界和守恒；紧急购电与弃光由真实数据下的供需缺口计算，而非由优化器直接安排。四问的结果文件分别保存十分钟购电量、四小时储能汇总、始末SOC和紧急购电时段，核心代码与中间数据见附录和支撑材料。
 
 
 \begin{table}[H]
