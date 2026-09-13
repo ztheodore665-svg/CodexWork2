@@ -5,6 +5,7 @@
 \usepackage{float}
 \usepackage{array}
 \usepackage{tabularx}
+\usepackage{longtable}
 \usepackage{subcaption}
 
 \graphicspath{{figures/}}
@@ -977,31 +978,76 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
     \vspace{1.5em}
 \end{center}
 
-本表列出本文四个问题所使用的本地实验材料。表中仅列出文件名或文件名组，程序、分析结果、图形和提交文件与正文中的问题一至问题四分别对应；原始附件文件均保留在原目录中。
+本表列出本文四个问题所使用的本地实验材料。表中每行仅列出一个文件名，并为该文件给出唯一说明；程序、分析结果、图形和提交文件与正文中的问题一至问题四分别对应。原始附件文件均保留在原目录中。
 
-\begin{table}[H]
-\centering
 \scriptsize
-\renewcommand\arraystretch{1.22}
-\caption{附件说明表}
-\label{tab:appendix_final}
-\begin{tabularx}{\textwidth}{p{5.6cm}X}
+\renewcommand\arraystretch{1.16}
+\begin{longtable}{p{5.2cm}p{8.8cm}}
+\caption{附件说明表}\label{tab:appendix_final}\\
 \toprule
-\textbf{文件或文件组} & \textbf{说明}\\
+\textbf{文件名} & \textbf{说明}\\
 \midrule
-\texttt{附件1.xlsx--附件4.xlsx} & 题目原始输入数据，分别对应基础电价、全年负荷与实际光伏、四个时刻的光伏预测和动态电价。\\
-\texttt{solve\_q1.py}、\texttt{validation\_q1.py} & 问题一求解、无储能对照、敏感性、影子价格及结果有效性检验代码。\\
-\texttt{q1\_*.png} & 问题一储能调度、能量平衡、SOC、经济性和参数分析图。\\
-\texttt{solve\_q2.py}、\texttt{refine\_k.py}、\texttt{run\_dynamic\_mild.py} & 问题二全年机会约束求解、安全系数$K$细扫和动态安全裕度对照实验代码。\\
-\texttt{q2\_*.png} & 问题二固定$K$粗扫、局部细扫和动态安全裕度分析图。\\
-\texttt{solve\_q3.py} & 问题三原版光伏预测更新与MPC滚动购电求解代码，正文主方案来源。\\
-\texttt{solve\_q3\_clean.py}、\texttt{solve\_q3\_clean\_ab.py} & 问题三预测物理清洗和晨间SOC下限消融实验代码。\\
-\texttt{result3.xlsx}、\texttt{q3\_*.csv}、\texttt{q3\_*.png} & 问题三策略对比、预测误差、紧急购电、成本结构、典型日期和消融实验材料。\\
-\texttt{solve\_q4\_2.py}、\texttt{solve\_q4\_3.py} & 问题四4-2动态电价机会约束和4-3动态电价MPC求解代码。\\
-\texttt{q4\_analysis\_only.py}、\texttt{q4\_plot.py}、\texttt{q4\_*.csv}、\texttt{q4\_*.png} & 问题四全周期汇总、极端价差、弃光、紧急购电、参数敏感性及动态电价分析材料。\\
-\texttt{result1.xlsx}、\texttt{result2.xlsx}、\texttt{result4-2.xlsx}、\texttt{result4-3.xlsx} & 问题一、问题二和问题四按题目要求整理的最终结果文件。\\
+\endfirsthead
+\multicolumn{2}{c}{附件说明表（续）}\\
+\toprule
+\textbf{文件名} & \textbf{说明}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{续下页}\\
+\endfoot
 \bottomrule
-\end{tabularx}
-\end{table}
+\endlastfoot
+\texttt{附件1.xlsx} & 题目提供的基础分时电价输入数据。\\
+\texttt{附件2.xlsx} & 题目提供的全年负荷与实际光伏数据。\\
+\texttt{附件3.xlsx} & 题目提供的四个发布时间对应的光伏预测数据。\\
+\texttt{附件4.xlsx} & 题目提供的按日期和时段变化的动态电价数据。\\
+\texttt{solve\_q1.py} & 问题一单日确定性线性规划求解程序。\\
+\texttt{validation\_q1.py} & 问题一无储能对照、容量效率敏感性、影子价格和有效性检验程序。\\
+\texttt{solve\_q2.py} & 问题二基于前14天历史净负荷的全年机会约束求解程序。\\
+\texttt{refine\_k.py} & 问题二安全系数$K$局部细扫程序。\\
+\texttt{run\_dynamic\_mild.py} & 问题二动态安全裕度对照实验程序。\\
+\texttt{solve\_q3.py} & 问题三原版光伏预测更新与MPC滚动购电求解程序。\\
+\texttt{solve\_q3\_clean.py} & 问题三光伏预测物理清洗改进方案程序。\\
+\texttt{solve\_q3\_clean\_ab.py} & 问题三晨间SOC下限消融实验程序。\\
+\texttt{solve\_q4\_2.py} & 问题四4-2动态电价机会约束求解程序。\\
+\texttt{solve\_q4\_3.py} & 问题四4-3动态电价MPC求解程序。\\
+\texttt{q4\_analysis\_only.py} & 问题四全周期成本、弃光和紧急购电汇总程序。\\
+\texttt{q4\_plot.py} & 问题四成本结构、价差套利和敏感性分析绘图程序。\\
+\texttt{result1.xlsx} & 问题一按题目要求整理的最终结果文件。\\
+\texttt{result2.xlsx} & 问题二按题目要求整理的最终结果文件。\\
+\texttt{result3.xlsx} & 问题三按题目要求整理的最终结果文件。\\
+\texttt{result4-2.xlsx} & 问题四4-2按题目要求整理的动态电价日前结果文件。\\
+\texttt{result4-3.xlsx} & 问题四4-3按题目要求整理的动态电价MPC结果文件。\\
+\texttt{q1\_capacity.png} & 问题一储能容量敏感性分析图。\\
+\texttt{q1\_dispatch.png} & 问题一电价与储能充放电调度图。\\
+\texttt{q1\_efficiency.png} & 问题一储能充放电效率敏感性分析图。\\
+\texttt{q1\_shadow.png} & 问题一储能容量约束影子价格分析图。\\
+\texttt{q1\_soc.png} & 问题一储能荷电状态变化图。\\
+\texttt{q1\_validity.png} & 问题一能量守恒与约束有效性检验图。\\
+\texttt{q2\_dynamic.png} & 问题二动态安全裕度方案分析图。\\
+\texttt{q2\_k\_fine.png} & 问题二安全系数$K$局部细扫分析图。\\
+\texttt{q2\_k\_scan.png} & 问题二安全系数$K$粗扫描分析图。\\
+\texttt{q3\_clean\_compare.png} & 问题三预测清洗方案对比图。\\
+\texttt{q3\_compare.png} & 问题三原版与滚动方案综合对比图。\\
+\texttt{q3\_correlation.png} & 问题三预测误差与紧急购电相关性图。\\
+\texttt{q3\_cost\_structure.png} & 问题三成本结构分析图。\\
+\texttt{q3\_curve\_feb.png} & 问题三二月典型日期调度曲线图。\\
+\texttt{q3\_curve\_jun.png} & 问题三六月典型日期调度曲线图。\\
+\texttt{q3\_curve\_sep.png} & 问题三九月典型日期调度曲线图。\\
+\texttt{q3\_curve\_dec.png} & 问题三十二月典型日期调度曲线图。\\
+\texttt{q3\_emergency.png} & 问题三紧急购电分析图。\\
+\texttt{q3\_error.png} & 问题三预测误差分布分析图。\\
+\texttt{q3\_pareto.png} & 问题三成本与风险的Pareto分析图。\\
+\texttt{q3\_sensitivity.png} & 问题三参数敏感性分析图。\\
+\texttt{q4\_2\_emergency.png} & 问题四4-2紧急购电分析图。\\
+\texttt{q4\_3\_emergency.png} & 问题四4-3紧急购电分析图。\\
+\texttt{q4\_arbitrage\_buy.png} & 问题四动态电价下购电套利分析图。\\
+\texttt{q4\_arbitrage\_compare.png} & 问题四固定计划与MPC套利效果对比图。\\
+\texttt{q4\_arbitrage\_soc.png} & 问题四动态电价下储能SOC套利轨迹图。\\
+\texttt{q4\_beta.png} & 问题四预测折减参数$\beta$敏感性分析图。\\
+\texttt{q4\_cost.png} & 问题四不同方案成本结构分析图。\\
+\texttt{q4\_curtail.png} & 问题四不同方案弃光量分析图。
+\end{longtable}
 
 \end{document}
