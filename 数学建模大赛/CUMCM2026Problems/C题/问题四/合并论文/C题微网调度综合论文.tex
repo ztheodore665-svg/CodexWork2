@@ -123,7 +123,7 @@ $E_{\mathrm{load},d,t}$、$E_{\mathrm{pv},d,t}$ & 负荷电量和实际光伏电
 $\widehat E^{(r)}_{\mathrm{pv},d,t}$ & 发布时刻$r$形成的光伏预测电量 & kWh\\
 $E_{\mathrm{emer},d,t}$、$E_{\mathrm{curt},d,t}$ & 紧急购电量和弃光量 & kWh\\
 $u^+_{d,t}$、$u^-_{d,t}$ & 增购量和退订量辅助变量 & kWh\\
-$K$、$\alpha$、$\beta$ & 安全裕度、预测折减和动态电价场景折减系数 & --\\
+$K$、$\varepsilon$、$\alpha$、$\beta$ & 安全裕度、机会约束违约概率、问题三预测折减和问题四预测折减系数 & --\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -330,13 +330,13 @@ E_{\mathrm{grid},t}+E_{\mathrm{pv},t}+E_{\mathrm{dis},t}
 这里采用程序中的经验标准差（分母为$W$）；问题四4-2的程序则采用无偏标准差（分母为$W-1$），两者的计算口径分别保持与对应结果文件一致。
 在净负荷近似服从正态分布的条件下，对供电能力设置机会约束。机会约束的基本思想是允许小概率的约束违约，并通过分位点将概率要求转换为确定性安全裕度\cite{charnes1959,bental2009}：
 \begin{equation}
-\mathbb P\left(E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}\geq N_{d,t}\right)\geq1-\alpha
+\mathbb P\left(E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}\geq N_{d,t}\right)\geq1-\varepsilon
 \tag{11}
 \end{equation}
 可转化为
 \begin{equation}
 E^0_{d,t}+E_{\mathrm{dis},d,t}-E_{\mathrm{ch},d,t}
-\geq\mu_{d,t}+K\sigma_{d,t},qquad K=\Phi^{-1}(1-\alpha).
+\geq\mu_{d,t}+K\sigma_{d,t},\qquad K=\Phi^{-1}(1-\varepsilon).
 \tag{12}
 \end{equation}
 这里的$K$是可解释的安全裕度系数，但式（12）只表示逐时段正态近似，并不保证全天144个时段的联合覆盖率。
@@ -440,12 +440,14 @@ $K$ & 总成本（万元） & 紧急天数 & 紧急购电（万kWh） & 弃光�
 
 \subsection{预测序列构造}
 
-附件3在每天0:00、6:00、12:00和18:00给出未来24小时的整点光伏预测。读取后先对日期列向前填充，再按发布时间分组。6:00预报只取当天7:00至24:00，12:00预报只取当天13:00至24:00，18:00预报只取当天19:00至24:00，跨日部分不进入当天剩余时域。对整点序列进行分段线性插值，得到十分钟预测；日内预测再乘以保守折减系数$\alpha$：
+附件3在每天0:00、6:00、12:00和18:00给出未来24小时的整点光伏预测。读取后先对日期列向前填充，再按发布时间分组。6:00预报只取当天7:00至24:00，12:00预报只取当天13:00至24:00，18:00预报只取当天19:00至24:00，跨日部分不进入当天剩余时域。这里的截断是信息边界处理，而不是对跨日预测值进行重新计算。
+
+为与十分钟决策变量对齐，程序以每个十分钟时段的中心时刻作为插值位置，即第$i$个切片对应$t_i=(i+1.5)/6$小时。0:00预测使用整点网格$0,1,\ldots,24$，在0点补入光伏功率0后进行线性插值；6:00、12:00和18:00预测分别以真实光伏序列在第35、71和107个零基切片处的功率作为当前时刻锚点，再连接当天剩余预测整点值并插值。这样既保持了当前运行状态与最新实测值的一致，也避免把次日预测误用于当日剩余时段。对插值后的日内预测乘以保守折减系数$\alpha$：
 \begin{equation}
 \widetilde E_{\mathrm{pv},d,t}^{(r)}=\alpha\widehat E_{\mathrm{pv},d,t}^{(r)},qquad r\in\{6,12,18\}.
 \tag{16}
 \end{equation}
-主方案取$\alpha=0.95$。$\alpha$越小，预测越保守，通常会降低紧急购电，却可能增加常规购电和偏差成本。
+其中$\widehat E^{(0)}_{\mathrm{pv},d,t}$表示由附件3的0:00预报插值得到的全天光伏预测电量，$\widehat E^{(r)}_{\mathrm{pv},d,t}$表示发布时间$r$对应的剩余时段预测电量。主方案取$\alpha=0.95$。$\alpha$越小，预测越保守，通常会降低紧急购电，却可能增加常规购电和偏差成本。
 
 \subsection{日前计划、滚动调整与执行轨迹}
 
@@ -864,7 +866,7 @@ $\beta$ & MPC总成本（万元） & 相对固定计划节省（万元） & 节�
 
 \subsection{程序实现与可复核性}
 
-程序采用Python读取附件1至附件4，并将每一天的数据整理为长度为144的数组。问题二和4-2先根据目标日前14天样本计算净负荷统计量，再调用线性规划求解器；问题三和4-3先对附件3预报完成日期向前填充、跨日截断和线性插值，再按四个发布时间依次求解。每次滚动求解只保留下一个执行区间，已执行区间的购电量和储能状态不再修改。统一参数和变量边界见附录A，算法与输出字段的复核口径见附录B和附录C。
+程序采用Python读取附件1至附件4，并将每一天的数据整理为长度为144的数组。问题二和4-2先根据目标日前14天样本计算净负荷统计量，再调用线性规划求解器；问题三和4-3先对附件3预报完成日期向前填充、跨日截断和线性插值，再按四个发布时间依次求解。每次滚动求解只保留下一个执行区间，已执行区间的购电量和储能状态不再修改。统一参数和变量边界见附录A，算法流程见附录B，材料索引见附录C，结果文件结构与复核口径见附录D和附录E。
 
 回测阶段不重新优化已发生的时段，而是按式（4）递推实际储能状态，并将真实光伏和真实负荷代入式（14）或式（22）。这样，程序输出的紧急购电记录是“决策轨迹在真实数据下的物理缺口”，而不是求解器为了降低目标函数主动安排的变量。每个方案均输出完整的十分钟购电量、六个四小时区间的充放电量、0:00和24:00储电量以及紧急购电时间段，分别对应题目要求的result1.xlsx、result2.xlsx、result3.xlsx、result4-2.xlsx和result4-3.xlsx。
 
@@ -1030,30 +1032,102 @@ Huangfu Q, Hall J A J. Parallelizing the dual revised simplex method[J]. \textit
 
 上述流程保证了“预测用于决策、真实数据用于回测”这一信息边界。因而附录中的结果文件并不是重新拟合真实数据得到的最优轨迹，而是对事前决策在真实样本上的闭环执行结果。
 
-\section{结果文件与复核清单}
+\section{材料总索引与一一对应关系}
 
-本文正文中的数值、图形和表格均应能够由本地实验程序生成的结果文件复核。文件名按照题目要求和本地项目中的输出约定列出如下。
+为保证论文结论能够回溯到本地实验材料，本附录以\texttt{C题}文件夹为根目录建立索引。题目附件是统一数据源，四个问题文件夹保存各自的建模说明、程序、图形和完整输出，\texttt{附件/附件5}保存按照题目要求整理的提交格式结果。下表中的“正文对应”指向本文的相应问题章节。原始附件和实验材料均保留在原目录中，本文只建立引用关系，不对其进行移动、删除或覆盖。
 
 \begin{table}[H]
 \centering
-\small
-\renewcommand\arraystretch{1.25}
-\caption{四问结果文件及主要复核内容}
-\label{tab:appendix_files}
-\begin{tabularx}{\textwidth}{p{3.2cm}p{3.0cm}X}
+\scriptsize
+\renewcommand\arraystretch{1.35}
+\caption{四问建模、编程与结果材料总索引}
+\label{tab:appendix_material_index}
+\begin{tabularx}{\textwidth}{p{0.8cm}p{3.5cm}p{5.0cm}X}
 \toprule
-\textbf{结果文件} & \textbf{对应方案} & \textbf{主要复核内容}\\
+\textbf{问题} & \textbf{建模原稿} & \textbf{主程序与实验材料} & \textbf{正文对应及使用边界}\\
 \midrule
-\texttt{result1.xlsx} & 问题一 & 单日十分钟购电量、充放电量、储能状态及无储能对照\\
-\texttt{result2.xlsx} & 问题二 & 334天日前计划、紧急购电、弃光和$K$敏感性汇总\\
-\texttt{result3.xlsx} & 问题三 & 四个预测发布时间下的滚动执行轨迹、偏差费用和$\alpha$敏感性\\
-\texttt{result4-2.xlsx} & 问题四4-2 & 动态电价机会约束日前计划及$K$敏感性结果\\
-\texttt{result4-3.xlsx} & 问题四4-3 & 动态电价MPC轨迹、偏差结算和$\beta$敏感性结果\\
+1 & \path{问题一/问题一论文表述.tex}；\path{问题一/建模（✓）.md}；\path{问题一/编程.md} & \path{问题一/图片和附件/solve_q1.py}；\path{问题一/图片和附件/validation_q1.py}；\path{问题一/图片和附件/result1.xlsx}；\path{问题一/图片和附件/*.png} & 对应问题一的确定性线性规划、无储能对照、容量与效率敏感性及影子价格检验。\\
+2 & \path{问题二/问题二论文表述.tex}；\path{问题二/建模（✓）.md}；\path{问题二/编程.md} & \path{问题二/图片和附件/solve_q2.py}；\path{问题二/图片和附件/refine_k.py}；\path{问题二/图片和附件/run_dynamic_mild.py}；\path{问题二/图片和附件/result2.xlsx}；\path{问题二/图片和附件/*.png} & 对应问题二的14天历史统计、固定$K$扫描、局部细扫、动态安全裕度对照和334天回测。\\
+3 & \path{问题三/问题三论文表述.tex}；\path{问题三/建模.md}；\path{问题三/编程.md} & \path{问题三/图片和附件/solve_q3.py}；\path{问题三/图片和附件/solve_q3_clean.py}；\path{问题三/图片和附件/solve_q3_clean_ab.py}；\path{问题三/图片和附件/analyze_q3_extra.py}；\path{问题三/图片和附件/analyze_q3_clean_extra.py}；\path{问题三/图片和附件/result3.xlsx}；\path{问题三/图片和附件/问题三的3个版本结果/} & 正文主结论使用原版MPC、$\alpha=0.95$结果；物理清洗和晨间SOC下限属于正文中的改进与消融实验，不与主方案结果混用。\\
+4 & \path{问题四/问题四论文表述.tex}；\path{问题四/建模.md}；\path{问题四/编程.md} & \path{问题四/图片和附件/solve_q4_2.py}；\path{问题四/图片和附件/solve_q4_3.py}；\path{问题四/图片和附件/q4_analysis_only.py}；\path{问题四/图片和附件/q4_plot.py}；\path{问题四/图片和附件/问题4的相关文件/} & 对应问题四4-2机会约束、4-3动态电价MPC、极端价差日、$K$敏感性、$\beta$敏感性及弃光与紧急购电分析。\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-复核任一结果文件时，建议按以下顺序执行：首先确认日期范围和每一天的144个时段均存在；其次确认普通购电、充电和放电量均为非负；再次由式（4）重新递推储能状态并核对上下界与日循环边界；最后重新汇总成本、紧急购电量、紧急购电天数和弃光量。对于问题三和4-3，还应检查更新时刻之前的执行轨迹在后续重优化中保持不变，以确认滚动模型没有使用未来信息。
+\subsection{题目附件与四问输入的一一对应}
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand\arraystretch{1.3}
+\caption{题目附件、字段和使用问题对应表}
+\label{tab:appendix_input_index}
+\begin{tabularx}{\textwidth}{p{2.0cm}p{4.3cm}p{3.0cm}X}
+\toprule
+\textbf{文件} & \textbf{主要工作表或字段} & \textbf{使用问题} & \textbf{进入模型的方式}\\
+\midrule
+\path{附件/附件1.xlsx} & Sheet1：时间、电价、小区负载、光伏发电预测功率 & 问题一 & 提供单日确定性日前优化的基础电价、负荷和光伏预测。\\
+\path{附件/附件2.xlsx} & 小区负载；光伏发电实际功率 & 问题二、问题三、问题四 & 提供2025年全年实际负荷和实际光伏，用于历史统计、滚动回测、紧急购电和弃光结算。\\
+\path{附件/附件3.xlsx} & Sheet1：日期、预报时刻、预报1小时至预报24小时 & 问题三、问题四4-3 & 提供0:00、6:00、12:00和18:00的光伏预测，经过日期填充、跨日截断和插值后进入MPC。\\
+\path{附件/附件4.xlsx} & Sheet1：日期\\时间及144个时段电价 & 问题四 & 提供随日期和时段变化的动态电价矩阵$C_{d,t}$。\\
+\path{附件/附件5/} & result1.xlsx至result4-3.xlsx & 四问最终输出 & 保存题目规定的提交格式结果，不替代各问题目录中用于完整回测和分析的实验文件。\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{四问结果版本的使用边界}
+
+问题一至问题四均存在“题目输出文件”和“实验分析文件”两类材料。前者用于按题目格式提交，后者保留334天完整轨迹、敏感性扫描或误差明细。问题三还存在原版、物理清洗版和物理清洗加晨间SOC下限版三个实验版本。本文将原版$\alpha=0.95$作为问题三主方案，将清洗版和消融版仅用于解释可靠性--经济性权衡；问题四的4-2和4-3则使用同一动态电价输入下的两种正式模型。这样的版本边界保证了正文结论与结果文件之间能够逐项对应。
+
+\section{结果文件结构与复核清单}
+
+\subsection{题目格式结果文件}
+
+\texttt{附件/附件5}中的结果文件是提交格式的直接对应物。根据本地工作簿的实际工作表结构，复核关系如下。表中行数包含表头，问题二至问题四的计划购电量表均对应334天和144个十分钟时段。
+
+\begin{table}[H]
+\centering
+\scriptsize
+\renewcommand\arraystretch{1.3}
+\caption{题目格式结果文件与工作表对应关系}
+\label{tab:appendix_submission_files}
+\begin{tabularx}{\textwidth}{p{3.0cm}p{3.0cm}p{2.0cm}X}
+\toprule
+\textbf{结果文件} & \textbf{工作表及规模} & \textbf{对应模型} & \textbf{复核内容}\\
+\midrule
+\path{附件/附件5/result1.xlsx} & 计划购电量（145行）；充放电量（7行） & 问题一 & 单日144时段购电量、六个四小时区间充放电量及储电量。\\
+\path{附件/附件5/result2.xlsx} & 计划购电量（335行）；充放电量（20行）；紧急购电量（11行） & 问题二 & 334天日前计划、指定日期储能结果和题目要求的紧急购电明细。\\
+\path{附件/附件5/result3.xlsx} & 计划购电量（335行）；调整购电量（335行）；充放电量（26行）；紧急购电量（11行） & 问题三 & 0:00计划、滚动调整计划、指定日期储能结果及紧急购电明细。\\
+\path{附件/附件5/result4-2.xlsx} & 计划购电量（335行）；充放电量（20行）；紧急购电量（11行） & 问题四4-2 & 动态电价机会约束日前计划及指定日期结果。\\
+\path{附件/附件5/result4-3.xlsx} & 计划购电量（335行）；调整购电量（335行）；充放电量（26行）；紧急购电量（11行） & 问题四4-3 & 动态电价下0:00计划、MPC调整计划及指定日期结果。\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{完整实验输出与分析材料}
+
+为避免将“指定日期输出”误认为“全周期统计明细”，完整回测文件仍以各问题目录中的文件为准：问题一为\path{问题一/图片和附件/result1.xlsx}，问题二为\path{问题二/图片和附件/result2.xlsx}，问题三主方案为\path{问题三/图片和附件/问题三的3个版本结果/result3.xlsx}，问题三改进方案分别为\path{问题三/图片和附件/问题三的3个版本结果/q3_clean_result3.xlsx}和\path{问题三/图片和附件/问题三的3个版本结果/q3_clean_ab_result3.xlsx}，问题四为\path{问题四/图片和附件/result4-2.xlsx}与\path{问题四/图片和附件/result4-3.xlsx}。这些文件保留完整购电、充放电、储能和紧急购电轨迹，是正文334天成本、风险和典型日期分析的直接数据来源。
+
+\begin{table}[H]
+\centering
+\scriptsize
+\renewcommand\arraystretch{1.3}
+\caption{敏感性、误差和极端日期分析材料对应关系}
+\label{tab:appendix_analysis_files}
+\begin{tabularx}{\textwidth}{p{1.4cm}p{5.5cm}X}
+\toprule
+\textbf{问题} & \textbf{分析材料目录或文件} & \textbf{对应正文结论}\\
+\midrule
+2 & \path{问题二/图片和附件/refine_k.py}；\path{问题二/图片和附件/run_dynamic_mild.py}；固定$K$和动态$K$敏感性图片 & 对应固定安全裕度粗扫、低成本区间细扫及动态安全裕度对照。\\
+3 & \path{问题三/图片和附件/问题三的3个版本结果/q3_clean_ab_sensitivity_full.csv}；\path{问题三/图片和附件/问题三的3个版本结果/q3_clean_comparison_experiment.csv}；\path{问题三/图片和附件/问题三的3个版本结果/q3_clean_forecast_error_summary.csv}；\path{问题三/图片和附件/问题三的3个版本结果/q3_clean_error_emer_corr.csv}；各版本紧急购电矩阵和误差明细 & 对应$\alpha$敏感性、物理清洗消融、预测误差分布、误差与紧急购电相关性及指定日期分析。\\
+4 & \path{问题四/图片和附件/问题4的相关文件/q4_2_K_sensitivity.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_3_beta_sensitivity.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_extreme_spread_day.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_3_extreme_spread_day.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_2_emer_matrix.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_3_emer_matrix.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_2_curt_matrix.csv}；\path{问题四/图片和附件/问题4的相关文件/q4_3_curt_matrix.csv} & 对应$K$和$\beta$敏感性、2025-08-15极端价差日、紧急购电分布和弃光分布。\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{逐层复核顺序}
+
+复核任一结果文件时，先确认输入日期和每一天的144个时段完整，再确认普通购电、充电和放电量非负；随后由式（4）递推储能状态，核对$1200\leq S_{d,t}\leq10800$及$S_{d,0}=S_{d,144}=6000$；最后重新汇总总成本、紧急购电量、紧急购电天数和弃光量。对于问题三和4-3，还必须检查6:00、12:00、18:00之前的执行轨迹在后续重优化中保持不变。若复核的是问题三改进版本，还应先确认所使用的版本文件，再与对应版本的$\alpha$、物理清洗规则和晨间SOC边界相匹配。
 
 \section{符号与单位复核}
 
