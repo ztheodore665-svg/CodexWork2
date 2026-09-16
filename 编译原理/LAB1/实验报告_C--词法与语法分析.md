@@ -58,7 +58,43 @@ Tree.h 中的 Node 结构体保存结点名称、结点类型、源程序行号�
 
 ## 四 程序设计与实现
 
-### 4.1 程序执行流程
+### 4.1 编译和运行步骤
+
+进入 Code 目录后，可以直接使用 Makefile 自动编译：
+
+    cd lab1_example_solution1/Code
+    make clean
+    make
+
+其中，make clean 用于删除上一次构建产生的 parser、目标文件和 Flex/Bison 生成文件；make 会按照 Makefile 自动执行 Flex、Bison 和 GCC。首次编译或修改 lexical.l、syntax.y 后，建议先执行 make clean，再执行 make。
+
+如果不使用 Makefile，也可以逐条执行以下命令：
+
+    flex -o lex.yy.c lexical.l
+    bison -o syntax.tab.c -d -v syntax.y
+    gcc -std=c99 -c syntax.tab.c -o syntax.tab.o
+    gcc -std=c99 -c main.c -o main.o
+    gcc -std=c99 -c Tree.c -o Tree.o
+    gcc -o parser main.o syntax.tab.o Tree.o
+
+第一条命令根据 lexical.l 生成词法分析器 lex.yy.c；第二条命令根据 syntax.y 生成语法分析器 syntax.tab.c、头文件 syntax.tab.h 和分析报告 syntax.output；接下来的三条命令分别编译语法分析器、主程序和语法树模块；最后一条命令将目标文件链接为可执行文件 parser。
+
+syntax.y 的头部已经包含 lex.yy.c，因此不需要再次单独编译 lex.yy.c，也不要把 lex.yy.o 重复加入最后的链接命令，否则会产生 yylex、yyrestart 等符号重复定义错误。
+
+编译成功后，可以将测试文件路径作为命令行参数传给 parser。例如：
+
+    ./parser ../Test/3.cmm
+    ./parser ../External_Test/in/testcase_3
+
+程序会将错误信息或语法树直接输出到终端。若希望保存结果，可以使用 shell 重定向：
+
+    ./parser ../External_Test/in/testcase_7 > ../External_Test/out/my_result
+
+然后可以使用 diff 比较实际结果与参考结果：
+
+    diff -u ../External_Test/out/testcase_7 ../External_Test/out/my_result
+
+### 4.2 程序执行流程
 
 程序入口在 main.c。运行 ./parser 文件名 后，程序依次完成以下工作：
 
@@ -69,7 +105,7 @@ Tree.h 中的 Node 结构体保存结点名称、结点类型、源程序行号�
 
 词法分析器由 Flex 生成，语法分析器由 Bison 生成；syntax.tab.c 包含生成的扫描器代码，因此 Makefile 最终只需要链接 main.o、Tree.o 和 syntax.tab.o。
 
-### 4.2 词法规则实现
+### 4.3 词法规则实现
 
 整数规则区分三种形式：
 
@@ -83,7 +119,7 @@ Tree.h 中的 Node 结构体保存结点名称、结点类型、源程序行号�
 
 块注释使用 Flex 的 COMMENT 状态实现。遇到 /* 时进入 COMMENT 状态，直到读到 */ 才回到初始状态；注释中的普通字符被忽略，换行时更新行号。
 
-### 4.3 语法错误恢复
+### 4.4 语法错误恢复
 
 为了继续报告同一文件中的多个错误，文法中增加了带 error 的错误恢复产生式。例如：
 
@@ -101,7 +137,7 @@ Tree.h 中的 Node 结构体保存结点名称、结点类型、源程序行号�
 
 yyerror 只负责记录语法错误，不再直接打印 Bison 的默认英文提示，从而避免默认提示和实验要求的自定义提示同时出现。当文件已经存在词法错误时，程序不再额外输出由非法字符引起的连锁语法提示。
 
-### 4.4 构建兼容性处理
+### 4.5 构建兼容性处理
 
 Flex 通常通过 libfl 提供 yywrap。为减少对外部库的依赖，main.c 中实现了：
 
