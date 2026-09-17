@@ -1,0 +1,18 @@
+测试日期：2026-09-17
+测试对象：Calculator.java / ExpressionParser.java（源码重新编译）
+执行命令：javac -encoding UTF-8 -d _qa\bin Calculator.java ExpressionParser.java _qa\CalculatorQaHarness.java; java -cp _qa\bin CalculatorQaHarness
+
+通过：9；失败：9。
+
+失败复现摘要：
+CALC-J-021 | (2+3)= 后按 *4= | actual=54 | expected=20
+CALC-J-058 | 12+3 后按 CE | actual=0 | expected=保留当前表达式前缀并清除当前项
+CALC-J-036 | 1e-5 | actual=7.718281828459045 | expected=0.00001
+CALC-J-038 | -2**2 | actual=4.0 | expected=-4.0（常规数学约定）
+CALC-J-013b | 角度模式 tan(90) | actual=1.633123935319537E16 | expected=错误或未定义
+CALC-J-039a | inputNumber(null) | actual=未抛异常，写入 null 状态 | expected=可控拒绝
+CALC-J-039c | inputFunction(null) | actual=未抛异常，拼接为 null( | expected=可控拒绝
+CALC-J-039d | inputConstant(null) | actual=未抛异常，写入 null 状态 | expected=可控拒绝
+CALC-J-034 | Locale.GERMANY 格式化极大值 | actual=1,234568e+16 | expected=与解析器一致的可复用格式
+
+通过摘要：2+3*4=14；(2+3)*4=20；2**3=8；弧度 sin(pi/2)=1；log(100)+ln(e)=3；CE 后输入 3=3；大写 1E+3=1000；1/0 被控制为错误。
