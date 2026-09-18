@@ -41,6 +41,8 @@ results-src/
 
 程序会识别 PNG、JPG、BMP、GIF、TIF 和 TIFF 文件；输出统一使用 PNG，避免 JPEG 有损压缩影响算法对比。
 
+本项目同时提供 Word 格式实验报告：`实验报告_代码与结果.docx`。报告只介绍代码文件和 `src` 图片批处理结果，并插入 `cameraman` 的六张代表性结果图。
+
 也可以手动编译并指定参数：
 
 ```powershell

@@ -22,6 +22,9 @@ try {
     }
     Copy-Item -LiteralPath (Join-Path $projectDir "README.md") -Destination $tempDir
     Copy-Item -LiteralPath (Join-Path $projectDir "实验报告.md") -Destination $tempDir
+    if (Test-Path -LiteralPath (Join-Path $projectDir "实验报告_代码与结果.docx")) {
+        Copy-Item -LiteralPath (Join-Path $projectDir "实验报告_代码与结果.docx") -Destination $tempDir
+    }
     Compress-Archive -Path (Join-Path $tempDir "*") -DestinationPath $zipPath -Force
     Write-Host "已生成: $zipPath"
 }
