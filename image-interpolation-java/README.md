@@ -18,6 +18,29 @@
 
 默认会在 `results/` 生成 6 张结果图：每种算法各输出 0.5 倍和 3 倍两种尺寸。
 
+如果要一次处理上级 `src` 文件夹中的全部图片，可以执行：
+
+```powershell
+.\batch.ps1
+```
+
+批处理结果按算法和倍率分目录保存，例如：
+
+```text
+results-src/
+├─ nearest/
+│  ├─ 0.5x/cameraman.png
+│  └─ 3x/cameraman.png
+├─ bilinear/
+│  ├─ 0.5x/cameraman.png
+│  └─ 3x/cameraman.png
+└─ bicubic/
+   ├─ 0.5x/cameraman.png
+   └─ 3x/cameraman.png
+```
+
+程序会识别 PNG、JPG、BMP、GIF、TIF 和 TIFF 文件；输出统一使用 PNG，避免 JPEG 有损压缩影响算法对比。
+
 也可以手动编译并指定参数：
 
 ```powershell

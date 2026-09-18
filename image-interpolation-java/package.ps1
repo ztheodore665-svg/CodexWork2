@@ -17,6 +17,9 @@ try {
     Copy-Item -LiteralPath (Join-Path $projectDir "src") -Destination $tempDir -Recurse
     Copy-Item -LiteralPath (Join-Path $projectDir "input") -Destination $tempDir -Recurse
     Copy-Item -LiteralPath (Join-Path $projectDir "results") -Destination $tempDir -Recurse
+    if (Test-Path -LiteralPath (Join-Path $projectDir "results-src")) {
+        Copy-Item -LiteralPath (Join-Path $projectDir "results-src") -Destination $tempDir -Recurse
+    }
     Copy-Item -LiteralPath (Join-Path $projectDir "README.md") -Destination $tempDir
     Copy-Item -LiteralPath (Join-Path $projectDir "实验报告.md") -Destination $tempDir
     Compress-Archive -Path (Join-Path $tempDir "*") -DestinationPath $zipPath -Force
