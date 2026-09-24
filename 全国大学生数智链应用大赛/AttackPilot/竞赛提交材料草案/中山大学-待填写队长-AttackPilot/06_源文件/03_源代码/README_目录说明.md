@@ -1,0 +1,1 @@
+源代码已打包为上级目录的 AttackPilot_源代码_提交版.zip。该压缩包已脱敏并按 100MB 限制排除超大编译器和模型文件，详见压缩包内 SUBMISSION_SOURCE_NOTES.md。
