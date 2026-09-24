@@ -1,0 +1,317 @@
+% !TEX program = xelatex
+% 编译方式：xelatex AttackPilot竞赛设计说明书.tex（建议连续编译两次）
+% 本文件与 latex_assets 文件夹放在同一目录即可生成 PDF。
+
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage[a4paper,left=22mm,right=22mm,top=23mm,bottom=22mm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{caption}
+
+\definecolor{AttackBlue}{HTML}{1E4E79}
+\definecolor{AttackLightBlue}{HTML}{F2F6FA}
+\definecolor{AttackGray}{HTML}{526173}
+\definecolor{AttackLine}{HTML}{C9D4DF}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AttackBlue,
+  urlcolor=AttackBlue,
+  citecolor=AttackBlue,
+  pdftitle={AttackPilot设计说明书},
+  pdfauthor={中山大学 AttackPilot 项目团队}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.35}
+\captionsetup{font=small,labelfont=bf,justification=centering}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small AttackPilot 设计说明书}
+\fancyhead[R]{\small 2026 年第三届全国大学生数智链应用大赛}
+\fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\placeholder}[1]{\textcolor{AttackGray}{\fbox{\parbox{0.88\textwidth}{\centering #1}}}}
+\newcommand{\asset}[2][0.88\textwidth]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1]{latex_assets/#2}
+  \end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+  \vspace*{22mm}
+  \begin{center}
+    {\zihao{1}\bfseries\color{AttackBlue} AttackPilot 设计说明书\par}
+    \vspace{8mm}
+    {\zihao{3}\color{AttackGray}2026 年第三届全国大学生数智链应用大赛\par}
+    \vspace{3mm}
+    {\zihao{4}\color{AttackGray}区块链大类\quad 技术应用—应用实践与应用设计\par}
+    \vspace{20mm}
+    \renewcommand{\arraystretch}{1.7}
+    \begin{tabularx}{0.84\textwidth}{>{\bfseries}p{0.23\textwidth}X}
+      \toprule
+      作品名称 & AttackPilot \\
+      所选分类 & 技术应用—应用实践与应用设计 \\
+      学校名称 & 中山大学 \\
+      团队队长 & \underline{\hspace{55mm}} \\
+      团队成员 & \underline{\hspace{55mm}} \\
+      指导教师 & \underline{\hspace{55mm}} \\
+      提交日期 & 2026 年 \underline{\hspace{12mm}} 月 \underline{\hspace{12mm}} 日 \\
+      \bottomrule
+    \end{tabularx}
+    \vfill
+    {\small 本说明书根据 AttackPilot 项目报告、部署说明、API 文档和 AI 工具使用报告整理。\par}
+  \end{center}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+\section{作品概述}
+
+\subsection{创作背景}
+
+区块链通过分布式账本记录交易和状态，智能合约则把资产管理和协议规则写入链上代码。交易哈希、事件日志和执行轨迹共同构成了链上安全事件复盘的重要证据。然而，真实的去中心化应用攻击经常由准备、触发、套利和清理等多笔交易共同完成，安全分析人员需要在区块浏览器、Trace 工具、合约源码、模拟环境和日志之间反复切换，才能回答“资金如何被转移、攻击利用了什么漏洞、漏洞函数在哪里、修复是否有效”等问题。
+
+AttackPilot 选取链上攻击复盘这一具体场景，尝试把交易事实、智能合约执行过程和大模型辅助分析组织成一条可追溯的证据链。作品的意义在于降低安全复盘门槛、减少跨工具查找成本，并通过补丁编译和交易重放提升分析结论的可核验性。它同时面向真实安全事件复盘、协议修复辅助和区块链安全案例教学。
+
+\subsection{作品简介}
+
+AttackPilot 是面向链上安全事件的攻击复盘 Web 应用。用户可以输入单笔交易 Hash、多笔同一事件中的交易列表，也可以选择 SushiSwap、ApeCoin 等已导入的缓存案例。系统先收集交易收据、事件日志、资金变化、执行 Trace 和合约源码，再通过多智能体协作完成攻击检测、跨交易上下文分析、动态 Trace 探索、根因定位、补丁生成和补丁重放验证。
+
+平台将 Agent 状态、任务日志、攻击路径、关键交易、证据来源、补丁结果和结构化报告集中展示，并提供报告导出、取证助手、漏洞教学和案例知识库能力。作品的开发目的不是简单输出一个可疑函数列表，而是把“提出假设—查找证据—验证结论—修正判断”的安全分析过程转化为可以观察、恢复和复核的应用工作流。
+
+\subsection{目标受众与使用场景}
+
+\begin{itemize}[leftmargin=2.5em]
+  \item \textbf{安全分析人员：}用于可疑交易初筛、攻击路径复盘、证据核验和报告整理。
+  \item \textbf{智能合约开发者：}用于查看根因函数、触发条件、修复建议，并检查补丁能否阻断原始攻击。
+  \item \textbf{学习与研究人员：}用于从真实案例中学习攻击步骤、链上信号、漏洞机制和修复思路。
+  \item \textbf{教学与演示：}通过缓存案例和漏洞教学视图，将复杂 Trace、资金流和调用关系组织成易理解的学习材料。
+\end{itemize}
+
+\section{设计理念}
+
+\subsection{设计主题与创意来源}
+
+作品以“证据驱动的链上攻击复盘”为主题。创意来源于安全专家在实际复盘中不断提出假设、查找证据、运行验证并修正判断的工作方式。AttackPilot 的核心方法来自团队 TracePilot 研究工作，项目将跨交易故障定位、动态 Trace 探索和补丁验证方法转化为可运行的前后端平台，使模型推理尽量不脱离交易事实、源码位置和执行结果。
+
+\subsection{核心设计思路}
+
+系统以“交易取证—智能体分析—补丁验证—证据归档”为主线。宏观交易分析智能体先识别相关交易、地址角色、资金流向和状态依赖；Trace 智能体围绕可疑调用逐步展开内部节点，结合源码、参数、返回值和状态读写定位根因；补丁智能体根据根因生成修复建议，并在模拟环境中重放原始攻击；审查智能体检查证据链是否完整、补丁是否有效以及结论是否一致。完成的报告会沉淀为结构化案例知识，支持后续分析、修复和教学。
+
+\subsection{作品主要功能}
+
+\begin{table}[H]
+  \centering
+  \caption{AttackPilot 主要功能}
+  \begin{tabularx}{0.96\textwidth}{>{\bfseries}p{0.24\textwidth}X}
+    \toprule
+    功能模块 & 主要能力 \\
+    \midrule
+    交易复盘 & 输入单笔或多笔交易 Hash，选择真实缓存案例并执行链上取证。 \\
+    攻击检测与故障定位 & 识别攻击者、受害合约、资金流和攻击阶段，将根因定位到具体函数及业务规则。 \\
+    补丁生成与验证 & 根据根因生成修复建议，完成编译并重放原始攻击，检查补丁能否阻断攻击。 \\
+    结果复核与交互 & 展示 Agent 状态、关键交易、攻击路径、证据来源、日志和结构化报告。 \\
+    学习与知识沉淀 & 将真实案例整理为背景、攻击步骤、链上信号和修复思路，并支持关键词与向量检索。 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{开发过程}
+
+\subsection{创作时间线}
+
+项目报告明确了研究、平台开发、数据部署、测试整理等阶段，但未给出每一阶段的具体起止日期。正式提交前请由团队根据实际开发记录补填日期。
+
+\begin{longtable}{>{\bfseries}p{0.23\textwidth}p{0.22\textwidth}p{0.45\textwidth}}
+  \caption{AttackPilot 创作时间线}\label{tab:timeline}\\
+  \toprule
+  阶段 & 时间 & 主要工作 \\
+  \midrule
+  \endfirsthead
+  \toprule
+  阶段 & 时间 & 主要工作 \\
+  \midrule
+  \endhead
+  研究与需求梳理 & \underline{\hspace{20mm}} 至 \underline{\hspace{20mm}} & 梳理 DApp 攻击复盘问题，形成跨交易定位、动态 Trace 和补丁验证需求。 \\
+  后端与智能体开发 & \underline{\hspace{20mm}} 至 \underline{\hspace{20mm}} & 实现 FastAPI 服务、任务调度、MCP 工具、链上数据获取、Agent 状态和结构化报告。 \\
+  前端工作台开发 & \underline{\hspace{20mm}} 至 \underline{\hspace{20mm}} & 实现交易输入、案例选择、任务控制台、日志、攻击路径、报告和教学视图。 \\
+  数据与部署整理 & \underline{\hspace{20mm}} 至 \underline{\hspace{20mm}} & 接入 PostgreSQL、Redis 和 Docker Compose，准备 SushiSwap、ApeCoin 等缓存案例。 \\
+  测试与材料整理 & \underline{\hspace{20mm}} 至 \underline{\hspace{20mm}} & 进行接口、前端构建、任务恢复、报告和补丁验证检查，整理部署与演示材料。 \\
+  \bottomrule
+\end{longtable}
+
+\subsection{所使用的技术和系统架构}
+
+AttackPilot 采用“视图层—业务逻辑层—数据层”的分层架构。视图层基于 React 18、Vite 5 和 TypeScript 5，实现交易输入、案例选择、任务控制台、Agent 状态、攻击路径和报告导出等页面。业务逻辑层使用 FastAPI、Pydantic、Uvicorn 和 WebSocket 承接 REST API、数据校验、服务启动和实时日志推送，多智能体引擎负责交易筛选、宏观分析、Trace 调试、根因定位、补丁生成、重放验证和结果审查。数据层使用 PostgreSQL 15 保存任务、报告和日志索引，Redis 7 缓存高频日志和上下文；链上取证和模拟依赖 JSON-RPC、Etherscan 类接口、Tenderly、本地源码缓存和案例知识库。
+
+\asset{attackpilot-2.png}
+\captionof{figure}{AttackPilot 技术架构}
+
+\section{区块链技术应用}
+
+\subsection{使用的区块链平台和版本}
+
+作品面向 Ethereum 及 EVM 兼容链上的真实交易数据，使用 JSON-RPC 获取交易和状态，使用 Etherscan 类接口获取合约源码与 ABI，使用 Tenderly Simulation API 进行交易模拟和补丁重放。项目没有另行发行代币或搭建新链，而是将区块链公开账本、智能合约执行轨迹和模拟环境用于安全分析应用。具体案例的网络和接口版本应以运行时配置及演示材料为准。
+
+\begin{table}[H]
+  \centering
+  \caption{区块链相关平台和用途}
+  \begin{tabularx}{0.96\textwidth}{p{0.23\textwidth}p{0.24\textwidth}X}
+    \toprule
+    平台或工具 & 版本或接口 & 主要用途 \\
+    \midrule
+    Ethereum/EVM 兼容链 & 按案例实际网络 & 读取真实交易、事件、调用和状态证据。 \\
+    JSON-RPC & OpenRPC 接口 & 获取区块、交易、收据和状态数据。 \\
+    Etherscan 类接口 & API v2 & 获取合约源码、ABI 和元数据。 \\
+    Tenderly & Simulation API & 重放原始攻击并验证补丁。 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{区块链主要存储的信息类型}
+
+平台主要读取并组织交易 Hash、区块和交易收据、事件日志、调用关系、资金变化、合约地址、函数签名、源码位置、状态读写、攻击阶段和补丁重放结果。任务状态、最终报告和日志索引保存在本地 PostgreSQL 中，Redis 用于高频运行时缓存；链上原始证据仍以公开链上数据和相应接口返回结果为依据。换言之，区块链承担事实记录和执行证据来源，平台数据库承担分析任务和报告管理。
+
+\section{作品特色与创新}
+
+\subsection{作品的创新点}
+
+\begin{enumerate}[leftmargin=2.8em]
+  \item \textbf{从单笔交易分析扩展到跨交易攻击复盘。}平台将准备、触发、套利和清理等交易阶段组织成连续攻击路径，识别地址角色、资金流和状态依赖。
+  \item \textbf{动态 Trace 探索。}系统先建立浅层执行视图，再围绕资产异常、权限判断、价格计算、状态读写和可疑内部调用选择性展开，降低噪声和上下文压力。
+  \item \textbf{补丁生成与重放验证闭环。}系统不仅给出修复建议，还尝试编译并重放原始攻击；验证失败时将反馈交给分析或补丁智能体继续修正。
+  \item \textbf{证据化报告与知识沉淀。}关键结论尽量绑定交易 Hash、Trace 节点、函数位置、工具调用和补丁结果，完成的报告可沉淀为后续分析可检索的案例知识。
+\end{enumerate}
+
+\subsection{与同类作品的区别与优势}
+
+传统工具通常提供交易浏览、Trace 展示或静态候选位置，用户仍需人工串联证据。AttackPilot 以任务为中心，将交易输入、链上取证、智能体过程、证据审查、补丁验证和报告导出统一到同一工作区。对安全人员，它减少在多个工具之间切换的成本；对开发者，它把根因、修复建议和重放状态放在同一条证据链上；对学习者，它把真实案例整理成背景、攻击步骤、PoC 思路、链上信号和修复方式。
+
+项目报告中的离线评测覆盖 149 个真实 DApp 安全事件。报告给出的 AttackPilot 核心算法 Recall@Top-1、Recall@Top-3、Recall@Top-5 均为 71.14\%，Precision 为 77.78\%；平均端到端分析时间约为 4,893.81 秒，约 1.36 小时。上述结果属于报告所述实验设置，正式提交时应同时提供可核验的数据集、实验条件和结果材料。
+
+\begin{table}[H]
+  \centering
+  \caption{项目报告中的故障定位效果}
+  \begin{tabular}{lcccc}
+    \toprule
+    方法 & Recall@1 & Recall@3 & Recall@5 & Precision \\
+    \midrule
+    DAppFL & 12.75\% & 19.46\% & 22.82\% & 4.56\% \\
+    FaultSeeker & 31.08\% & 49.32\% & 50.67\% & 23.04\% \\
+    AttackPilot 核心算法 & 71.14\% & 71.14\% & 71.14\% & 77.78\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{作品难点及解决方案}
+
+\begin{enumerate}[leftmargin=2.8em]
+  \item \textbf{跨交易关系复杂：}通过地址角色、资金变化、入口函数、调用层级和关键操作建立交易上下文，避免只按时间或金额筛选。
+  \item \textbf{Trace 体量大：}以外部调用为骨架，对已确认无关的分支折叠，对涉及资产异常、权限判断和状态变化的节点继续读取内部调用和源码。
+  \item \textbf{补丁可能无法执行：}将编译和交易模拟作为反馈环，区分补丁实现问题与根因判断问题。
+  \item \textbf{任务运行时间长：}用 PostgreSQL 持久化任务、报告和日志索引，用 Redis 缓存高频数据，支持 WebSocket 实时状态、分页日志和结果恢复。
+  \item \textbf{结论需要可核对：}将报告结论与交易 Hash、Trace 节点、函数源码、状态变化、工具调用和补丁验证状态关联。
+\end{enumerate}
+
+\section{创作总结}
+
+\subsection{开发过程中的收获与经验}
+
+项目将研究方法转化为可运行平台，使团队获得了复杂智能体任务工程化的经验。安全分析不仅需要模型能力，也需要稳定的数据模型、明确的任务状态、可恢复的运行机制和清晰的用户界面。把最终答案、推理过程、原始证据和验证结果同时呈现，能够帮助用户判断系统结论是否值得采信。
+
+\subsection{区块链使用的体会与反思}
+
+区块链数据公开、可追溯，但公开不等于易理解。交易、事件、内部调用和状态变化必须经过结构化组织，才能服务于安全判断。大模型可以提高阅读、归纳和任务规划效率，但不应替代链上事实、源码位置和可执行验证。对于依赖外部 RPC、扫描器和模拟服务的系统，还必须关注接口稳定性、网络条件、访问权限和密钥安全。
+
+\subsection{作品的不足之处及改进方向}
+
+当前版本仍依赖外部 RPC、扫描器、模拟服务和模型接口；完整新案例分析需要相应密钥和网络条件，演示主要依赖已导入的缓存案例。后续将完善多链适配、密钥与权限管理、编译器按需获取、更多可量化评测、在线部署、报告模板化导出和更细致的人工复核机制。同时，正式提交前需要脱敏项目源代码中的接口凭据，并补齐公网部署地址、团队信息、演示材料和区块链浏览器截图。
+
+\section{参考资料}
+
+\subsection{设计开发过程中参考的文献和资料}
+
+\begin{enumerate}[leftmargin=2.8em,label={[\arabic*]}]
+  \item TracePilot: Self-verifiable Framework for Decentralized Applications Fault Localization across Transactions. Proceedings of ISSTA 2026.
+  \item Sun, K.; Xu, Z.; Li, K.; Zhang, L.; Sun, Y.; Tan, L.; Liu, Y. FAULTSEEKER: LLM-Empowered Framework for Blockchain Transaction Fault Localization. Proceedings of ASE 2025.
+  \item Wu, Z.; Wu, J.; Zhang, H.; Li, Z.; Chen, J.; Zheng, Z.; Xia, Q.; Fan, G.; Zhen, Y. DAppFL: Just-in-Time Fault Localization for Decentralized Applications in Web3. Proceedings of ISSTA 2024, 137--148.
+  \item SunWeb3Sec. DeFiHackLabs. \url{https://github.com/SunWeb3Sec/DeFiHackLabs}.
+  \item BlockSec. Phalcon Explorer and Security Incidents Library. \url{https://blocksec.com/phalcon/explorer}.
+  \item Tenderly. Tenderly Explorer and Transaction Simulation API. \url{https://tenderly.co/developer-explorer}.
+  \item DeepSeek. Models and Pricing. \url{https://api-docs.deepseek.com/quick_start/pricing/}.
+  \item Becker, J. Heimdall: An advanced EVM toolkit. \url{https://github.com/Jon-Becker/heimdall-rs}.
+  \item Wood, G. Ethereum: A Secure Decentralised Generalised Transaction Ledger. 2014.
+  \item OpenZeppelin. The Ethernaut. \url{https://ethernaut.openzeppelin.com/}.
+  \item Solidity Documentation. \url{https://docs.soliditylang.org/}.
+\end{enumerate}
+
+\subsection{第三方资源使用情况说明及授权依据}
+
+项目使用 React、React DOM、React Router、Ant Design、Lucide React、Axios、React Markdown、Vite、TypeScript、FastAPI、Pydantic、Uvicorn、WebSocket、web3.py、eth-abi、SQLAlchemy、PostgreSQL、Redis、Docker Compose、MCP/FastMCP、OpenAI Python SDK 等开源组件，分别用于前端界面、服务接口、链上数据获取、任务持久化、缓存、容器编排和智能体工具调用。依赖版本与名称以源代码中的 `package.json`、`package-lock.json`、`requirements.txt` 和 Docker 配置为准。
+
+项目还参考并使用了 DeFiHackLabs、Phalcon、Tenderly、Ethernaut 等公开案例、工具或教学资源。正式提交时应将各资源的许可证、引用方式和使用范围与源代码包一并核对，保留原项目的版权声明和许可证文件，不将第三方资源误表述为团队原创。
+
+开发过程中使用 Gemini、OpenAI Codex 和 DeepSeek 等 AI 工具辅助算法资料阅读、代码修改、文档整理和系统运行。问题定义、算法设计、数据集、评测方法、案例核对和最终提交内容由团队成员确认并负责；模型输出经过人工检查，不直接替代公开报告、链上数据和运行验证。
+
+\section*{附录}
+\addcontentsline{toc}{section}{附录}
+
+\subsection*{附录 A：作品成品展示截图与效果图}
+\addcontentsline{toc}{subsection}{附录 A：作品成品展示截图与效果图}
+
+\asset{attackpilot-1.png}
+\captionof{figure}{AttackPilot 产品首页}
+\asset{attackpilot-3.png}
+\captionof{figure}{用户功能模块}
+\asset{attackpilot-4.png}
+\captionof{figure}{多智能体系统流程}
+\asset{attackpilot-5.png}
+\captionof{figure}{时间效率对比}
+\asset{attackpilot-6.png}
+\captionof{figure}{任务输入工作区}
+\asset{attackpilot-7.png}
+\captionof{figure}{漏洞教学区}
+\asset{attackpilot-8.png}
+\captionof{figure}{分析复盘区}
+
+\subsection*{附录 B：区块链配置信息或区块链浏览器截图}
+\addcontentsline{toc}{subsection}{附录 B：区块链配置信息或区块链浏览器截图}
+
+现有项目报告中没有单独提供区块链浏览器截图或脱敏配置截图。正式提交前请补充至少一组与演示案例对应的截图，建议包含：网络名称、交易 Hash、区块高度、交易收据或事件日志、合约地址、关键调用以及与报告中攻击路径对应的证据。截图中不得出现 API Key、模型密钥或个人隐私信息。
+
+\placeholder{待补充：脱敏后的区块链浏览器截图或 JSON-RPC / Tenderly 配置截图}
+
+\subsection*{附录 C：其他补充材料}
+\addcontentsline{toc}{subsection}{附录 C：其他补充材料}
+
+\begin{itemize}[leftmargin=2.5em]
+  \item 本地部署入口：\url{http://localhost:5173}。
+  \item 后端接口文档：\url{http://localhost:8000/docs}。
+  \item 运行环境：Windows 10/11、Docker Desktop、Node.js 20 及以上、npm 9 及以上，建议内存 16GB 以上。
+  \item 缓存案例：SushiSwap、ApeCoin 等。
+  \item 正式提交前必须将演示视频压缩到 50MB 以内，并将源文件压缩包控制在 100MB 以内。
+  \item 正式提交前必须把源代码中的硬编码接口凭据替换为环境变量或占位符，并轮换已经暴露的凭据。
+\end{itemize}
+
+\end{document}
