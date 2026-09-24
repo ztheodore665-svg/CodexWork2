@@ -1,0 +1,118 @@
+% !TEX program = xelatex
+% 编译方式：在 Overleaf 中选择 XeLaTeX。
+
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage[a4paper,left=22mm,right=22mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{hyperref}
+
+\definecolor{AttackBlue}{HTML}{1E4E79}
+\definecolor{AttackGray}{HTML}{526173}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AttackBlue,
+  urlcolor=AttackBlue,
+  pdftitle={AttackPilot作品信息概要表},
+  pdfauthor={中山大学 AttackPilot 项目团队}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.45}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small AttackPilot 作品信息概要表}
+\fancyhead[R]{\small 2026 年第三届全国大学生数智链应用大赛}
+\fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\blank}[1]{\underline{\makebox[#1][c]{}}}
+\newcommand{\checked}{\ensuremath{\boxtimes}}
+\newcommand{\unchecked}{\ensuremath{\square}}
+
+\begin{document}
+
+\begin{center}
+  {\zihao{2}\bfseries\color{AttackBlue} AttackPilot 作品信息概要表\par}
+  \vspace{2mm}
+  {\small 2026 年第三届全国大学生数智链应用大赛\par}
+\end{center}
+
+\vspace{3mm}
+
+\begin{tabularx}{\textwidth}{>{\bfseries\color{AttackBlue}}p{0.22\textwidth}X}
+  \toprule
+  作品名称 & AttackPilot：区块链攻击复盘平台 \\
+  \midrule
+  所选分类 & \checked\ 应用实践与应用设计\qquad \unchecked\ 技术创新与前沿探索 \\
+  \midrule
+  学校名称 & 中山大学 \\
+  队长姓名 & \blank{45mm}\qquad 联系电话：\blank{45mm} \\
+  团队成员 & （含队长共 \blank{12mm} 人）\\[1mm]
+  & 1.\blank{38mm}\quad 2.\blank{38mm}\\
+  & 3.\blank{38mm}\quad 4.\blank{38mm}\\
+  & 5.\blank{38mm} \\
+  指导教师 & \blank{45mm}（不超过 2 人） \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{5mm}
+\section*{作品简介}
+
+AttackPilot 是面向链上安全事件的攻击复盘平台。项目针对智能合约攻击涉及多笔交易、执行轨迹复杂、证据分散等问题，支持输入单笔或多笔交易 Hash，或选择 SushiSwap、ApeCoin 等真实案例。系统通过交易取证、跨交易上下文分析、动态 Trace 探索和多智能体协作，识别攻击交易、地址角色、资金流和根因函数，并生成修复建议，在 Tenderly 模拟环境中重放原始攻击，验证补丁是否有效。平台同时提供攻击路径、证据来源、任务日志、结构化报告、取证助手、漏洞教学和案例知识库功能。
+
+
+\section*{创新点}
+
+\begin{enumerate}[leftmargin=2.4em,itemsep=0.25em,topsep=0.2em]
+  \item \textbf{跨交易智能体复盘：}将准备、触发、套利和清理等多笔交易组织为连续攻击路径，综合地址角色、资金流和状态依赖，完成从交易取证到根因定位的自动化分析。
+  \item \textbf{动态 Trace 探索：}以外部调用 Trace 为骨架，根据当前分析假设选择性展开可疑节点，读取内部调用、源码片段、参数和状态读写，减少无关信息对模型分析的干扰。
+  \item \textbf{补丁验证闭环：}将根因分析、补丁生成、代码编译和攻击重放放在同一条流程中；验证失败时反馈给分析或补丁智能体，避免只输出未经执行检验的修复建议。
+  \item \textbf{证据链与知识沉淀：}将交易 Hash、Trace 节点、函数位置、工具调用和补丁结果组织为可复核证据，并将完成的报告沉淀为可检索案例知识。
+\end{enumerate}
+
+
+\section*{区块链应用}
+
+项目使用的区块链及相关服务如下。项目不发行新代币，不搭建新的区块链网络，主要利用公链公开账本、智能合约执行轨迹和模拟环境完成攻击复盘。
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}p{0.24\textwidth}X}
+  \toprule
+  平台或服务名称 & 版本或网络 & 用途 \\
+  \midrule
+  Ethereum & 主网，EVM，Chain ID 1 & 获取真实交易、交易收据、事件日志、合约调用和执行 Trace。 \\
+  BNBChain & EVM 兼容网络，Chain ID 56 & 支持 EVM 兼容链上的交易取证与攻击分析扩展。 \\
+  JSON-RPC & 节点访问接口 & 获取区块、交易、收据、状态和执行数据。 \\
+  Etherscan 类服务 & 合约查询接口 & 获取验证源码、ABI 和合约编译信息。 \\
+  Phalcon/Tenderly Trace & Trace 服务 & 分析交易内部调用、函数路径和状态变化。 \\
+  Tenderly & Simulation API & 编译、部署或模拟补丁，重放原始攻击并检查攻击是否被阻断。 \\
+  \bottomrule
+\end{tabularx}
+
+\section*{作品原创性声明}
+
+本团队保证以上信息真实、准确，参赛作品为本团队原创。作品的研究方法、系统设计、数据整理、软件实现和实验评测由团队完成；项目开发过程中使用的第三方组件、公开案例和 AI 辅助工具均按照相关要求进行说明。
+
+\vspace{8mm}
+
+\begin{tabularx}{\textwidth}{p{0.48\textwidth}X}
+  队长签字：\blank{38mm} & 日期：\blank{12mm} 年 \blank{10mm} 月 \blank{10mm} 日 \\
+\end{tabularx}
+
+\vfill
+\begin{center}
+  {\small 注：请在提交前补齐队长、成员、联系电话、指导教师和日期信息，并核对区块链平台及版本表述。}
+\end{center}
+
+\end{document}
