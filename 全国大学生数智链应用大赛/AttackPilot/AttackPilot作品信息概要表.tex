@@ -29,6 +29,8 @@
 \setlength{\parskip}{0.45em}
 \setlength{\emergencystretch}{3em}
 \renewcommand{\arraystretch}{1.45}
+% 让 tabularx 的 X 列采用 m 列的垂直居中方式，避免标签与内容上下错位。
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -51,7 +53,7 @@
 
 \vspace{3mm}
 
-\begin{tabularx}{\textwidth}{>{\bfseries\color{AttackBlue}}p{0.22\textwidth}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\bfseries\color{AttackBlue}}m{0.22\textwidth}>{\raggedright\arraybackslash}X}
   \toprule
   作品名称 & AttackPilot：区块链攻击复盘平台 \\
   \midrule
