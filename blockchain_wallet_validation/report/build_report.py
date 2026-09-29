@@ -283,10 +283,6 @@ def build() -> Path:
     story += [p("本实验是交易所有权确认的最小模型，仍有三点需要在真实区块链系统中补充：第一，验证 UTXO 是否存在且未被花费；第二，检查 Alice 是否有足够余额；第三，使用交易 ID、输入引用、时间锁和区块确认数等机制防止重放与双花。本实验聚焦的是题目要求的“私钥控制权验证”，不模拟完整账本状态。", body)]
     story += [p("六、实验总结", h1)]
     story += [p("本实验完成了从钱包生成、地址构造、交易消息规范化、Alice 私钥签名到共识节点公钥验签的完整闭环。实验结果说明：地址主要用于表示收款目标，真正证明转出权的是与交易消息绑定的数字签名；任何对金额、收款地址或签名者的替换都会使验证失败。实现代码可直接用 `go test -v` 和 `go run .` 复现。", body)]
-    story += [p("七、提交文件清单", h1)]
-    files = """wallet_validation/\n├─ go.mod                 Go 模块与固定依赖\n├─ wallet.go              钱包、地址、签名、验签实现\n├─ main.go                Alice -> Bob 演示程序\n├─ wallet_test.go         自动化测试\n├─ README.md              编译运行说明\n└─ report/build_report.py 报告生成脚本"""
-    story += [Preformatted(files, code_style), p("报告依据：用户提供的《4 实验-对钱包地址的校验-20260928-2039.pdf》，重点对应第 42-43 页作业要求。", small)]
-
     doc = SimpleDocTemplate(
         str(OUTPUT), pagesize=A4, rightMargin=18 * mm, leftMargin=18 * mm,
         topMargin=16 * mm, bottomMargin=20 * mm, title="第4次实验课作业：对 BTC 所有权的确认",
