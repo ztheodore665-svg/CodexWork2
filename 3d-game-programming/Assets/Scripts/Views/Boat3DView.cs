@@ -8,8 +8,9 @@ namespace PriestsAndDevils.Views
         {
             Renderer renderer = GetComponent<Renderer>();
             if (renderer == null) renderer = gameObject.AddComponent<MeshRenderer>();
-            Shader unlit = Shader.Find("Unlit/Color");
-            if (unlit != null) renderer.material.shader = unlit;
+            Shader shader = Shader.Find("Unlit/Color");
+            if (shader == null) shader = Shader.Find("Standard");
+            if (shader != null) renderer.material = new Material(shader);
             renderer.material.color = color;
         }
     }

@@ -112,6 +112,7 @@ namespace PriestsAndDevils.Views
 
         private void CreateWorld()
         {
+            CreateBlock("Sky", new Vector3(0, 5.5f, 7f), new Vector3(40f, 30f, 0.4f), new Color(0.18f, 0.48f, 0.78f));
             CreateBlock("Water", new Vector3(0, -0.25f, 0), new Vector3(4.1f, 0.3f, 8.5f), new Color(0.02f, 0.3f, 0.58f));
             CreateBlock("LeftIsland", new Vector3(-6.6f, 0, 0), new Vector3(5.2f, 0.8f, 8.5f), new Color(0.23f, 0.5f, 0.18f));
             CreateBlock("RightIsland", new Vector3(6.6f, 0, 0), new Vector3(5.2f, 0.8f, 8.5f), new Color(0.23f, 0.5f, 0.18f));
@@ -135,8 +136,9 @@ namespace PriestsAndDevils.Views
             block.transform.position = position;
             block.transform.localScale = scale;
             Renderer renderer = block.GetComponent<Renderer>();
-            Shader unlit = Shader.Find("Unlit/Color");
-            if (unlit != null) renderer.material.shader = unlit;
+            Shader shader = Shader.Find("Unlit/Color");
+            if (shader == null) shader = Shader.Find("Standard");
+            if (shader != null) renderer.material = new Material(shader);
             renderer.material.color = color;
             return block;
         }

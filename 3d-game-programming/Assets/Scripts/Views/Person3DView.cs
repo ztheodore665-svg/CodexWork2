@@ -18,15 +18,21 @@ namespace PriestsAndDevils.Views
             baseColor = color;
             meshRenderer = GetComponent<Renderer>();
             if (meshRenderer == null) meshRenderer = gameObject.AddComponent<MeshRenderer>();
-            Shader unlit = Shader.Find("Unlit/Color");
-            if (unlit != null) meshRenderer.material.shader = unlit;
-            meshRenderer.material.color = baseColor;
+            ApplyColor(meshRenderer, baseColor);
             if (GetComponent<Collider>() == null) gameObject.AddComponent<BoxCollider>();
         }
 
         public void SetSelected(bool selected)
         {
-            if (meshRenderer != null) meshRenderer.material.color = selected ? Color.yellow : baseColor;
+            if (meshRenderer != null) ApplyColor(meshRenderer, selected ? Color.yellow : baseColor);
+        }
+
+        private void ApplyColor(Renderer renderer, Color color)
+        {
+            Shader shader = Shader.Find("Unlit/Color");
+            if (shader == null) shader = Shader.Find("Standard");
+            if (shader != null && renderer.material.shader != shader) renderer.material = new Material(shader);
+            renderer.material.color = color;
         }
 
         private void OnMouseDown()
