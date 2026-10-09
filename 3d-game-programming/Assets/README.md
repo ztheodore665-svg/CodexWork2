@@ -1,6 +1,6 @@
 # 牧师与恶魔 2D
 
-这是 3D 游戏编程实验五的 Unity 2D 实现。运行时只保留 `Main Camera` 与 `GameController` 两个场景对象，其余游戏对象由 `GameController.LoadResources()` 和 `GameView` 动态生成。
+这是 3D 游戏编程实验五的 Unity 2D 实现。运行时只保留 `Main Camera` 与 `GameController` 两个场景对象，其余游戏对象由 `GameController.LoadResources()` 和 `GameView` 动态生成。为兼容团结引擎，运行时不通过 `Resources.Load<GameObject>` 读取手写 Unity Prefab，而是使用 `LoadResources` 创建的运行时原型。
 
 ## 操作
 

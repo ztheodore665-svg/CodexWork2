@@ -22,8 +22,6 @@ namespace PriestsAndDevils.Views
             { 3, new Vector3(4.0f, 0.1f, -1) }, { 4, new Vector3(5.0f, 0.1f, -1) }, { 5, new Vector3(6.0f, 0.1f, -1) }
         };
         private BoatView boatView;
-        private GameObject personPrefab;
-        private GameObject boatPrefab;
         private Text statusText;
         private Text timerText;
         private Text leftCountText;
@@ -39,8 +37,6 @@ namespace PriestsAndDevils.Views
         {
             controller = owner;
             root = new GameObject("RuntimeView").transform;
-            personPrefab = Resources.Load<GameObject>("Prefabs/PersonPrefab");
-            boatPrefab = Resources.Load<GameObject>("Prefabs/BoatPrefab");
             PriestSprite = RuntimeSpriteFactory.CreateSquareSprite("PriestSquare", Color.white);
             DevilSprite = RuntimeSpriteFactory.CreateCircleSprite("DevilCircle", new Color(0.92f, 0.12f, 0.16f));
             BoatSprite = RuntimeSpriteFactory.CreateSquareSprite("BoatRectangle", new Color(0.38f, 0.18f, 0.08f));
@@ -52,7 +48,7 @@ namespace PriestsAndDevils.Views
             CreateUi();
             foreach (PersonModel person in model.Persons)
             {
-                GameObject objectRoot = personPrefab != null ? Object.Instantiate(personPrefab) : new GameObject();
+                GameObject objectRoot = new GameObject();
                 objectRoot.name = person.Type + "_" + person.Id;
                 objectRoot.transform.SetParent(root);
                 PersonView view = objectRoot.GetComponent<PersonView>();
@@ -61,7 +57,7 @@ namespace PriestsAndDevils.Views
                 personViews.Add(person.Id, view);
             }
 
-            GameObject boatObject = boatPrefab != null ? Object.Instantiate(boatPrefab) : new GameObject();
+            GameObject boatObject = new GameObject();
             boatObject.name = "Boat";
             boatObject.transform.SetParent(root);
             boatView = boatObject.GetComponent<BoatView>();
@@ -163,7 +159,7 @@ namespace PriestsAndDevils.Views
             RectTransform rect = objectRoot.AddComponent<RectTransform>();
             rect.anchorMin = anchor; rect.anchorMax = anchor; rect.pivot = new Vector2(0.5f, 0.5f); rect.sizeDelta = dimensions;
             Text text = objectRoot.AddComponent<Text>();
-            text.text = content; text.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); text.fontSize = size; text.color = color;
+            text.text = content; text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); text.fontSize = size; text.color = color;
             text.alignment = TextAnchor.MiddleCenter; text.horizontalOverflow = HorizontalWrapMode.Overflow; text.verticalOverflow = VerticalWrapMode.Overflow;
             return text;
         }
