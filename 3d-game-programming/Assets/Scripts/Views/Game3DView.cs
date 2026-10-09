@@ -135,6 +135,8 @@ namespace PriestsAndDevils.Views
             block.transform.position = position;
             block.transform.localScale = scale;
             Renderer renderer = block.GetComponent<Renderer>();
+            Shader unlit = Shader.Find("Unlit/Color");
+            if (unlit != null) renderer.material.shader = unlit;
             renderer.material.color = color;
             return block;
         }

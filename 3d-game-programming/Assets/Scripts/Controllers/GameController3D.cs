@@ -22,6 +22,8 @@ namespace PriestsAndDevils.Controllers
             camera.fieldOfView = 48;
             camera.transform.position = new Vector3(0, 11, -17);
             camera.transform.LookAt(new Vector3(0, 0, 0));
+            camera.nearClipPlane = 0.1f;
+            camera.farClipPlane = 100f;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.025f, 0.08f, 0.16f);
             LoadResources();

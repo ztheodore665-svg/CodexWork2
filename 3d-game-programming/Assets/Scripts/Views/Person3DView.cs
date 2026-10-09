@@ -18,6 +18,8 @@ namespace PriestsAndDevils.Views
             baseColor = color;
             meshRenderer = GetComponent<Renderer>();
             if (meshRenderer == null) meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            Shader unlit = Shader.Find("Unlit/Color");
+            if (unlit != null) meshRenderer.material.shader = unlit;
             meshRenderer.material.color = baseColor;
             if (GetComponent<Collider>() == null) gameObject.AddComponent<BoxCollider>();
         }
