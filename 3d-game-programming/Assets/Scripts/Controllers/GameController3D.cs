@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace PriestsAndDevils.Controllers
 {
-    public sealed class GameController : MonoBehaviour
+    public sealed class GameController3D : MonoBehaviour
     {
         private GameModel model;
-        private GameView view;
+        private Game3DView view;
         private Coroutine timerCoroutine;
         private GameObject rectangleResource;
         private GameObject squareResource;
@@ -17,34 +17,33 @@ namespace PriestsAndDevils.Controllers
         private void Awake()
         {
             Application.targetFrameRate = 60;
-            Camera.main.orthographic = true;
-            Camera.main.orthographicSize = 5.6f;
-            Camera.main.transform.position = new Vector3(0, 0, -10);
-            Camera.main.clearFlags = CameraClearFlags.SolidColor;
-            Camera.main.backgroundColor = new Color(0.035f, 0.12f, 0.22f);
-            model = new GameModel();
+            Camera camera = Camera.main;
+            camera.orthographic = false;
+            camera.fieldOfView = 48;
+            camera.transform.position = new Vector3(0, 11, -17);
+            camera.transform.LookAt(new Vector3(0, 0, 0));
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.025f, 0.08f, 0.16f);
             LoadResources();
+            model = new GameModel();
             model.Reset();
             view.Build(model);
         }
 
-        // The coursework asks the scene controller to initialise the primitive resources here.
-        // All gameplay objects are still instantiated dynamically from these runtime resources.
         private void LoadResources()
         {
-            rectangleResource = CreatePrimitiveResource("RectanglePrefab", PrimitiveType.Cube, new Vector3(2.4f, 0.6f, 1f), new Color(0.38f, 0.18f, 0.08f));
+            rectangleResource = CreatePrimitiveResource("RectanglePrefab", PrimitiveType.Cube, new Vector3(2.6f, 0.45f, 1.8f), new Color(0.36f, 0.14f, 0.045f));
             squareResource = CreatePrimitiveResource("SquarePrefab", PrimitiveType.Cube, Vector3.one, Color.white);
-            sphereResource = CreatePrimitiveResource("SpherePrefab", PrimitiveType.Sphere, Vector3.one, new Color(0.92f, 0.12f, 0.16f));
-            view = new GameView(this);
+            sphereResource = CreatePrimitiveResource("SpherePrefab", PrimitiveType.Sphere, Vector3.one, new Color(0.92f, 0.08f, 0.1f));
+            view = new Game3DView(this);
         }
 
-        private GameObject CreatePrimitiveResource(string resourceName, PrimitiveType primitiveType, Vector3 scale, Color color)
+        private GameObject CreatePrimitiveResource(string name, PrimitiveType type, Vector3 scale, Color color)
         {
-            GameObject resource = GameObject.CreatePrimitive(primitiveType);
-            resource.name = resourceName;
+            GameObject resource = GameObject.CreatePrimitive(type);
+            resource.name = name;
             resource.transform.localScale = scale;
-            Renderer renderer = resource.GetComponent<Renderer>();
-            if (renderer != null) renderer.material.color = color;
+            resource.GetComponent<Renderer>().material.color = color;
             resource.SetActive(false);
             return resource;
         }
@@ -56,11 +55,9 @@ namespace PriestsAndDevils.Controllers
 
         public void OnPersonClicked(int personId)
         {
-            if (!model.TryTogglePassenger(personId, out string message))
-            {
-                Debug.Log(message);
-            }
+            model.TryTogglePassenger(personId, out string message);
             view.Refresh(model);
+            if (!string.IsNullOrEmpty(message)) Debug.Log(message);
         }
 
         public void OnGoClicked()
@@ -86,14 +83,13 @@ namespace PriestsAndDevils.Controllers
         {
             model.Boat.IsMoving = true;
             view.Refresh(model);
-            Vector3 start = model.Boat.Side == Side.Left ? new Vector3(-1.6f, -2.45f, -1) : new Vector3(1.6f, -2.45f, -1);
-            Vector3 end = model.Boat.Side == Side.Left ? new Vector3(1.6f, -2.45f, -1) : new Vector3(-1.6f, -2.45f, -1);
-            const float duration = 1.25f;
+            Vector3 start = model.Boat.Side == Side.Left ? new Vector3(-1.9f, 0.55f, 0) : new Vector3(1.9f, 0.55f, 0);
+            Vector3 end = model.Boat.Side == Side.Left ? new Vector3(1.9f, 0.55f, 0) : new Vector3(-1.9f, 0.55f, 0);
             float elapsed = 0;
-            while (elapsed < duration)
+            while (elapsed < 1.5f)
             {
                 elapsed += Time.deltaTime;
-                view.SetBoatPosition(Vector3.Lerp(start, end, elapsed / duration));
+                view.SetBoatPosition(Vector3.Lerp(start, end, elapsed / 1.5f));
                 yield return null;
             }
             model.MoveBoat();
