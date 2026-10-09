@@ -1,0 +1,228 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 26
+  productGUID: 4e9f5bfc7f5c4e3ca2b1f7a9d7a4a001
+  AndroidProfiler: 0
+  defaultScreenOrientation: 4
+  targetDevice: 2
+  useOnDemandResources: 0
+  accelerometerFrequency: 60
+  companyName: CodexWork
+  productName: Priests and Devils 2D
+  defaultCursor: {fileID: 0}
+  cursorHotspot: {x: 0, y: 0}
+  m_SplashScreenBackgroundColor: {r: 0.04, g: 0.1, b: 0.18, a: 1}
+  m_ShowUnitySplashScreen: 0
+  m_ShowUnitySplashLogo: 1
+  m_SplashScreenOverlayOpacity: 1
+  m_SplashScreenAnimation: 1
+  m_SplashScreenLogoStyle: 1
+  m_SplashScreenDrawMode: 0
+  m_SplashScreenBackgroundAnimationZoom: 1
+  m_SplashScreenLogoAnimationZoom: 1
+  m_SplashScreenBackgroundLandscapeAspect: 1
+  m_SplashScreenBackgroundPortraitAspect: 1
+  m_SplashScreenBackgroundLandscapeUvs: {x: 0, y: 0, width: 1, height: 1}
+  m_SplashScreenBackgroundPortraitUvs: {x: 0, y: 0, width: 1, height: 1}
+  m_SplashScreenLogos: []
+  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_HolographicTrackingLossScreen: {fileID: 0}
+  defaultScreenWidth: 1280
+  defaultScreenHeight: 720
+  defaultScreenWidthWeb: 960
+  defaultScreenHeightWeb: 600
+  m_StereoRenderingPath: 0
+  m_ActiveColorSpace: 0
+  unsupportedMSAAFallback: 0
+  m_SpriteBatchVertexThreshold: 300
+  m_MTRendering: 1
+  mipStripping: 0
+  numberOfMipsStripped: 0
+  numberOfMipsStrippedPerMipmapLimitGroup: {}
+  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  iosShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: -1
+  m_BuildTargetEnableVuforiaSettings: []
+  m_BuildTargetEnableFacebookSettings: []
+  bundleVersion: 0.1
+  preloadedAssets: []
+  metroInputSource: 0
+  wsaTransparentSwapchain: 0
+  m_HolographicPauseOnTrackingLoss: 1
+  xboxOneDisableEsram: 0
+  xboxOneEnableTypeOptimization: 0
+  xboxOnePresentImmediateThreshold: 0
+  switchQueueCommandMemory: 1048576
+  switchQueueControlMemory: 16384
+  switchQueueComputeMemory: 262144
+  switchNVNShaderPoolsGranularity: 33554432
+  switchNVNDefaultPoolsGranularity: 16777216
+  switchNVNOtherPoolsGranularity: 16777216
+  switchGpuScratchPoolGranularity: 2097152
+  switchAllowGpuScratchShrinking: 0
+  switchNVNMaxPublicTextureIDCount: 0
+  switchNVNMaxPublicSamplerIDCount: 0
+  switchNVNGraphicsFirmwareMemory: 32
+  switchMaxWorkerMultiple: 8
+  stadiaPresentMode: 0
+  stadiaTargetFramerate: 0
+  vulkanNumSwapchainBuffers: 3
+  vulkanEnableSetSRGBWrite: 0
+  vulkanEnablePreTransform: 0
+  vulkanEnableLateAcquireNextImage: 0
+  vulkanEnableCommandBufferRecycling: 1
+  loadStoreDebugModeEnabled: 0
+  bundleVersion: 0.1
+  metroPackageVersion: 1.0.0.0
+  metroPackageLogo: {fileID: 0}
+  metroPackageLogo: {fileID: 0}
+  scriptingDefineSymbols: {}
+  additionalCompilerArguments:
+    Standalone:
+    - 
+  platformArchitecture: {}
+  scriptingBackend:
+    Standalone: 1
+  il2cppCompilerConfiguration: {}
+  il2cppCodeGeneration: {}
+  managedStrippingLevel: {}
+  incrementalIl2cppBuild: {}
+  suppressCommonWarnings: 1
+  allowUnsafeCode: 0
+  useDeterministicCompilation: 1
+  additionalIl2CppArgs: 
+  scriptingRuntimeVersion: 1
+  gcIncremental: 1
+  assemblyVersionValidation: 1
+  apiCompatibilityLevelPerPlatform: {}
+  m_RenderingPath: 1
+  mobileMTRendering: 1
+  metroPackageName: Template
+  metroPackageDisplayName: Template
+  metroPackageDescription: Template
+  metroPackageFamilyName: Template
+  metroPackageVersion: 1.0.0.0
+  metroCertificatePath: 
+  metroCertificatePassword: 
+  metroCertificateSubject: 
+  metroCertificateIssuer: 
+  metroCertificateNotAfter: 0000000000000000
+  metroCertificateNotBefore: 0000000000000000
+  metroCertificateKeyUsage: 0
+  metroCertificateEnhancedKeyUsages: []
+  webGLInitialMemorySize: 32
+  webGLMaximumMemorySize: 2048
+  webGLMemoryGrowthMode: 2
+  webGLMemoryLinearGrowthStep: 16
+  webGLMemoryGeometricGrowthStep: 0.2
+  webGLMemoryGeometricGrowthCap: 96
+  webGLPowerPreference: 2
+  scriptingDefineSymbols: {}
+  additionalCompilerArguments: {}
+  platformArchitecture: {}
+  scriptingBackend: {}
+  il2cppCompilerConfiguration: {}
+  il2cppCodeGeneration: {}
+  managedStrippingLevel: {}
+  incrementalIl2cppBuild: {}
+  suppressCommonWarnings: 1
+  allowUnsafeCode: 0
+  useDeterministicCompilation: 1
+  additionalIl2CppArgs: 
+  scriptingRuntimeVersion: 1
+  gcIncremental: 1
+  assemblyVersionValidation: 1
+  apiCompatibilityLevelPerPlatform: {}
+  m_ActiveInputHandler: 0
+  m_InitializeARKitOnLoad: 0
+  metroInputSource: 0
+  XboxOneDisableKinectGpuReservation: 1
+  XboxOneEnable7thCore: 1
+  vrSettings:
+    enable360StereoCapture: 0
+  cloudProjectId: 
+  frameTimingStats: 0
+  enableOpenGLProfilerGPURecorders: 1
+  allowHDRDisplaySupport: 0
+  useHDRDisplay: 0
+  hdrBitDepth: 0
+  m_ColorGamuts: 00000000
+  targetPixelDensity: 30
+  resolutionScalingMode: 0
+  resetResolutionOnWindowResize: 0
+  androidSupportedAspectRatio: 1
+  androidMaxAspectRatio: 2.1
+  applicationIdentifier:
+    Standalone: com.CodexWork.PriestsAndDevils2D
+  buildNumber:
+    Standalone: 0
+  metroPackageVersion: 1.0.0.0
+  facebookSdkVersion: 7.9.0
+  facebookSdkLink: 
+  facebookSdkBuild: 0
+  enableInternalProfiler: 0
+  logObjCUncaughtExceptions: 1
+  enableCrashReportAPI: 0
+  cameraUsageDescription: 
+  locationUsageDescription: 
+  microphoneUsageDescription: 
+  switchNMETAOverride: 
+  switchNetLibKey: 
+  switchSocketMemoryPoolSize: 6144
+  switchSocketAllocatorPoolSize: 256
+  switchSocketMemoryPoolGranularity: 32
+  switchSocketDynamicPoolSize: 32768
+  switchSocketDynamicPoolGranularity: 32
+  switchMaxWorkerMultiple: 8
+  switchNVNMaxPublicTextureIDCount: 0
+  switchNVNMaxPublicSamplerIDCount: 0
+  switchNVNGraphicsFirmwareMemory: 32
+  switchMaxWorkerMultiple: 8
+  stadiaPresentMode: 0
+  stadiaTargetFramerate: 0
+  vulkanNumSwapchainBuffers: 3
+  vulkanEnableSetSRGBWrite: 0
+  vulkanEnablePreTransform: 0
+  vulkanEnableLateAcquireNextImage: 0
+  vulkanEnableCommandBufferRecycling: 1
+  loadStoreDebugModeEnabled: 0
+  vulkanEnablePreTransform: 0
+  platformArchitecture: {}
+  scriptingBackend: {}
+  il2cppCompilerConfiguration: {}
+  il2cppCodeGeneration: {}
+  managedStrippingLevel: {}
+  incrementalIl2cppBuild: {}
+  suppressCommonWarnings: 1
+  allowUnsafeCode: 0
+  useDeterministicCompilation: 1
+  additionalIl2CppArgs: 
+  scriptingRuntimeVersion: 1
+  gcIncremental: 1
+  assemblyVersionValidation: 1
+  apiCompatibilityLevelPerPlatform: {}
+  m_RenderingPath: 1
+  mobileMTRendering: 1
+  metroPackageName: Template
+  metroPackageDisplayName: Template
+  metroPackageDescription: Template
+  metroPackageFamilyName: Template
+  metroCertificatePath: 
+  metroCertificatePassword: 
+  metroCertificateSubject: 
+  metroCertificateIssuer: 
+  metroCertificateNotAfter: 0000000000000000
+  metroCertificateNotBefore: 0000000000000000
+  metroCertificateKeyUsage: 0
+  metroCertificateEnhancedKeyUsages: []
+  webGLInitialMemorySize: 32
+  webGLMaximumMemorySize: 2048
+  webGLMemoryGrowthMode: 2
+  webGLMemoryLinearGrowthStep: 16
+  webGLMemoryGeometricGrowthStep: 0.2
+  webGLMemoryGeometricGrowthCap: 96
+  webGLPowerPreference: 2
