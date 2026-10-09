@@ -29,17 +29,10 @@ namespace PriestsAndDevils.Views
         private Button goButton;
         private Button restartButton;
 
-        public Sprite PriestSprite { get; }
-        public Sprite DevilSprite { get; }
-        public Sprite BoatSprite { get; }
-
         public GameView(GameController owner)
         {
             controller = owner;
             root = new GameObject("RuntimeView").transform;
-            PriestSprite = RuntimeSpriteFactory.CreateSquareSprite("PriestSquare", Color.white);
-            DevilSprite = RuntimeSpriteFactory.CreateCircleSprite("DevilCircle", new Color(0.92f, 0.12f, 0.16f));
-            BoatSprite = RuntimeSpriteFactory.CreateSquareSprite("BoatRectangle", new Color(0.38f, 0.18f, 0.08f));
         }
 
         public void Build(GameModel model)
@@ -48,21 +41,22 @@ namespace PriestsAndDevils.Views
             CreateUi();
             foreach (PersonModel person in model.Persons)
             {
-                GameObject objectRoot = new GameObject();
+                PrimitiveType shape = person.Type == PersonType.Priest ? PrimitiveType.Cube : PrimitiveType.Sphere;
+                GameObject objectRoot = GameObject.CreatePrimitive(shape);
                 objectRoot.name = person.Type + "_" + person.Id;
                 objectRoot.transform.SetParent(root);
                 PersonView view = objectRoot.GetComponent<PersonView>();
                 if (view == null) view = objectRoot.AddComponent<PersonView>();
-                view.Initialize(controller, person, person.Type == PersonType.Priest ? PriestSprite : DevilSprite);
+                view.Initialize(controller, person, person.Type == PersonType.Priest ? Color.white : new Color(0.92f, 0.12f, 0.16f));
                 personViews.Add(person.Id, view);
             }
 
-            GameObject boatObject = new GameObject();
+            GameObject boatObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             boatObject.name = "Boat";
             boatObject.transform.SetParent(root);
             boatView = boatObject.GetComponent<BoatView>();
             if (boatView == null) boatView = boatObject.AddComponent<BoatView>();
-            boatView.Initialize(BoatSprite);
+            boatView.Initialize(new Color(0.38f, 0.18f, 0.08f));
             boatObject.transform.localScale = new Vector3(2.2f, 0.55f, 1);
             Refresh(model);
         }
@@ -112,8 +106,8 @@ namespace PriestsAndDevils.Views
 
         private void CreateWorld()
         {
-            CreateBlock("Sky", new Vector3(0, 0.4f, 2), new Vector2(18, 8.5f), new Color(0.035f, 0.12f, 0.22f), -8);
-            CreateBlock("Water", new Vector3(0, -3.25f, 1), new Vector2(18, 1.9f), new Color(0.04f, 0.42f, 0.67f), -7);
+            CreateBlock("Sky", new Vector3(0, 0.4f, 2), new Vector2(40, 20f), new Color(0.035f, 0.12f, 0.22f), -8);
+            CreateBlock("Water", new Vector3(0, -3.25f, 1), new Vector2(40, 1.9f), new Color(0.04f, 0.42f, 0.67f), -7);
             CreateBlock("LeftIsland", new Vector3(-6.1f, -2.25f, 0), new Vector2(5.2f, 1.7f), new Color(0.29f, 0.56f, 0.22f), -6);
             CreateBlock("RightIsland", new Vector3(6.1f, -2.25f, 0), new Vector2(5.2f, 1.7f), new Color(0.29f, 0.56f, 0.22f), -6);
             CreateBlock("LeftShore", new Vector3(-6.1f, -2.75f, -0.2f), new Vector2(5.2f, 0.5f), new Color(0.63f, 0.48f, 0.22f), -5);
@@ -122,13 +116,16 @@ namespace PriestsAndDevils.Views
 
         private GameObject CreateBlock(string name, Vector3 position, Vector2 size, Color color, int order)
         {
-            GameObject block = new GameObject(name);
+            GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            block.name = name;
             block.transform.SetParent(root);
             block.transform.position = position;
-            block.transform.localScale = new Vector3(size.x, size.y, 1);
-            SpriteRenderer renderer = block.AddComponent<SpriteRenderer>();
-            renderer.sprite = RuntimeSpriteFactory.CreateSquareSprite(name, color, 8);
-            renderer.sortingOrder = order;
+            block.transform.localScale = new Vector3(size.x, size.y, 0.1f);
+            MeshRenderer renderer = block.GetComponent<MeshRenderer>();
+            if (renderer == null) renderer = block.AddComponent<MeshRenderer>();
+            Shader unlit = Shader.Find("Unlit/Color");
+            if (unlit != null) renderer.material.shader = unlit;
+            renderer.material.color = color;
             return block;
         }
 
@@ -138,7 +135,11 @@ namespace PriestsAndDevils.Views
             canvasObject.transform.SetParent(root);
             Canvas canvas = canvasObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObject.AddComponent<CanvasScaler>();
+            CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1280, 720);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
             canvasObject.AddComponent<GraphicRaycaster>();
 
             Text title = CreateText(canvasObject.transform, "PRIESTS  &  DEVILS", 28, new Color(0.86f, 0.93f, 1f), new Vector2(0.5f, 0.93f), new Vector2(500, 55));

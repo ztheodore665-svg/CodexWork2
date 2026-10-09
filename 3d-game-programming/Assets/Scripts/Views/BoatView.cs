@@ -4,12 +4,13 @@ namespace PriestsAndDevils.Views
 {
     public sealed class BoatView : MonoBehaviour
     {
-        public void Initialize(Sprite sprite)
+        public void Initialize(Color color)
         {
-            SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
-            if (renderer == null) renderer = gameObject.AddComponent<SpriteRenderer>();
-            renderer.sprite = sprite;
-            renderer.color = new Color(0.32f, 0.13f, 0.06f);
+            Renderer renderer = gameObject.GetComponent<Renderer>();
+            if (renderer == null) renderer = gameObject.AddComponent<MeshRenderer>();
+            Shader unlit = Shader.Find("Unlit/Color");
+            if (unlit != null) renderer.material.shader = unlit;
+            renderer.material.color = color;
         }
     }
 }
