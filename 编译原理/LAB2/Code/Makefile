@@ -38,7 +38,7 @@ parser_:
 	gcc -std=c99 -g -c -o semantic.o semantic.c
 	gcc -std=c99 -g -c -o Tree.o Tree.c
 	gcc -std=c99 -g -c -o main.o main.c
-	gcc -g -o parser ./semantic.o ./Tree.o ./syntax.tab.o ./main.o -lfl -ly
+	gcc -g -o parser ./semantic.o ./Tree.o ./syntax.tab.o ./main.o -lfl
 
 # 定义的一些伪目标
 .PHONY: clean test
