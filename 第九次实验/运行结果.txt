@@ -1,0 +1,32 @@
+
+=== 创世状态 ===
+  alice    balance=  100 Wei   nonce=0
+  bob      balance=   10 Wei   nonce=0
+
+>>> 场景 1:alice 向 bob 转账 30 Wei(nonce=0)
+  [成功] alice -> bob 转账 30 Wei (nonce=0)
+
+=== 执行 tx1 后 ===
+  alice    balance=   70 Wei   nonce=1
+  bob      balance=   40 Wei   nonce=0
+
+>>> 场景 2:攻击者重放 tx1(同样的 nonce=0,再转 30 Wei)
+  [拒绝] nonce 不匹配:交易 nonce=0,账户 nonce=1
+
+=== 重放 tx1 后 ===
+  alice    balance=   70 Wei   nonce=1
+  bob      balance=   40 Wei   nonce=0
+
+>>> 场景 3:alice 正常发起第二笔交易 nonce=1
+  [成功] alice -> bob 转账 20 Wei (nonce=1)
+
+=== 执行 tx2 后 ===
+  alice    balance=   50 Wei   nonce=2
+  bob      balance=   60 Wei   nonce=0
+
+>>> 场景 4:bob 尝试转账 1000 Wei(余额不足)
+  [拒绝] 余额不足:账户余额=60 Wei,转账金额=1000 Wei
+
+=== 执行 tx3 后 ===
+  alice    balance=   50 Wei   nonce=2
+  bob      balance=   60 Wei   nonce=0
