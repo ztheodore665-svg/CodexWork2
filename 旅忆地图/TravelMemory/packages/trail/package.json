@@ -1,0 +1,23 @@
+{
+  "name": "@travelmemory/trail",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "轨迹回放内核：样条 / 里程 / 相机 / 时钟 / 投影 / Canvas 渲染器（与 React 无关）",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@travelmemory/geo": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
+  }
+}

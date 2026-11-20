@@ -1,0 +1,32 @@
+# 后端工程配置（pytest / ruff / mypy）
+# 注意：本文件只放工具配置，不放运行时依赖；依赖见 requirements.txt
+
+[project]
+name = "travel-memory-backend"
+version = "0.0.0"
+description = "旅忆地图 TravelMemory 后端（阶段 0：纯文本 RAG CLI）"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"                        # 异步用例无需逐个打 @pytest.mark.asyncio
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+# db 标记的用例需要真实 PostgreSQL(PostGIS + pgvector)，没有数据库时自动跳过
+markers = [
+    "db: 需要真实 PostgreSQL(PostGIS + pgvector) 容器才会执行，缺失时自动 skip",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]          # 中英混排 + 注释，行长交给 formatter 处理
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = false
+exclude = ["alembic/"]

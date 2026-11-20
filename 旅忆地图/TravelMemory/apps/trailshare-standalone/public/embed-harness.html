@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>嵌入测试 harness · TrailShare</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        background: #0a1019;
+        color: #cfe0f0;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        height: 100vh;
+      }
+      aside {
+        border-right: 1px solid #1b2b3d;
+        padding: 16px;
+        overflow: auto;
+      }
+      h1 {
+        font-size: 14px;
+        letter-spacing: 0.1em;
+        color: #7fa9cf;
+        margin: 0 0 12px;
+      }
+      button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #22405c;
+        background: #10202f;
+        color: #cfe0f0;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #16304a;
+      }
+      pre {
+        font-size: 11px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-all;
+        color: #8fb4d4;
+        margin: 8px 0 0;
+      }
+      iframe {
+        border: 0;
+        width: 100%;
+        height: 100%;
+        background: #04070d;
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>模拟父窗口（主应用）</h1>
+      <button id="btn-init">发送 init（身份 + 5 张照片）</button>
+      <button id="btn-update">发送 photos-update（换 3 张）</button>
+      <button id="btn-clear">清空日志</button>
+      <pre id="log">等待 iframe 发来 ready…</pre>
+    </aside>
+    <!-- 阶段 13：iframe 指向**嵌入版入口** `embed.html`（与真实主应用一致）。
+         `/`（index.html）现在是深色独立版：没有桥、也不消费 `?embedded=1`，
+         指向它会让这个 harness 看起来"桥坏了"。 -->
+    <iframe id="frame" src="./embed.html?embedded=1" title="trailshare"></iframe>
+
+    <script>
+      // 测试 harness（不是生产代码）：模拟主应用那一侧，只收发消息并打印。
+      const frame = document.getElementById('frame');
+      const log = document.getElementById('log');
+      const lines = [];
+
+      function push(text) {
+        lines.push(new Date().toISOString().slice(11, 19) + '  ' + text);
+        if (lines.length > 60) lines.shift();
+        log.textContent = lines.join('\n');
+      }
+
+      const TEST_PUBKEY =
+        'ed25519:3b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29';
+
+      const FALLBACK_THUMB =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGNgAAIAAAUAAXpeqz8AAAAASUVORK5CYII=';
+
+      function paintThumb(index) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return FALLBACK_THUMB;
+        const hue = (index * 53) % 360;
+        const gradient = ctx.createLinearGradient(0, 0, 64, 64);
+        gradient.addColorStop(0, 'hsl(' + hue + ', 60%, 44%)');
+        gradient.addColorStop(1, 'hsl(' + ((hue + 70) % 360) + ', 55%, 18%)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 64, 64);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = 'bold 22px system-ui, sans-serif';
+        ctx.fillText(String(index + 1), 24, 42);
+        return canvas.toDataURL('image/jpeg', 0.6);
+      }
+
+      function dataUrlToBytes(dataUrl) {
+        const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+        return bytes.buffer;
+      }
+
+      function makePhotoSet(count) {
+        const out = [];
+        for (let i = 0; i < count; i += 1) {
+          const thumb = paintThumb(i);
+          out.push({
+            id: 'p_harness' + i,
+            bytes: dataUrlToBytes(thumb),
+            name: 'harness-' + (i + 1) + '.jpg',
+            thumbnailDataUrl: thumb,
+            takenAt: new Date(Date.UTC(2026, 3, 18, 1, i * 20, 0)).toISOString(),
+            lat: 30.24 + i * 0.002,
+            lng: 120.1 + i * 0.002,
+          });
+        }
+        return out;
+      }
+
+      frame.addEventListener('load', () => push('iframe loaded'));
+
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin) {
+          push('忽略跨源消息 from ' + event.origin);
+          return;
+        }
+        const data = event.data || {};
+        if (data.type === 'ready') {
+          push('← ready（可以在此时发 init）');
+          return;
+        }
+        if (data.type === 'download') {
+          push('← download: ' + (data.filename || '(无文件名)') + ' / ' + (data.blob ? data.blob.size + ' bytes' : 'no blob'));
+          return;
+        }
+        if (data.type === 'import-to-main') {
+          push('← import-to-main: ' + JSON.stringify(data.journey).slice(0, 240) + '…');
+          return;
+        }
+        if (data.type === 'error') {
+          push('← error: ' + data.message);
+          return;
+        }
+        push('← 未知消息 ' + JSON.stringify(data).slice(0, 160));
+      });
+
+      document.getElementById('btn-init').addEventListener('click', () => {
+        const photos = makePhotoSet(5);
+        frame.contentWindow.postMessage(
+          { type: 'init', payload: { identity: { pubkey: TEST_PUBKEY }, photos: photos } },
+          window.location.origin,
+          [...photos.map((photo) => photo.bytes)],
+        );
+        push('→ init（5 张照片，含 transfer）');
+      });
+
+      document.getElementById('btn-update').addEventListener('click', () => {
+        const photos = makePhotoSet(3);
+        frame.contentWindow.postMessage(
+          { type: 'photos-update', photos: photos },
+          window.location.origin,
+          [...photos.map((photo) => photo.bytes)],
+        );
+        push('→ photos-update（3 张照片）');
+      });
+
+      document.getElementById('btn-clear').addEventListener('click', () => {
+        lines.length = 0;
+        log.textContent = '';
+      });
+    </script>
+  </body>
+</html>

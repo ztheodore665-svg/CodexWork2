@@ -1,0 +1,22 @@
+{
+  "name": "travelmemory",
+  "private": true,
+  "version": "0.1.0",
+  "description": "旅忆地图 TravelMemory —— 单仓库多应用",
+  "workspaces": [
+    "frontend",
+    "packages/*",
+    "apps/track-studio",
+    "apps/trailshare-standalone"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "check:boundaries": "node tools/check-import-boundaries.mjs",
+    "check": "npm run typecheck && npm run test && npm run check:boundaries"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@travelmemory/track-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "轨迹演示小应用：系统相册 → 生成轨迹回放 → 导出视频（零后端，数据不落盘）",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "@noble/curves": "^2.4.0",
+    "@travelmemory/amap-loader": "*",
+    "@travelmemory/geo": "*",
+    "@travelmemory/journey-transfer": "*",
+    "@travelmemory/photo-source": "*",
+    "@travelmemory/trail": "*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.21",
+    "vitest": "^2.1.9"
+  }
+}

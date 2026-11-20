@@ -1,0 +1,20 @@
+{
+  "name": "@travelmemory/journey-transfer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "journey.json 线格式：主应用旅程 ↔ 独立应用的缩略图 + 元数据包（纯 TS，零内部依赖）",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
+  }
+}

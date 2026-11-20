@@ -1,0 +1,53 @@
+# 阶段 0 运行时依赖（精简：只放真正用到的包）
+#
+# 说明：本项目禁止把依赖装到系统 Python。请使用项目内虚拟环境：
+#   python -m venv .venv  →  .venv/Scripts/pip install -r requirements.txt
+# 新增依赖时必须同时更新本文件，并在注释里写清用途。
+
+# 阶段 16：每个依赖都加了上界。没有上界的 `>=` 等于把「下次大版本破坏」写进依赖里，
+# 而 langgraph / langchain-core 的 1.x 已经是一次破坏性升级（声明 >=0.2.60 却装到 1.2）。
+
+# ---- Web / 服务壳 ----
+fastapi>=0.115,<1           # HTTP 接口层（阶段 0 仅健康检查，阶段 2 起 SSE）
+uvicorn[standard]>=0.30,<1  # ASGI 服务器，make dev 依赖
+
+# ---- 数据层 ----
+sqlalchemy[asyncio]>=2.0.30,<3  # ORM，全项目统一 2.0 风格（Session.execute / mapped_column）
+asyncpg>=0.29,<1                # PostgreSQL 异步驱动
+alembic>=1.13,<2                # 数据库迁移
+pgvector>=0.2.5,<1              # pgvector 的 SQLAlchemy 类型（Vector 列）
+
+# ---- 配置与契约 ----
+pydantic>=2.7,<3            # 数据校验
+pydantic-settings>=2.3,<3   # 从 .env 读取配置（见 app/core/config.py）
+
+# ---- 外部调用 ----
+httpx>=0.27,<1              # 统一的网络出口：LLM / Embedding 都走 OpenAI 兼容协议
+
+# ---- 阶段 6：照片导入（W6-1）----
+Pillow>=10.0,<14  # EXIF 解析（GPS / 拍摄时间）与缩略图生成；只用于本地导入链路
+python-multipart>=0.0.9,<1  # FastAPI 解析 multipart/form-data 的必需依赖：
+                         # 没有它，`POST /api/v1/photos/import`（files 字段可重复）会直接
+                         # 抛 "Form data requires python-multipart"，且报错发生在进入 handler 之前
+
+# ---- 阶段 4：Agent 编排（W4-2）----
+# 只在 `AGENT_RUNTIME=graph` 时真正被 import。
+# 不装也不会让主流程挂掉：`app/agent/runtime.py` 捕获 ImportError 后
+# 记一条警告并回退纯 Python 管道（PROJECT.md §二、[8]：失败必须降级）。
+langgraph>=0.2.60,<2             # StateGraph / 条件边 / astream 自定义流
+langchain-core>=0.3.0,<2         # langgraph 的 RunnableConfig 与消息契约
+
+# ---- 可选依赖（不参与 pip install -r requirements.txt）----
+#
+# 【阶段 3】redis>=5（异步客户端 redis.asyncio）
+#   · 用途：core/cache.py 的 RedisCache，承载设计文档 §3.2 的四级用途
+#           （API 结果缓存 / Embedding 缓存 / 会话态 / 幂等锁与预算计数）
+#   · 不装也能跑：build_cache() 会捕获 ImportError 并降级为 InMemoryCache（进程内 TTL + LRU），
+#     功能与全部测试均不受影响（见 PRD 约束 E1 / O-4）
+#   · 需要真实 Redis 时手动安装即可：
+#       pip install "redis>=5"
+#     届时把 CACHE_ENABLED=true + REDIS_URL 配好，无需改任何代码
+#   · 之所以不入正式列表：本机开发环境没有 Docker/Redis（5432/6379 不通），
+#     把它变成必装依赖会让"离线占位模式"（LLM_PROVIDER=mock）整套跑不起来
+# # redis>=5
+

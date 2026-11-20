@@ -1,0 +1,39 @@
+# 真实 HTTP 响应头（Netlify / Cloudflare Pages 的 _headers 约定；nginx 用 add_header 照抄）。
+#
+# 为什么需要这个文件：CSP 的 frame-ancestors 在 <meta http-equiv> 里**被浏览器忽略**
+# （CSP 规范只允许 meta 下发部分指令）。要真正限制"谁能 iframe 嵌套本应用"，
+# 必须由 HTTP 头下发。这里的策略与 src/csp.ts 的 buildCsp(kind) 逐字一致 ——
+# 改一处必须改两处；csp.test.ts 盯着 standalone 那份不含任何地图域名。
+#
+# 部署前把 https://app.travelmemory.com 换成主应用真实域名。
+#
+# ⚠ 两份策略只差一行，但那是产品承诺的分界线（W12-4）：
+#   /index.html  → 全程零网络请求，**一个地图域名都没有**
+#   /embed.html  → 允许地图底图（script-src 放行 webapi.amap.com、img-src 放行 *.amap.com）
+#
+# ⚠ 两个入口的 connect-src 都是 `'self'`（任务书 §6.4.3）：高德只允许走脚本与图片，
+#   不放开 fetch/XHR —— 否则"除了地图底图没有其他网络请求"这句承诺就作废了。
+#
+# 注意 /embed.html 必须单独成块：`/*` 会被它覆盖，但反过来不成立 ——
+# 所以 index 与根路径各写一份，避免"根路径拿到 embed 的宽松策略"。
+
+/index.html
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; frame-ancestors 'self' https://app.travelmemory.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+/
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; frame-ancestors 'self' https://app.travelmemory.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+/embed.html
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://webapi.amap.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.amap.com; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; frame-ancestors 'self' https://app.travelmemory.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+/sw.js
+  Cache-Control: no-cache

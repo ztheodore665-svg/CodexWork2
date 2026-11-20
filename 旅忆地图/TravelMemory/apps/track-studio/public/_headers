@@ -1,0 +1,34 @@
+# 真实 HTTP 响应头（Netlify / Cloudflare Pages 的 _headers 约定；nginx 用 add_header 照抄）。
+#
+# 为什么需要这个文件：CSP 里的 frame-ancestors 在 <meta http-equiv> 里**被浏览器忽略**
+# （CSP 规范只允许 meta 下发部分指令）。要真正限制"谁能 iframe 嵌套本应用"，
+# 必须由 HTTP 头下发。
+#
+# 阶段 13 / W13-1：应用有了**两个入口**，它们的策略不同 —— 必须分两段写，
+# 不能再用 `/*` 一刀切（那样独立版会被一起放宽，等于把"零网络"承诺作废）：
+#
+#   /  、 /index.html   → standalone：深色独立版，自绘降级格网，**一个高德域名都不放行**
+#   /embed.html         → embed     ：浅色嵌入版，放行高德脚本与瓦片
+#
+# 两段与 src/csp.ts 的 buildCsp('standalone' | 'embed') **逐字一致**：
+# 改一处必须同步另一处（csp.test.ts 检查 meta 版；构建后的 grep 检查产物）。
+#
+# 部署前把 https://app.travelmemory.com 换成主应用真实域名。
+
+# ── 独立入口（深色，零网络）─────────────────────────────────────
+/ /index.html
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; frame-ancestors 'self' https://app.travelmemory.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+# ── 嵌入入口（浅色，允许高德底图）───────────────────────────────
+/embed.html
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://webapi.amap.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.amap.com; connect-src 'self'; font-src 'self'; media-src 'self' blob:; worker-src 'self'; frame-ancestors 'self' https://app.travelmemory.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+# Service Worker 的响应不能被缓存（否则换版本后客户端一直拿旧 SW）。
+/sw.js
+  Cache-Control: no-cache

@@ -1,0 +1,96 @@
+%% 阶段 3 时序图：一次「带工具调用的问答」完整流程（含降级分支）
+%% 与 docs/design/stage3-architecture.md §5 同源
+sequenceDiagram
+    autonumber
+    actor U as 用户
+    participant FE as 前端 AgentPage
+    participant API as api/v1/agent.py
+    participant P as AgentPipeline
+    participant RN as RetrieveNode
+    participant TN as ToolCallNode
+    participant RG as ToolRegistry
+    participant PT as SearchPoiTool
+    participant MS as MapService
+    participant CA as CacheClient
+    participant BC as BuildContextNode
+    participant GN as GenerateNode
+    participant SC as SelfCheckNode
+    participant TR as Trace
+
+    U->>FE: 输入「乌镇附近还有什么古镇？」
+    FE->>API: POST /api/v1/agent/chat (SSE)
+    API->>P: run_stream(...)
+    P->>P: rewrite → query_parse
+    P-->>FE: event: parsed
+    P->>RN: __call__(state, trace)
+    RN->>RN: embed + 结构化过滤 + 两路召回
+    Note over RN: W3-4：HNSW_ENABLED=true 时先 ann_search<br/>结果 < filter_min_hits → 回退 similar_search<br/>debug.index_path = hnsw | exact_fallback
+    RN->>TR: trace.step("retrieve")
+    RN-->>P: state.hits（记忆证据）
+
+    P->>TN: run(state, trace)
+    alt TOOLS_ENABLED = false（默认）
+        TN-->>P: 直接 return state（一行不做）
+    else TOOLS_ENABLED = true
+        TN->>TN: select(state)
+        Note over TN: llm.provider == "mock" → rule_select<br/>否则 LLM(tool_select.md)，JSON 失败兜底 rule
+        alt 决策 = none
+            TN-->>P: 不调工具
+        else 决策 = search_poi
+            TN-->>FE: event: tool_start {tool_name, args, attempt}
+            TN->>RG: invoke("search_poi", args)
+            RG->>PT: run(args)
+            PT->>CA: get(api:poi:<hash>)
+            alt 缓存命中
+                CA-->>PT: 命中值
+                PT-->>RG: ToolResult(ok=True, cache_hit=True)
+            else 缓存 miss / CACHE_ENABLED=false
+                PT->>MS: search_poi(keyword, city, location)
+                alt 有高德 Key 且调用成功
+                    MS-->>PT: POI 列表（含 poi_id, coord_system）
+                    PT->>CA: set(key, value, TTL_POI_SEC)
+                    PT-->>RG: ToolResult(ok=True, cache_hit=False)
+                else 无 Key / 超时 / 限流 / 5xx
+                    MS-->>PT: 空结果（NullMapProvider 或降级）
+                    PT-->>RG: ToolResult(ok=False, degraded=True)
+                    Note over PT,RG: 重试 ≤ max_retries（degradable 时 ≤1）<br/>**全程不抛异常**
+                end
+            end
+            RG-->>TN: ToolResult
+            TN->>TR: trace.record_tool_call(..., cache_hit=result.cache_hit)
+            TR->>TR: tool_calls.append + 写 JSONL + 写 ToolCallLog
+            TN-->>FE: event: tool_result {ok, degraded, cache_hit, latency_ms, summary}
+            alt ok = true
+                TN->>TN: hits_from_result() → SearchHit(source_type="map_tool")
+                TN->>TN: state.hits.extend(tool_hits)  ← 统一 [n] 编号的关键
+            else degraded
+                TN->>TN: state.tool_degraded = True（走记忆，prompt 声明工具不可用）
+            end
+        end
+    end
+
+    P->>BC: __call__(state, trace)
+    BC->>BC: build_context(state.hits) → 记忆 [1][2] + 工具 [3][4]
+    BC-->>P: state.blocks / context_text
+    P-->>FE: event: evidence（每条带 source: memory|map_tool, index_path）
+
+    P->>GN: astream(state, trace)
+    GN-->>FE: event: delta *（首字可见）
+    Note over GN: tool_degraded=True 时 prompt 注入<br/>「地图服务暂不可用，以下内容仅基于你的照片记录」
+
+    P->>SC: __call__(state, trace)
+    alt 无违规
+        SC-->>P: []
+    else 有违规 且 attempts == 0
+        SC-->>P: violations
+        P-->>FE: event: restart
+        P->>GN: 重生成一次
+        GN-->>FE: event: delta *
+        P->>SC: 再校验
+    else 仍违规
+        SC-->>P: violations
+        P-->>FE: event: restart + delta(拒答话术)
+    end
+    P->>TR: finish_run(status)
+    P-->>FE: event: done
+    FE->>FE: ToolCallBar 收起 / ToolResultCard 渲染（含缓存命中徽章）

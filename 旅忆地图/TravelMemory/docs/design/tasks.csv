@@ -1,0 +1,25 @@
+﻿id,track,task,depends,owner,days,done_when
+A1,前端,冻结契约（小票字段/SSE顺序/IndexedDB schema）,无,A,0.5,三人签字确认字段不再改
+A2,前端,小票卡 + 档位徽章,小票后端就绪,A,1,任一次回答能看到 L0/L1/L2 徽章与小票
+A3,前端,TrailShare 打成 ESM 库并引入,A1,A,1,React 里 import 成功并能跑一次 pack/unpack
+A4,前端,信物导入页 + 地图打点,A3,A,1.5,导入后地图出现朋友图钉，重复导入不重复写
+A5,前端,L0 时间解析 + 20 条单测,A1,A,1,20 条全绿，解析失败返回 null
+A6,前端,L0 查询四类 + 回答卡,A5,A,1.5,枚举/计数/偏好/求证各 5 条通过
+A7,前端,升级同意卡 + 设置页,A2,A,1,弹卡显示条数与留存，三个按钮行为正确
+A8,前端,数据账本页 + 删除索引入口,A2,A,0.5,历史小票可按档位筛选
+A9,前端,缺陷修复与演示彩排,A4 A6 A7,A,1,断网全流程无卡点
+B1,后端,index_consent 迁移与模型,无,B,0.5,alembic upgrade 通过
+B2,后端,SSE 接入 receipt 事件,B1,B,1,curl 能看到 receipt 在 done 之前
+B3,后端,/agent/answer-with-context 路由与校验,B2,B,1,curl 跑通，服务端不落库
+B4,后端,/vault/sync 与 DELETE 索引,B1,B,1,同步返回 docs+receipt；删除后查询失败
+B5,后端,专员注册表 + summary prompt,B3,B,1,summary 走独立 prompt_version
+B6,后端,planner / fact_check prompt 与权限,B5,B,1,规划类豁免引用；求证无证据拒答
+B7,后端,质检打回 + 降级路径,B2,B,1,无引用重试一次后拒答；超时返回 degraded
+B8,后端,端到端联调与性能,B4 B6 B7,B,1,P95 在预算内，日志无正文
+C1,评测,29 题标最低档位,无,C,1,每条有档位标签与理由
+C2,评测,E-A 跑批脚本,B3 C1,C,1,一键跑三档并输出表
+C3,评测,路由准确率标注与跑批,A1 C1,C,0.5,混淆矩阵生成
+C4,评测,E-A 定稿,B4 C2,C,1,29 行表 + 结论段落
+C5,评测,E-B 小票问卷,A2,C,0.5,20 份回收 + 均值表
+C6,文档,报告第 3~6 节（边界/架构/实现/实验）,C4,C,1.5,每节有图或表，无未标来源的数字
+C7,文档,演示脚本与答辩 Q&A,C4 C5,C,0.5,5 分钟彩排两遍不超时

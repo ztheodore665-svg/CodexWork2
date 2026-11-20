@@ -1,0 +1,8 @@
+# 开发环境依赖（不参与部署）
+# 安装：.venv/Scripts/pip install -r requirements-dev.txt
+
+pytest>=8.2,<10
+pytest-asyncio>=0.23,<2   # 异步用例：本项目 DB 与 LLM 调用全是 await
+ruff>=0.5,<1              # lint（make lint）
+mypy>=1.10,<3             # 类型检查（make lint）
+psycopg2-binary>=2.9,<3   # `alembic upgrade head --sql` 离线生成 SQL（不连库也能 review 迁移）

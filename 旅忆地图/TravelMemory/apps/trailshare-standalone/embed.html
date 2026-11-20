@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN" data-entry="embed">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f9fc" />
+    <meta name="color-scheme" content="light" />
+    <title>信物地图 · TrailShare</title>
+    <style>
+      /* 首屏骨架：React 挂载前有东西可看，避免白闪。挂载后整块被替换。
+         阶段 13 / W13-4：embed 入口现在渲染**浅色**主题，骨架也跟着换成浅底，
+         否则深色骨架会在浅色 UI 前面闪一下（"白闪"变成"黑闪"）。 */
+      html,
+      body {
+        margin: 0;
+        background: #f7f9fc;
+      }
+      #root > .boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f9fc;
+      }
+      #root > .boot span {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 12px;
+        letter-spacing: 0.36em;
+        color: #7d93ab;
+        text-transform: uppercase;
+        animation: boot-pulse 1.6s ease-in-out infinite;
+      }
+      @keyframes boot-pulse {
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div class="boot"><span>TRAILSHARE · MAP</span></div></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

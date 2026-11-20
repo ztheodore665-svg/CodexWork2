@@ -1,0 +1,148 @@
+%% 阶段 3 类图（与 docs/design/stage3-architecture.md §4.4 同源）
+classDiagram
+    class ToolResult {
+        +bool ok
+        +dict data
+        +str error
+        +bool degraded
+        +int latency_ms
+        +bool cache_hit
+        +int attempts
+        +str tool_name
+        +str status
+    }
+
+    class BaseTool~ArgsT~ {
+        <<abstract>>
+        +str name
+        +str description
+        +type args_schema
+        +float timeout_sec
+        +int max_retries
+        +bool degradable
+        +int cache_ttl_sec
+        +run(raw_args) ToolResult
+        #_execute(args) dict
+        +summarize(data) str
+        +json_schema() dict
+    }
+
+    class SearchPoiTool {
+        +str name = "search_poi"
+        +int cache_ttl_sec = TTL_POI_SEC
+        -MapService _map
+    }
+    class CalculateRouteTool {
+        +str name = "calculate_route"
+        +int cache_ttl_sec = TTL_ROUTE_SEC
+        -MapService _map
+    }
+
+    class ToolRegistry {
+        +register(tool) None
+        +get(name) BaseTool
+        +names() list
+        +list_specs() list
+        +invoke(name, raw_args) ToolResult
+    }
+
+    class MapService {
+        +int COORD_BATCH_SIZE = 40
+        +search_poi(keyword, city, location) list
+        +calculate_route(origin, destination, mode) dict
+        +convert_coords(coords, from_sys, to_sys) list
+    }
+    class MapProvider {
+        <<Protocol>>
+        +search_poi(...) list
+        +calculate_route(...) dict
+        +convert_coords(...) list
+    }
+    class AmapProvider
+    class NullMapProvider
+
+    class CacheClient {
+        <<Protocol>>
+        +get(key) str
+        +set(key, value, ttl_sec) None
+        +delete(key) None
+        +incr(key, by, ttl_sec) int
+        +setnx(key, value, ttl_sec) bool
+        +lpush(key, value, max_len, ttl_sec) None
+        +hset(key, mapping, ttl_sec) None
+    }
+    class InMemoryCache
+    class NullCache
+    class RedisCache
+
+    class ToolCallNode {
+        +__call__(state, trace) None
+        +run(state, trace) AsyncIterator
+        +select(state) ToolDecision
+        +rule_select(state) ToolDecision
+        +hits_from_result(tool, result, start_index) list
+    }
+    class ToolDecision {
+        +str tool_name
+        +dict args
+        +str source
+    }
+
+    class Trace {
+        +list tool_calls
+        +start_run() UUID
+        +step(type, payload) StepRecorder
+        +record_tool_call(...) None
+        +finish_run(status, token_usage) int
+    }
+    class ToolCallLog {
+        +str tool_name
+        +dict input
+        +dict output
+        +int latency_ms
+        +bool cache_hit
+    }
+
+    class Retriever {
+        +retrieve(state) list
+        -_fuse(vec_hits, lex_hits) list
+        -_search_ann_or_exact(...) list
+    }
+    class BaseReranker {
+        <<Protocol>>
+        +rerank(query, hits, top_n) list
+    }
+    class NoOpReranker
+    class RemoteReranker
+
+    class BudgetGuard {
+        +int limit_cents
+        +float spent_cents
+        +check() None
+        +add(cents) None
+        +sync_from_cache() None
+        +add_atomic(cents) None
+    }
+
+    BaseTool <|-- SearchPoiTool
+    BaseTool <|-- CalculateRouteTool
+    BaseTool ..> ToolResult : produces
+    BaseTool ..> CacheClient : reads/writes
+    SearchPoiTool --> MapService
+    CalculateRouteTool --> MapService
+    MapService --> MapProvider
+    MapProvider <|.. AmapProvider
+    MapProvider <|.. NullMapProvider
+    ToolRegistry o-- BaseTool
+    CacheClient <|.. InMemoryCache
+    CacheClient <|.. NullCache
+    CacheClient <|.. RedisCache
+    ToolCallNode --> ToolRegistry : selects + invokes
+    ToolCallNode --> ToolDecision
+    ToolCallNode --> Trace : record_tool_call
+    ToolCallNode ..> BaseTool
+    Trace ..> ToolCallLog : persists
+    Retriever --> BaseReranker
+    BaseReranker <|.. NoOpReranker
+    BaseReranker <|.. RemoteReranker
+    BudgetGuard --> CacheClient

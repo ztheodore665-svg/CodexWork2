@@ -1,0 +1,20 @@
+{
+  "name": "@travelmemory/geo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "坐标与地图基础：WGS84↔GCJ-02、Web 墨卡托、球面距离（纯函数，零依赖）",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
+  }
+}

@@ -1,0 +1,850 @@
+/* Track Studio · 浅色（嵌入版）主题样式。
+ *
+ * 阶段 13 / W13-3：本文件由 `src/styles.css` 机械迁移而来，**声明逐条保留**
+ * （行为与视觉零改动），只做了一件事 —— 给每个选择器加上 `.theme-light ` 前缀。
+ *
+ * 为什么必须作用域化：同一个应用现在有深色（standalone）与浅色（embed）两套 UI，
+ * 两套样式表都来自「手写全局 CSS」，一旦同页共存就会互相污染（两边都有 `.landing`
+ * / `.panel` / `.btn`）。作用域前缀是最省事、也最容易肉眼审计的做法（H9）。
+ *
+ * 映射规则（由一次性 sed/node 脚本机械完成，脚本不留在仓库里，见 `theme-dark/styles.css` 的同款说明）：
+ *  - `:root` / `html, body` / `body` → `.theme-light`（变量与 base 样式挂到容器上）
+ *  - `*` → `.theme-light, .theme-light *`
+ *  - `@media` 内部的选择器同样加前缀
+ *
+ * 配色口径（阶段 13 收尾修正）：**嵌入版 = 浅色，独立版 = 深色**。
+ * 深色版在 `theme-dark/styles.css`（从 showcase 移植，零网络 + 自绘格网）；
+ * 本文件负责嵌入版：正文/表单/卡片用浅底深字，好让它在主应用的浅色页面里不突兀。
+ * 阶段 14 / W14-2：**播放页（`.stage`）也改成浅色**了 —— 原先"播放页保持暗场"
+ * 的例外已取消，轨迹改由 `ui/PlayStage.tsx` 用深青色自绘（详见文件末的说明）。
+ */
+/* 原文件说明（保留供审计）：
+ * 手写 CSS，不引 Tailwind（A4）。两条硬约束：① 深色底 —— 轨迹的发光线条只有在
+ * 深色上才看得出层次；② 播放页画布必须 strict 铺满容器（渲染器按 canvas 的父元素
+ * 尺寸定分辨率，任何 padding / margin / 圆角都会让轨迹与底图错位）。
+ */
+
+.theme-light {
+  color-scheme: light;
+  --bg: #f7f9fc;
+  --bg-soft: #eef3f9;
+  --panel: #ffffff;
+  --line: #dfe6ef;
+  --line-soft: #eaf0f6;
+  --text: #16202e;
+  --text-dim: #5b6b7f;
+  --accent: #0e7bb5;
+  --accent-soft: rgba(14, 123, 181, 0.12);
+  --warn: #b45309;
+  --danger: #b42318;
+  --radius: 10px;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.theme-light,
+.theme-light * {
+  box-sizing: border-box;
+}
+
+.theme-light {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.theme-light {
+  min-height: 100vh;
+}
+
+.theme-light h1 {
+  font-size: 22px;
+  line-height: 1.35;
+  margin: 0 0 8px;
+  letter-spacing: 0.01em;
+}
+
+.theme-light h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.theme-light p {
+  margin: 0 0 10px;
+}
+
+.theme-light code {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* ── 通用按钮 ─────────────────────────────────────────────── */
+
+.theme-light .btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--text);
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.theme-light .btn:hover:not(:disabled) {
+  background: #132436;
+  border-color: #2b4761;
+}
+
+.theme-light .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.theme-light .btn-primary {
+  background: linear-gradient(180deg, #0f4c6b, #0b3348);
+  border-color: #1d6d92;
+  color: #eaf7ff;
+  font-weight: 600;
+}
+
+.theme-light .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #146085, #0d3d55);
+}
+
+.theme-light .btn-ghost {
+  background: transparent;
+  border-color: var(--line-soft);
+  color: var(--text-dim);
+}
+
+.theme-light .btn-tiny {
+  padding: 5px 9px;
+  font-size: 12px;
+  border-radius: 7px;
+}
+
+.theme-light .btn-tiny.is-active {
+  border-color: var(--accent);
+  color: #eaf7ff;
+  background: var(--accent-soft);
+}
+
+/* ── 首屏 ─────────────────────────────────────────────────── */
+
+.theme-light .landing {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 20px 96px;
+}
+
+.theme-light .landing-head .brand {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  color: #3f6d92;
+  margin-bottom: 18px;
+}
+
+.theme-light .lead {
+  color: var(--text-dim);
+  max-width: 58ch;
+}
+
+.theme-light .landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 14px;
+}
+
+.theme-light .hint {
+  color: var(--text-dim);
+  font-size: 12.5px;
+}
+
+.theme-light .hint-strong {
+  color: var(--warn);
+  border-left: 2px solid var(--warn);
+  padding-left: 10px;
+}
+
+.theme-light .error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.theme-light .identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 30px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: rgba(12, 22, 34, 0.6);
+}
+
+.theme-light .identity-badge {
+  font-size: 11.5px;
+  color: var(--warn);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.theme-light .identity-key {
+  color: var(--accent);
+}
+
+.theme-light .identity-note {
+  color: var(--text-dim);
+  font-size: 12px;
+  width: 100%;
+}
+
+/* ── 隐私说明 ─────────────────────────────────────────────── */
+
+.theme-light .privacy {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+  background: linear-gradient(180deg, rgba(12, 22, 34, 0.9), rgba(6, 11, 18, 0.9));
+}
+
+.theme-light .privacy-list {
+  margin: 0 0 12px;
+  padding-left: 18px;
+  color: var(--text-dim);
+}
+
+.theme-light .privacy-list li {
+  margin-bottom: 6px;
+}
+
+.theme-light .privacy-list strong {
+  color: var(--text);
+}
+
+.theme-light .privacy-foot {
+  font-size: 12px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 10px;
+}
+
+.theme-light .privacy-how {
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+
+.theme-light .privacy-how summary {
+  cursor: pointer;
+  color: var(--accent);
+  outline: none;
+}
+
+.theme-light .privacy-how ol {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+/* ── 编辑页 ───────────────────────────────────────────────── */
+
+.theme-light .panel {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 20px 96px;
+}
+
+.theme-light .panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.theme-light .panel-foot {
+  margin-top: 26px;
+  display: flex;
+  gap: 10px;
+}
+
+.theme-light .photo-list {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theme-light .photo-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: rgba(10, 16, 25, 0.8);
+}
+
+.theme-light .photo-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #0f1a26;
+  flex: 0 0 auto;
+}
+
+.theme-light .photo-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.theme-light .photo-name {
+  font-size: 13.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-light .photo-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-light .photo-transport {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  flex: 0 0 auto;
+}
+
+.theme-light .photo-transport-end {
+  font-family: var(--mono);
+}
+
+.theme-light .photo-transport select {
+  background: var(--bg-soft);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 4px 6px;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.theme-light .badge {
+  font-size: 10.5px;
+  border-radius: 999px;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+}
+
+.theme-light .badge-warn {
+  color: var(--warn);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+/* ── 播放页 ───────────────────────────────────────────────── */
+
+.theme-light .stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* 底图容器：地图 SDK 会往里塞自己的 DOM，必须绝对定位铺满 */
+.theme-light .stage-map {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* 主画布：铺满 + 不吃事件（否则会挡住底图的拖拽，虽然播放态不需要交互） */
+.theme-light .stage-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.theme-light .stage-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  /* 揭幕遮罩：原来写死 #04070d（暗场用），浅色版必须跟着底走浅，否则播放页会先黑一下 */
+  background: var(--bg);
+  transition: opacity 620ms ease;
+  pointer-events: none;
+}
+
+.theme-light .stage-top {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.theme-light .stage-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* 浅底上一行浅色光晕就够把字从轨迹里分离出来；黑投影在白底上会糊成脏边 */
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
+}
+
+.theme-light .stage-title strong {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.theme-light .stage-title span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.theme-light .stage-top .btn {
+  pointer-events: auto;
+}
+
+.theme-light .stage-note {
+  position: absolute;
+  top: 64px;
+  left: 20px;
+  z-index: 5;
+  max-width: 380px;
+  font-size: 12px;
+  color: var(--text-dim);
+  /* 原来是 rgba(4,7,13,.82)（暗场茶色玻璃），浅色版换成白玻璃 */
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.theme-light .stage-note-error {
+  color: var(--danger);
+}
+
+.theme-light .stage-controls {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  /* 浅色控制条：文字 #16202e（= --text）、边框 #e0e6ed —— 这两个值 QA 会读 computedStyle */
+  border: 1px solid #e0e6ed;
+  background: rgba(255, 255, 255, 0.94);
+  color: #16202e;
+  box-shadow: 0 8px 26px rgba(22, 32, 46, 0.14);
+  max-width: min(760px, calc(100vw - 32px));
+}
+
+.theme-light .seek {
+  appearance: none;
+  flex: 1 1 240px;
+  min-width: 120px;
+  height: 4px;
+  border-radius: 999px;
+  /* 未走部分原本收在 #1e4964（深海蓝），浅底上要收在浅钢蓝 */
+  background: linear-gradient(90deg, var(--accent), #b9d3e6);
+  outline: none;
+}
+
+.theme-light .seek::-webkit-slider-thumb {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+}
+
+.theme-light .seek::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+}
+
+.theme-light .speeds {
+  display: flex;
+  gap: 4px;
+}
+
+/* ── 完成页 ───────────────────────────────────────────────── */
+
+.theme-light .done-video {
+  width: 100%;
+  max-height: 46vh;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #000;
+  margin: 8px 0 18px;
+}
+
+.theme-light .done-empty {
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  padding: 26px;
+  text-align: center;
+  color: var(--text-dim);
+  margin: 8px 0 18px;
+}
+
+.theme-light .done-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* 窄屏：编辑页的交通工具选择换行，播放控件贴底 */
+@media (max-width: 620px) {
+
+  .theme-light .landing {
+    padding-top: 36px;
+  }
+
+  .theme-light .photo-item {
+    flex-wrap: wrap;
+  }
+
+  .theme-light .photo-transport {
+    order: 4;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .theme-light .stage-controls {
+    left: 12px;
+    right: 12px;
+    transform: none;
+    bottom: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .theme-light .seek {
+    order: 5;
+    flex-basis: 100%;
+  }
+
+}
+
+/* 身份警告（主应用未提供身份时的兜底提示，§10.2） */
+.theme-light .identity-warn {
+  color: var(--warn);
+}
+
+/* ── 补全照片位置（W12-2a） ─────────────────────────────────── */
+
+/* 编辑页里那个"N 张照片缺位置，点击补全"按钮的容器（单独一行，不挤在提示里） */
+.theme-light .panel-action {
+  margin: 4px 0 6px;
+}
+
+/* 整页固定：这个页面自己就是一张全屏工作台，底下没有别的内容要露出 */
+.theme-light .location-editor {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.theme-light .location-editor-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.theme-light .location-editor-head h1 {
+  margin-bottom: 4px;
+}
+
+.theme-light .location-editor-head .lead {
+  margin-bottom: 4px;
+  max-width: 72ch;
+}
+
+.theme-light .location-editor-body {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0; /* 没有它，flex 子项不会滚动而是把整页撑高 */
+}
+
+/* 左 30%：待补照片列表 */
+.theme-light .location-editor-list {
+  flex: 0 0 30%;
+  max-width: 30%;
+  min-width: 180px;
+  margin: 0;
+  padding: 12px;
+  list-style: none;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-right: 1px solid var(--line);
+  background: rgba(6, 11, 18, 0.6);
+}
+
+.theme-light .location-editor-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: rgba(10, 16, 25, 0.85);
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.theme-light .location-editor-item:hover {
+  border-color: #2b4761;
+}
+
+.theme-light .location-editor-item.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.theme-light .location-editor-thumb {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #0f1a26;
+  display: block;
+}
+
+.theme-light .location-editor-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.theme-light .location-editor-name {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-light .location-editor-coords {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* 右 70%：地图。容器必须是定位父级，小圆点按百分比落在它上面 */
+.theme-light .location-editor-map-wrap {
+  position: relative;
+  flex: 1 1 70%;
+  min-width: 0;
+}
+
+.theme-light .location-editor-map {
+  position: absolute;
+  inset: 0;
+}
+
+/* 选中点：只做视觉反馈，不吃事件（否则挡住地图点击） */
+.theme-light .location-editor-dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 2px solid #eaf7ff;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.theme-light .location-editor-readout,
+.theme-light .location-editor-note {
+  position: absolute;
+  z-index: 4;
+  bottom: 12px;
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: rgba(4, 7, 13, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.theme-light .location-editor-readout {
+  left: 12px;
+  font-family: var(--mono);
+}
+
+.theme-light .location-editor-note {
+  right: 12px;
+}
+
+.theme-light .location-editor-note-error {
+  color: var(--danger);
+}
+
+/* 窄屏：列表挪到上方、地图在下（左右排会两边都挤成一条缝） */
+@media (max-width: 720px) {
+
+  .theme-light .location-editor-body {
+    flex-direction: column;
+  }
+
+  .theme-light .location-editor-list {
+    flex: 0 0 auto;
+    max-width: none;
+    min-width: 0;
+    max-height: 38%;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .theme-light .location-editor-map-wrap {
+    flex: 1 1 auto;
+  }
+
+}
+
+/* ── 浅色补丁（阶段 13 收尾）：把原 CSS 里**写死的深色**逐条换成浅色 ──────
+ *
+ * 为什么不能只靠变量：`--bg` 这类 token 只覆盖了走变量的地方；原样式里还有一批
+ * 直接写死的深色（按钮渐变、卡片的半透明深底、缩略图占位色）。它们在浅底上是
+ * "一块块脏斑"，必须逐条覆盖。**深色版的值一个字都没动**（那份在 theme-dark/styles.css）。
+ */
+
+.theme-light .btn:hover:not(:disabled) {
+  background: #e6eef7;
+  border-color: #c3d3e4;
+}
+
+.theme-light .btn-primary {
+  background: linear-gradient(180deg, #1f8ac0, #146c99);
+  border-color: #146c99;
+  color: #ffffff;
+}
+
+.theme-light .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #249dd8, #1879ab);
+}
+
+/* 卡片类：深色半透明底 → 白底（靠 --line 提供边界） */
+.theme-light .identity {
+  background: #ffffff;
+}
+
+.theme-light .privacy {
+  background: linear-gradient(180deg, #ffffff, #f2f7fd);
+}
+
+.theme-light .photo-item {
+  background: #ffffff;
+}
+
+.theme-light .photo-thumb {
+  background: #e9eff6;
+}
+
+/* 补位置工作台 */
+.theme-light .location-editor-list {
+  background: #f2f6fb;
+}
+
+.theme-light .location-editor-item {
+  background: #ffffff;
+}
+
+.theme-light .location-editor-item:hover {
+  border-color: #c3d3e4;
+}
+
+.theme-light .location-editor-thumb {
+  background: #e9eff6;
+}
+
+.theme-light .location-editor-readout,
+.theme-light .location-editor-note {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+/* 琥珀色边框在浅底上偏弱，压深一档 */
+.theme-light .identity-badge {
+  border-color: rgba(180, 83, 9, 0.35);
+}
+
+.theme-light .badge-warn {
+  border-color: rgba(180, 83, 9, 0.4);
+}
+
+/* `.stage` 现在**继承浅色 token**，这里只做「深色写死值 → 浅色」的收尾覆盖。
+ *
+ * 历史包袱：阶段 13 曾把整套深色 token（`--bg:#04070d` …）重新声明在 `.stage` 子树内，
+ * 理由是"轨迹发光在白底上没层次"。阶段 14（W14-2）换了做法 ——
+ * 轨迹改由播放页**自绘**（深青 `#0066cc` / 亮青 `#0099ff`，无发光、无暗角），
+ * 于是不再需要暗场，也就不能再用"局部重声明 token"这种方式把整页压黑。
+ *
+ * 那条坑要记住：CSS 变量沿 DOM 继承，只要在 `.stage` 上重声明一次 `--bg`，
+ * 播放页里所有走 token 的按钮 / 进度条 / 提示条就全部回到深色 —— 这是
+ * "改了半天 CSS 没生效"的真正原因，排查时先 `getComputedStyle` 看变量来源。
+ */
+.theme-light .stage {
+  /* 显式写一次，防止将来有人删掉 `.stage` 的基础规则导致画布透明 */
+  background: var(--bg);
+  color: var(--text);
+}
+

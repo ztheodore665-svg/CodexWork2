@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>嵌入测试 harness · Track Studio</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        background: #0a1019;
+        color: #cfe0f0;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        height: 100vh;
+      }
+      aside {
+        border-right: 1px solid #1b2b3d;
+        padding: 16px;
+        overflow: auto;
+      }
+      h1 {
+        font-size: 14px;
+        letter-spacing: 0.1em;
+        color: #7fa9cf;
+        margin: 0 0 12px;
+      }
+      button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #22405c;
+        background: #10202f;
+        color: #cfe0f0;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #16304a;
+      }
+      pre {
+        font-size: 11px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-all;
+        color: #8fb4d4;
+        margin: 8px 0 0;
+      }
+      iframe {
+        border: 0;
+        width: 100%;
+        height: 100%;
+        background: #04070d;
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>模拟父窗口（主应用）</h1>
+      <button id="btn-init">发送 init（身份 + 5 张照片）</button>
+      <button id="btn-update">发送 photos-update（换 3 张）</button>
+      <button id="btn-clear">清空日志</button>
+      <pre id="log">等待 iframe 发来 ready…</pre>
+    </aside>
+    <!-- 阶段 13：iframe 指向**嵌入版入口** `embed.html`（与真实主应用一致）。
+         `/`（index.html）现在是深色独立版：没有桥、也不消费 `?embedded=1`，
+         指向它会让这个 harness 看起来"桥坏了"。 -->
+    <iframe id="frame" src="./embed.html?embedded=1" title="track-studio"></iframe>
+
+    <script>
+      // 这是**测试 harness**，不是生产代码：它模拟主应用那一侧，
+      // 只做两件事——发 init / photos-update，以及把收到的消息打印出来。
+      const frame = document.getElementById('frame');
+      const log = document.getElementById('log');
+      const lines = [];
+
+      function push(text) {
+        lines.push(new Date().toISOString().slice(11, 19) + '  ' + text);
+        if (lines.length > 60) lines.shift();
+        log.textContent = lines.join('\n');
+      }
+
+      // 固定测试种子（仅演示用，绝不用于真实身份）
+      const TEST_PUBKEY =
+        'ed25519:3b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29';
+      const TEST_SEED =
+        '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f';
+
+      const FALLBACK_THUMB =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR4nGNgAAIAAAUAAXpeqz8AAAAASUVORK5CYII=';
+
+      /** 用 canvas 现场画一张 64×64 JPEG，转成 data URL（不落盘、不联网）。 */
+      function paintThumb(index) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return FALLBACK_THUMB;
+        const hue = (index * 47) % 360;
+        const gradient = ctx.createLinearGradient(0, 0, 64, 64);
+        gradient.addColorStop(0, 'hsl(' + hue + ', 62%, 42%)');
+        gradient.addColorStop(1, 'hsl(' + ((hue + 60) % 360) + ', 58%, 18%)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 64, 64);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = 'bold 22px system-ui, sans-serif';
+        ctx.fillText(String(index + 1), 24, 42);
+        return canvas.toDataURL('image/jpeg', 0.6);
+      }
+
+      /** data URL → ArrayBuffer（照片字节必须是 ArrayBuffer，才能 transfer）。 */
+      function dataUrlToBytes(dataUrl) {
+        const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+        return bytes.buffer;
+      }
+
+      /** 造一张 SystemPhoto。坐标是杭州的真实点的近似值，只为让轨迹看起来像回事。 */
+      function makePhoto(index, offsetMinutes, lat, lng) {
+        const thumb = paintThumb(index);
+        return {
+          id: 'p_harness' + index,
+          bytes: dataUrlToBytes(thumb),
+          name: 'harness-' + (index + 1) + '.jpg',
+          thumbnailDataUrl: thumb,
+          takenAt: new Date(Date.UTC(2026, 3, 18, 1, offsetMinutes, 0)).toISOString(),
+          lat: lat,
+          lng: lng,
+        };
+      }
+
+      function makePhotoSet(count) {
+        const spots = [
+          [30.2431, 120.1459],
+          [30.2408, 120.0985],
+          [30.2213, 120.1147],
+          [30.1728, 120.1009],
+          [30.1878, 120.144],
+        ];
+        const out = [];
+        for (let i = 0; i < count; i += 1) {
+          const spot = spots[i % spots.length];
+          out.push(makePhoto(i, i * 40, spot[0], spot[1]));
+        }
+        return out;
+      }
+
+      frame.addEventListener('load', () => {
+        push('iframe loaded');
+      });
+
+      window.addEventListener('message', (event) => {
+        // harness 与 iframe 同源，只接受同源消息
+        if (event.origin !== window.location.origin) {
+          push('忽略跨源消息 from ' + event.origin);
+          return;
+        }
+        const data = event.data || {};
+        if (data.type === 'ready') {
+          push('← ready（可以在此时发 init）');
+          return;
+        }
+        if (data.type === 'import-to-main') {
+          push('← import-to-main: ' + JSON.stringify(data.journey).slice(0, 240) + '…');
+          return;
+        }
+        if (data.type === 'download') {
+          push('← download: ' + (data.filename || '(无文件名)'));
+          return;
+        }
+        if (data.type === 'error') {
+          push('← error: ' + data.message);
+          return;
+        }
+        push('← 未知消息 ' + JSON.stringify(data).slice(0, 160));
+      });
+
+      document.getElementById('btn-init').addEventListener('click', () => {
+        const photos = makePhotoSet(5);
+        const payload = {
+          // 键名必须是 privHex：`core/identity.ts` 的 `setInjectedIdentity` 只认它
+          // （主应用 `StudioEmbed.tsx` 发的也是 privHex）。发 seed 会让"使用主应用身份"永远验不到。
+          identity: { pubkey: TEST_PUBKEY, privHex: TEST_SEED },
+          photos: photos,
+        };
+        frame.contentWindow.postMessage({ type: 'init', payload: payload }, window.location.origin, [
+          ...photos.map((photo) => photo.bytes),
+        ]);
+        push('→ init（5 张照片，含 transfer）');
+      });
+
+      document.getElementById('btn-update').addEventListener('click', () => {
+        const photos = makePhotoSet(3);
+        frame.contentWindow.postMessage(
+          { type: 'photos-update', photos: photos },
+          window.location.origin,
+          [...photos.map((photo) => photo.bytes)],
+        );
+        push('→ photos-update（3 张照片）');
+      });
+
+      document.getElementById('btn-clear').addEventListener('click', () => {
+        lines.length = 0;
+        log.textContent = '';
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,742 @@
+/* Tailwind 管 billboard 级的原子类，手写 CSS 管阶段 2 留下的页面级规则。
+ *
+ * 为什么两者共存而不是一次性重写：阶段 2 的对话页（`AgentPage`）样式已经过人工验收，
+ * 为了引入 Tailwind 把它们推翻重做，收益为零、回归风险为正。所以这里保留原有规则，
+ * 阶段 6 新增/改版的页面（信物分享、地图相册）一律用 Tailwind + `components/ui/`。
+ *
+ * 过渡期唯一的坑是变量重名：原 `--border/--accent/--muted` 是 **hex 原色**，
+ * 而 Tailwind 主题要求它们是 **HSL 三元组**（`hsl(hsl(var(--border)))` 才能拼出颜色）。
+ * 处理方式：这三个变量改成 HSL 三元组，所有旧引用点在外面套一层 `hsl()`。
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ---- 阶段 2 遗留（继续被 .agent-page 等规则引用）---- */
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --text: #24231f;
+  --user: #2f6f5e;
+  --danger: #b4483c;
+
+  /* ---- Tailwind / shadcn 主题层（一律 HSL 三元组）---- */
+  --background: 60 11% 96%;
+  --foreground: 48 8% 13%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 48 8% 13%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 48 8% 13%;
+
+  /* 主色沿用 `--accent`（#2f6f5e → 164 41% 31%），保证两个体系的绿是同一个绿 */
+  --primary: 164 41% 31%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 60 5% 95%;
+  --secondary-foreground: 48 8% 20%;
+
+  --muted: 52 3% 47%;
+  --muted-foreground: 48 4% 42%;
+
+  --accent: 164 41% 31%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 6 50% 47%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 48 8% 88%;
+  --input: 48 8% 84%;
+  --ring: 164 41% 31%;
+
+  --radius: 0.625rem;
+
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.agent-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.agent-header h1 {
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.agent-header .hint,
+.empty {
+  color: hsl(var(--muted));
+  font-size: 13px;
+  margin: 0;
+}
+
+.message-list {
+  flex: 1;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message-user {
+  align-items: flex-end;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.7;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.message-assistant .bubble {
+  background: var(--panel);
+  border: 1px solid hsl(var(--border));
+  border-bottom-left-radius: 4px;
+}
+
+.message-user .bubble {
+  background: var(--user);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.caret {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  margin-left: 2px;
+  background: hsl(var(--accent));
+  vertical-align: text-bottom;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.chip-label {
+  color: hsl(var(--muted));
+}
+
+.chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef3f0;
+  border: 1px solid #dbe5df;
+  color: hsl(var(--accent));
+}
+
+.meta-row {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: hsl(var(--muted));
+}
+
+.meta-row .refused {
+  color: var(--danger);
+}
+
+.composer {
+  display: flex;
+  gap: 8px;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+  padding-top: 8px;
+}
+
+.composer input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: var(--panel);
+}
+
+.composer input:focus {
+  border-color: hsl(var(--accent));
+}
+
+.composer button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: hsl(var(--accent));
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.composer button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.composer button.stop {
+  background: var(--danger);
+}
+
+.error-bar {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fdeceb;
+  color: var(--danger);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* ---------------- 阶段 3：工具调用 ----------------
+   状态条与结果卡片的配色刻意与"证据"区分开：
+   记忆证据是用户的，工具结果是外部的，视觉上不该长得一样。 */
+
+.tool-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #eef4ff;
+  color: #35507a;
+  font-size: 12px;
+}
+
+.tool-spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #b9cbe8;
+  border-top-color: hsl(var(--accent));
+  border-radius: 50%;
+  animation: tool-spin 0.8s linear infinite;
+}
+
+@keyframes tool-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tool-reason {
+  color: #7a8ba3;
+}
+
+.tool-card {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9e3f5;
+  border-left: 3px solid hsl(var(--accent));
+  border-radius: 8px;
+  background: #fbfcff;
+  font-size: 12px;
+}
+
+.tool-card-failed {
+  border-left-color: var(--danger);
+  background: #fffaf9;
+}
+
+.tool-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: hsl(var(--accent));
+  color: #fff;
+}
+
+.tool-flag-source {
+  color: #8a5a00;
+}
+
+.tool-flag {
+  color: var(--danger);
+}
+
+.tool-chip {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #eef1f6;
+  color: #5b6b82;
+}
+
+.tool-card-note {
+  margin: 6px 0 0;
+  color: #6b7a90;
+}
+
+/* ---------------- 阶段 7：全屏地图壳 ----------------
+   地图是**唯一底层**：高德容器必须撑满整个视口，所以这里不再有
+   "居中窄列"的页面容器，也不再有顶部 Tab 条。
+   原先那套（.app-shell / .app-nav / .app-main / .map-page / .map-header /
+   .layer-toggles / .map-footer）随 Tab 结构一起删除 —— 留着只会让人
+   以为还能改回去，而改回去要先和七个选择器搏斗。
+   对话框/抽屉里的内容用自己的容器类（如 .share-page）。 */
+
+.map-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.map-hidden-hint,
+.map-empty-hint {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--panel);
+  border: 1px solid hsl(var(--border));
+  font-size: 12px;
+  color: hsl(var(--muted));
+}
+
+.map-empty-hint {
+  bottom: 44px;
+}
+
+/* 地图不可用（key 没配 / 脚本被墙）时铺满容器居中显示，
+   而不是像以前那样在页面中间飘一张小卡片 —— 那时地图还有边框，
+   现在没有东西可以"飘在中间"。 */
+.map-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+  background: var(--panel);
+}
+
+.map-fallback strong {
+  font-size: 15px;
+}
+
+.map-fallback p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: hsl(var(--muted));
+}
+
+.map-fallback .hint {
+  font-size: 12px;
+}
+
+/* 信物页 */
+
+/* 信物分享内容。现在它住在 ShareDialog 里（不再是独立页面），
+   所以去掉"撑满一页"那套：外层对话框已经有 max-w-2xl 与滚动区，
+   这里只需要纵向节奏。底部留 24px 而不是 60px ——
+   滚动容器自带内边距，60px 只会让最后一张卡片离底边老远。 */
+.share-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0 24px;
+}
+
+.share-page section {
+  margin: 0;
+}
+
+.share-header h1 {
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+
+.share-page section {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border));
+  background: var(--panel);
+}
+
+.share-page h2 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.share-page button {
+  border: 1px solid hsl(var(--accent));
+  background: hsl(var(--accent));
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.share-page button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.identity-card code {
+  font-size: 12px;
+  color: hsl(var(--muted));
+}
+
+.gen-message {
+  margin-top: 10px;
+  font-size: 13px;
+  color: hsl(var(--accent));
+}
+
+.verify-row {
+  font-size: 13px;
+}
+
+.place-card {
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+
+.place-title {
+  font-weight: 600;
+}
+
+.place-meta,
+.place-geo,
+.place-photos {
+  font-size: 12px;
+  color: hsl(var(--muted));
+}
+
+.place-geo {
+  color: hsl(var(--accent));
+}
+
+/* ── 轨迹回放（全屏层）─────────────────────────────────────────────
+ *
+ * 这一层是**深色**的，而本文件的 `--bg/--text` 是浅色主题变量（阶段 2 遗留），
+ * 所以这里不引用它们，全部写死深色值 —— 否则浅色主题一改，回放里的字会变成深色底深色字。
+ *
+ * `backdrop-filter` 只出现在顶/底栏这种小面积元素上；全屏使用会在每帧重采样整条
+ * 渲染链，直接吃掉 60fps。
+ */
+
+.replay-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #05080f;
+  overflow: hidden;
+}
+
+.replay-map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* canvas 是替换元素：绝对定位且 width:auto 时按固有尺寸(300×150)解析，
+   `inset:0` 的 right/bottom 会因过约束被忽略 —— 必须显式给 100%。 */
+.replay-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── 回放里的照片卡片 ──────────────────────────────────────────────
+ *
+ * 从 showcase/src/styles.css 移植，但有三处本地化处理：
+ *  1. 全部加 `.replay-root` 前缀 —— `.card` 太通用，不能污染浅色主题的主界面；
+ *  2. 不引用 `var(--text)` / `var(--font-mono)`：前者在本文件是浅色主题的深色字
+ *     （会变成深底深字），后者主应用根本没定义。都写死深色值/具体字体栈；
+ *  3. **去掉 `backdrop-filter: blur(10px)`**：本文件开头的性能约定只允许小面积顶/底栏
+ *     用它。卡片底下本来就是深色地图，模糊几乎看不出，但 32 个节点每帧重采样会
+ *     实打实吃帧预算 —— 我们刚把 p90 从 32.8ms 修到 16.5ms，别把它请回来。
+ *     改用更不透明的底色达到同样的可读性。
+ *
+ * `display:none` 是必需的：卡片是绝对定位、每帧由 JS 写 transform/opacity 驱动。
+ * 若漏掉，32 个 div 会每帧进出文档流，那是真实重排（不是"写后读"，但一样卡）。
+ */
+.replay-root .card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5; /* 画布 3 之上，顶/底栏 10 之下 */
+  width: 132px;
+  height: 168px;
+  border-radius: 6px;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: rgba(8, 14, 24, 0.9);
+  overflow: hidden;
+  will-change: transform, opacity;
+  transform-origin: 50% 50%;
+  display: none;
+  pointer-events: none;
+}
+
+.replay-root .card-media {
+  width: 132px;
+  height: 112px;
+  background-size: cover;
+  background-position: center;
+}
+
+.replay-root .card-body {
+  padding: 7px 9px 0;
+}
+
+.replay-root .card-place {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #e6f1ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replay-root .card-date {
+  margin-top: 3px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(124, 142, 166, 0.9);
+}
+
+.replay-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 28px;
+  background: linear-gradient(180deg, rgba(5, 8, 15, 0.9), rgba(5, 8, 15, 0));
+  pointer-events: none;
+}
+
+.replay-top > * {
+  pointer-events: auto;
+}
+
+.replay-eyebrow {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.65);
+}
+
+.replay-title {
+  margin: 6px 0 0;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #e6f1ff;
+}
+
+.replay-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #7c8ea6;
+  font-variant-numeric: tabular-nums;
+}
+
+.replay-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 14, 24, 0.72);
+  backdrop-filter: blur(8px);
+  color: #cbd5e1;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.replay-close:hover {
+  color: #ffffff;
+  border-color: rgba(125, 211, 252, 0.5);
+}
+
+.replay-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 26px 22px 20px;
+  /* 底栏背后是**每帧都在变的画布**：这里一旦用 backdrop-filter，浏览器每帧都要
+     对整条 1440×80 的区域重做一次模糊，实测直接吃掉 15~20fps。纯半透明色是合成层操作，零成本。 */
+  background: rgba(5, 8, 15, 0.88);
+}
+
+.replay-toggle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: rgba(8, 14, 24, 0.8);
+  color: #7dd3fc;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.replay-toggle:hover {
+  background: rgba(34, 211, 238, 0.14);
+  border-color: rgba(34, 211, 238, 0.65);
+}
+
+/* 图标切换走 CSS：主循环里不 setState，只改 data-playing */
+.replay-icon-pause {
+  display: none;
+}
+
+.replay-toggle[data-playing='true'] .replay-icon-play {
+  display: none;
+}
+
+.replay-toggle[data-playing='true'] .replay-icon-pause {
+  display: block;
+}
+
+.replay-track {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  height: 22px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.replay-track:focus-visible {
+  outline: 2px solid rgba(125, 211, 252, 0.6);
+  outline-offset: 4px;
+}
+
+.replay-track-base {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.replay-track-fill {
+  position: absolute;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.55), #7dd3fc);
+}
+
+.replay-percent {
+  flex: 0 0 auto;
+  width: 52px;
+  text-align: right;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #cbd5e1;
+}
+
+.replay-empty {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.replay-empty-hint {
+  font-size: 12px;
+  color: #7c8ea6;
+}
+
+.replay-empty-close {
+  width: auto;
+  height: 32px;
+  margin-top: 8px;
+  padding: 0 16px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}

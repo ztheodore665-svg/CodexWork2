@@ -1,0 +1,138 @@
+/** StudioEmbed 的少量必要样式（阶段 11）。
+ *
+ *  为什么不全用 Tailwind 类名：这里是**全屏 shell**（100dvh 布局 + iframe 铺满），
+ *  混在 JSX 里会变成一长串 `flex min-h-0 flex-1 ...`，而且 iframe 的高度链路
+ *  （root → body → iframe 三层 flex）出一点错就表现为"iframe 高度 0、一片空白"，
+ *  这种失败在开发时极难与"小应用没起来"区分。单独一个文件更好读也更好查。
+ *
+ *  约束：只允许 `studio-embed-*` 前缀的类名，**不改任何全局样式**（主应用用 Tailwind，
+ *  颜色全部取自 `src/styles.css` 的 CSS 变量，跟随主题）。
+ */
+
+.studio-embed-root {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  background: hsl(var(--background, 0 0% 100%));
+  color: hsl(var(--foreground, 0 0% 9%));
+}
+
+.studio-embed-bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid hsl(var(--border, 0 0% 88%));
+  background: hsl(var(--background, 0 0% 100%));
+}
+
+.studio-embed-heading {
+  min-width: 0;
+}
+
+.studio-embed-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.studio-embed-subtitle {
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 2px 0 0;
+  color: hsl(var(--muted-foreground, 0 0% 42%));
+  /* 副标题里会带"跳过 N 张"，长起来不该把标题挤掉 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-embed-close {
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 32px;
+  width: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid hsl(var(--border, 0 0% 88%));
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.studio-embed-close:hover {
+  background: hsl(var(--accent, 0 0% 95%));
+}
+
+.studio-embed-close:focus-visible {
+  outline: 2px solid hsl(var(--primary, 164 41% 31%));
+  outline-offset: 2px;
+}
+
+/**
+ * DialogContent 自带一个右上角的关闭按钮（`components/ui/dialog.tsx` 里固定渲染），
+ * 而这里是**全屏**布局：它会精确压在本组件的关闭按钮上。
+ * 那个文件不在本次允许改动范围内，所以在这里把它藏起来 ——
+ * 键盘用户仍可用 Esc / 本组件的按钮关闭（Radix 的 Esc 关闭与本按钮都是 `onClose`）。
+ */
+.studio-embed-content > button.absolute.right-4.top-4 {
+  display: none;
+}
+
+.studio-embed-notice {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: hsl(var(--muted-foreground, 0 0% 42%));
+  border-bottom: 1px solid hsl(var(--border, 0 0% 88%));
+}
+
+.studio-embed-error {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid hsl(var(--border, 0 0% 88%));
+  background: hsl(var(--destructive, 6 50% 47%) / 0.08);
+}
+
+.studio-embed-error-text {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: hsl(var(--destructive, 6 50% 47%));
+  /* 命令行要能被原样复制，所以允许折行且不省略 */
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.studio-embed-error-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: hsl(var(--muted-foreground, 0 0% 42%));
+}
+
+.studio-embed-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.studio-embed-frame {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border: 0;
+  background: hsl(var(--background, 0 0% 100%));
+}

@@ -1,0 +1,29 @@
+{"kind":"rag","question":"我去年秋天去过哪些古镇？","expected_evidence":[{"source_type":"trip","source_id":"t1","chunk_index":0}]}
+{"kind":"rag","question":"我在杭州最喜欢哪类地点？","expected_evidence":[{"source_type":"place","source_id":"p12","chunk_index":0}]}
+{"kind":"plan","question":"帮我照着上次那趟再规划一个类似的路线。","expected_answer":"含杭州西湖/灵隐寺等地的合理类似路线","note":"规划类：不计入引用率与拒答率，只要求生成合理"}
+{"kind":"rag","question":"前年五一我在哪？","expected_evidence":[{"source_type":"trip","source_id":"t3","chunk_index":0}]}
+{"kind":"rag","question":"洛阳那趟我都打卡了哪些景点？","expected_evidence":[{"source_type":"trip","source_id":"t3","chunk_index":0},{"source_type":"place","source_id":"p14","chunk_index":0}]}
+{"kind":"rag","question":"我在乌镇都做了什么？","expected_evidence":[{"source_type":"place","source_id":"p10","chunk_index":0}]}
+{"kind":"rag","question":"我去过哪些爬山看云海的地方？","expected_evidence":[{"source_type":"trip","source_id":"t4","chunk_index":0}]}
+{"kind":"rag","question":"苏州和上海连着去的那次，都到过哪些地方？","expected_evidence":[{"source_type":"trip","source_id":"t5","chunk_index":0}]}
+{"kind":"rag","question":"去年夏天我去了哪儿？","expected_evidence":[{"source_type":"trip","source_id":"t4","chunk_index":0}]}
+{"kind":"rag","question":"我看冰雕的那趟是什么时候？","expected_evidence":[{"source_type":"trip","source_id":"t6","chunk_index":0}]}
+{"kind":"rag","question":"2023 年那趟西北环线经过哪些地方？","expected_evidence":[{"source_type":"trip","source_id":"t7","chunk_index":0}]}
+{"kind":"rag","question":"我在成都都看了些什么？","expected_evidence":[{"source_type":"trip","source_id":"t8","chunk_index":0}]}
+{"kind":"rag","question":"鼓浪屿那次是几月去的？","expected_evidence":[{"source_type":"place","source_id":"p25","chunk_index":0}]}
+{"kind":"rag","question":"今年春天我去了哪座古都？","expected_evidence":[{"source_type":"trip","source_id":"t10","chunk_index":0}]}
+{"kind":"rag","question":"我去看过兵马俑吗？","expected_evidence":[{"source_type":"place","source_id":"p26","chunk_index":0}]}
+{"kind":"rag","question":"我在海边小岛住过一晚是哪里？","expected_evidence":[{"source_type":"place","source_id":"p25","chunk_index":0}]}
+{"kind":"rag","question":"我去看过大熊猫吗？在哪看的？","expected_evidence":[{"source_type":"place","source_id":"p22","chunk_index":0}]}
+{"kind":"rag","question":"我逛过哪些博物馆？","expected_evidence":[{"source_type":"place","source_id":"p17","chunk_index":0}]}
+{"kind":"rag","question":"我在上海看了什么夜景？","expected_evidence":[{"source_type":"place","source_id":"p19","chunk_index":0}]}
+{"kind":"rag","question":"哪趟行程是以看石窟和古城为主的？","expected_evidence":[{"source_type":"trip","source_id":"t3","chunk_index":0}]}
+{"kind":"rag","question":"我七月去过湖边吗？","expected_evidence":[{"source_type":"place","source_id":"p24","chunk_index":0}]}
+{"kind":"refusal","question":"我 2019 年去过巴黎吗？","expected_answer":"拒答（无证据）"}
+{"kind":"refusal","question":"我在南极看过企鹅吗？","expected_answer":"拒答（无证据）"}
+{"kind":"refusal","question":"我上个月在东京迪士尼排了多久的队？","expected_answer":"拒答（无证据）"}
+{"kind":"refusal","question":"我攀登珠穆朗玛峰用了几天？","expected_answer":"拒答（无证据）"}
+{"kind":"recommend","question":"去完洛阳该去哪？","expected_answer":"自然风光类","note":"群体语义先验，阶段 7 才启用；不计入 citation_rate，只计 hit@3"}
+{"kind":"rag","question":"厦门那趟我清晨拍了什么？","expected_evidence":[{"source_type":"trip","source_id":"t9","chunk_index":0}]}
+{"kind":"plan","question":"帮我把去年秋天江南古镇那趟安排成一个两天的行程计划。","expected_answer":"含乌镇/西塘等古镇的两日合理安排","note":"规划类：不计入引用率，只要求生成合理"}
+{"kind":"rag","question":"去年四月我在杭州做了什么？","expected_evidence":[{"source_type":"trip","source_id":"t2","chunk_index":0}]}

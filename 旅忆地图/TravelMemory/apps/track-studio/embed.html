@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- data-entry 决定 main.tsx 加载哪套主题：embed = 浅色嵌入版（允许高德底图），CSP 由 vite 按入口注入。 -->
+<html lang="zh-CN" data-entry="embed">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f9fc" />
+    <meta name="color-scheme" content="light" />
+    <title>轨迹演示 · 嵌入</title>
+    <style>
+      /* 首屏骨架：React 挂载前有东西可看，避免白闪。挂载后整块被替换。
+         两个入口各自内联一份（不共享文件，dev 下都不依赖外部 CSS）：本文件是**浅色**骨架
+         （嵌入版），`index.html` 那份是深色（独立版）。底色不同，避免浅色 UI 前面闪一下深底。 */
+      html,
+      body {
+        margin: 0;
+        background: #f7f9fc;
+      }
+      #root > .boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f9fc;
+      }
+      #root > .boot span {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 12px;
+        letter-spacing: 0.36em;
+        color: #7b8ca1;
+        text-transform: uppercase;
+        animation: boot-pulse 1.6s ease-in-out infinite;
+      }
+      @keyframes boot-pulse {
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div class="boot"><span>TRACK STUDIO</span></div></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

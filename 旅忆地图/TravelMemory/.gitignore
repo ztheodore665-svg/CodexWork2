@@ -1,0 +1,28 @@
+__pycache__/
+*.pyc
+.env
+.env.local
+*.local
+.pytest-tmproot/
+.venv/
+node_modules/
+dist/
+build/
+*.log
+# 阶段 16：`make dashboard` 的产物是构建输出，不是源码（别再提交进仓库）
+backend/data/*.html
+backend/data/traces/*.jsonl
+!backend/data/traces/.gitkeep
+research/results/*
+!research/results/.gitkeep
+# 工具缓存与增量编译产物
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+coverage/
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+# 自动化任务的运行时记忆目录（每个 automation 一份，不入库）
+.workbuddy/memory/automations/
